@@ -4,18 +4,16 @@ import { myTodos } from './firebase';
 const List = () => {
   const [todos, setTodos] = useState([]);
 
-  const get = async () => {
-    const querySnapshot = await myTodos().get();
-    const t = [];
-    querySnapshot.forEach((doc) => {
-      t.push(doc.data());
-    });
-    setTodos(t);
-  };
-
-  useEffect(() => {
-    get();
-  }, []);
+  useEffect(
+    () => myTodos().onSnapshot((querySnapshot) => {
+      const t = [];
+      querySnapshot.forEach((doc) => {
+        t.push(doc.data());
+      });
+      setTodos(t);
+    }),
+    [],
+  );
 
   return (
     <ul>
