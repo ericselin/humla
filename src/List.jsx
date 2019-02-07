@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { myTodos } from './firebase';
+import Item from './Item';
+import New from './New';
 
 const List = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState({});
 
   useEffect(
     () => myTodos().onSnapshot((querySnapshot) => {
-      const t = [];
+      const t = {};
       querySnapshot.forEach((doc) => {
-        t.push(doc.data());
+        t[doc.id] = doc.data();
       });
       setTodos(t);
     }),
@@ -16,11 +18,12 @@ const List = () => {
   );
 
   return (
-    <ul>
-      {todos.map(todo => (
-        <li key={todo.title}>{todo.title}</li>
+    <div>
+      {Object.keys(todos).map(id => (
+        <Item key={id} todo={todos[id]} id={id} />
       ))}
-    </ul>
+      <New />
+    </div>
   );
 };
 export default List;

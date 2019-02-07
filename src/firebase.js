@@ -16,17 +16,19 @@ const config = {
 };
 firebase.initializeApp(config);
 
-firebase
-  .firestore()
-  .enablePersistence()
-  .catch((err) => {
-    console.warn('Could not enable persistence', err);
-  });
+const db = firebase.firestore();
+
+db.enablePersistence().catch((err) => {
+  console.warn('Could not enable persistence', err);
+});
 
 export default firebase;
 
 export const myTodos = () => {
   const { uid } = firebase.auth().currentUser;
-  const db = firebase.firestore();
   return db.collection('todos').where('owner', '==', uid);
 };
+
+export const uid = () => firebase.auth().currentUser.uid;
+
+export { db };

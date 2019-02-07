@@ -8,7 +8,9 @@
     "build": "parcel build ./src/index.html"
   },
   "dependencies": {
+    "draft-js": "^0.10.5",
     "firebase": "^5.8.2",
+    "prop-types": "^15.6.2",
     "react": "16.8.0-alpha.1",
     "react-dom": "16.8.0-alpha.1"
   },
