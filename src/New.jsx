@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Editor, EditorState } from 'draft-js';
 import { db, uid } from './firebase';
+import './Item.css';
+import './New.css';
 
 const New = () => {
   const [editor, setEditor] = useState(EditorState.createEmpty());
@@ -22,7 +24,12 @@ const New = () => {
     }
   };
 
-  return <Editor editorState={editor} onChange={onChange} onBlur={onBlur} />;
+  return (
+    <div className="item new">
+      <i className="material-icons">add</i>
+      <Editor placeholder="New..." editorState={editor} onChange={onChange} onBlur={onBlur} />
+    </div>
+  );
 };
 
 export default New;

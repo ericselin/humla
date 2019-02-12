@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import firebase from './firebase';
 import List from './List';
+import './App.css';
 
 const login = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -18,24 +19,29 @@ const logout = () => {
 const App = () => {
   const [user, setUser] = useState(undefined);
 
-  useEffect(() => firebase.auth().onAuthStateChanged((u) => {
-    if (u) {
-      console.info('User signed in', u);
-      setUser(u);
-    } else {
-      console.info('User signed out');
-      setUser(false);
-    }
-  }), []);
+  useEffect(
+    () => firebase.auth().onAuthStateChanged((u) => {
+      if (u) {
+        console.info('User signed in', u);
+        setUser(u);
+      } else {
+        console.info('User signed out');
+        setUser(false);
+      }
+    }),
+    [],
+  );
 
   return (
-    <div>
+    <React.Fragment>
       {user && (
         <React.Fragment>
-          <button onClick={logout} type="button">
-            Logout
+          <button onClick={logout} type="button" className="menu-btn">
+            <i className="material-icons">menu</i>
           </button>
-          <List />
+          <main className="content">
+            <List />
+          </main>
         </React.Fragment>
       )}
       {user === undefined && <div>Loading...</div>}
@@ -44,7 +50,7 @@ const App = () => {
           Login
         </button>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

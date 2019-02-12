@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Editor, EditorState, ContentState } from 'draft-js';
 import { db } from './firebase';
+import './Item.css';
 
 const Item = ({ todo, id }) => {
   const [editor, setEditor] = useState(
@@ -18,7 +19,12 @@ const Item = ({ todo, id }) => {
     console.log('Updated', id, 'to', title);
   };
 
-  return <Editor editorState={editor} onChange={onChange} onBlur={onBlur} />;
+  return (
+    <div className="item">
+      <i className="material-icons">check_box_outline_blank</i>
+      <Editor editorState={editor} onChange={onChange} onBlur={onBlur} />
+    </div>
+  );
 };
 
 Item.propTypes = {
