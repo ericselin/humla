@@ -6,16 +6,17 @@ import New from './New';
 const List = () => {
   const [todos, setTodos] = useState({});
 
-  useEffect(
-    () => myTodos().onSnapshot((querySnapshot) => {
+  useEffect(() => {
+    console.log('Adding query snapshot listener...');
+    return myTodos().orderBy('completed').onSnapshot((querySnapshot) => {
+      console.log('Incoming query snapshot', querySnapshot);
       const t = {};
       querySnapshot.forEach((doc) => {
         t[doc.id] = doc.data();
       });
       setTodos(t);
-    }),
-    [],
-  );
+    });
+  }, []);
 
   return (
     <div>

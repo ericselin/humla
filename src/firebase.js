@@ -26,9 +26,5 @@ export default firebase;
 
 export const myTodos = () => {
   const { uid } = firebase.auth().currentUser;
-  return db.collection('todos').where('owner', '==', uid);
+  return db.collection(uid);
 };
-
-export const uid = () => firebase.auth().currentUser.uid;
-
-export { db };

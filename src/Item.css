@@ -7,8 +7,18 @@
   display: flex;
 }
 
-.item > i {
+.item.completed {
+  background: none;
+  box-shadow: none;
+  text-decoration: line-through;
+}
+
+.checkbox {
   color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
 }
 
 .item > div {

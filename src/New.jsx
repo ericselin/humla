@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Editor, EditorState } from 'draft-js';
-import { db, uid } from './firebase';
+import { myTodos } from './firebase';
 import './Item.css';
 import './New.css';
 
@@ -17,7 +17,7 @@ const New = () => {
   const onBlur = () => {
     const title = editor.getCurrentContent().getPlainText();
     if (title) {
-      db.collection('todos').add({ title, owner: uid() });
+      myTodos().add({ title, completed: null });
       console.log('Created', title);
       setEditor(EditorState.createEmpty());
       update = false;
