@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { list } from './firebase';
+import { unprocessed } from './firebase';
 import Item from './Item';
 import New from './New';
 
 const List = () => {
   const [todos, setTodos] = useState({});
 
-  useEffect(list(setTodos), []);
+  // possibly make this a custom hook
+  useEffect(unprocessed(setTodos), []);
 
   return (
     <div>

@@ -32,13 +32,23 @@ const App = () => {
     [],
   );
 
+  const selectView = () => {
+    // todo: open view selector here
+    // todo: create view selector
+  };
+
   return (
     <React.Fragment>
       {user && (
         <React.Fragment>
-          <button onClick={logout} type="button" className="menu-btn">
-            <i className="material-icons">menu</i>
-          </button>
+          <header>
+            <button onClick={logout} type="button" className="menu-btn">
+              <i className="material-icons">menu</i>
+            </button>
+            <div>
+              <button onClick={selectView} type="button">Main</button>
+            </div>
+          </header>
           <main className="content">
             <List />
           </main>

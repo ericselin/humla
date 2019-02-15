@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Editor, EditorState } from 'draft-js';
-import { myTodos } from './firebase';
+import { add } from './firebase';
 import './Item.css';
 import './New.css';
 
@@ -11,13 +11,12 @@ const New = () => {
   const onChange = (editorState) => {
     if (update) setEditor(editorState);
     else update = true;
-    console.log(editorState.getCurrentContent().getBlockMap());
   };
 
   const onBlur = () => {
     const title = editor.getCurrentContent().getPlainText();
     if (title) {
-      myTodos().add({ title, completed: null });
+      add({ title, completed: null });
       console.log('Created', title);
       setEditor(EditorState.createEmpty());
       update = false;

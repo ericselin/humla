@@ -24,7 +24,36 @@ db.enablePersistence().catch((err) => {
 
 export default firebase;
 
-export const myTodos = () => {
+const myTodos = () => {
   const { uid } = firebase.auth().currentUser;
   return db.collection(uid);
+};
+
+const snapshotListener = setter => (querySnapshot) => {
+  console.info('Incoming query snapshot', querySnapshot);
+  const t = {};
+  querySnapshot.forEach((doc) => {
+    t[doc.id] = doc.data();
+  });
+  setter(t);
+};
+
+export const unprocessed = setter => () => {
+  console.info('Adding query snapshot listener...');
+  return myTodos()
+    .where('soft', '==', null)
+    .where('completed', '==', false)
+    .onSnapshot(snapshotListener(setter));
+};
+
+export const list = setter => () => {
+  console.log('Adding query snapshot listener...');
+  return myTodos()
+    .orderBy('completed')
+    .orderBy('soft')
+    .onSnapshot(snapshotListener(setter));
+};
+
+export const add = (todo) => {
+  myTodos().add(todo);
 };
