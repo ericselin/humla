@@ -5,6 +5,7 @@
   margin-bottom: 0.2rem;
   border-radius: 0.2rem;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .item.completed {
@@ -24,4 +25,12 @@
 .item > div {
   margin: 0 0.5rem;
   flex: 1;
+}
+
+.item.completed .dates {
+  display: none;
+}
+
+.item > .dates {
+  flex: 0 0 100%;
 }

@@ -8,7 +8,7 @@ const List = () => {
 
   useEffect(() => {
     console.log('Adding query snapshot listener...');
-    return myTodos().orderBy('completed').onSnapshot((querySnapshot) => {
+    return myTodos().orderBy('completed').orderBy('soft').onSnapshot((querySnapshot) => {
       console.log('Incoming query snapshot', querySnapshot);
       const t = {};
       querySnapshot.forEach((doc) => {

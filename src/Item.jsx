@@ -28,12 +28,32 @@ const Item = ({ todo, id }) => {
     return c;
   };
 
+  const dateChange = (e) => {
+    myTodos()
+      .doc(id)
+      .update({ [e.target.name]: e.target.value });
+  };
+
   return (
     <div className={`item ${todo.completed ? 'completed' : ''}`}>
       <button className="checkbox" type="button" onClick={toggleComplete}>
         <i className="material-icons">{todo.completed ? 'check_box' : 'check_box_outline_blank'}</i>
       </button>
       <Editor editorState={editor} onChange={onChange} onBlur={onBlur} />
+      <div className="dates">
+        <label htmlFor="soft">
+          Soft date:
+          <input type="date" name="soft" id="soft" onChange={dateChange} defaultValue={todo.soft} />
+        </label>
+        <label htmlFor="hard">
+          Hard date:
+          <input type="date" name="hard" id="hard" onChange={dateChange} defaultValue={todo.hard} />
+        </label>
+        <label htmlFor="due">
+          Due date:
+          <input type="date" name="due" id="due" onChange={dateChange} defaultValue={todo.due} />
+        </label>
+      </div>
     </div>
   );
 };
