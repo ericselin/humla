@@ -16,7 +16,7 @@ const New = () => {
   const onBlur = () => {
     const title = editor.getCurrentContent().getPlainText();
     if (title) {
-      add({ title, completed: null });
+      add({ title, completed: false, soft: '' });
       console.log('Created', title);
       setEditor(EditorState.createEmpty());
       update = false;

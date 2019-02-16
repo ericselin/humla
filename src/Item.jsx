@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Editor, EditorState, ContentState } from 'draft-js';
-import { myTodos } from './firebase';
+import { update } from './firebase';
 import './Item.css';
 
 const Item = ({ todo, id }) => {
@@ -13,25 +13,19 @@ const Item = ({ todo, id }) => {
 
   const onBlur = () => {
     const title = editor.getCurrentContent().getPlainText();
-    myTodos()
-      .doc(id)
-      .update({ title });
+    update(id, { title });
     console.log('Updated', id, 'to', title);
   };
 
   const toggleComplete = () => {
     const c = !todo.completed;
-    myTodos()
-      .doc(id)
-      .update({ completed: c });
+    update(id, { completed: c });
     console.log('Updated', id, 'completion to', c);
     return c;
   };
 
   const dateChange = (e) => {
-    myTodos()
-      .doc(id)
-      .update({ [e.target.name]: e.target.value });
+    update(id, { [e.target.name]: e.target.value });
   };
 
   return (

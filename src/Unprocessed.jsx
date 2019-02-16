@@ -3,7 +3,7 @@ import { unprocessed } from './firebase';
 import Item from './Item';
 import New from './New';
 
-const List = () => {
+const Unprocessed = () => {
   const [todos, setTodos] = useState({});
 
   // possibly make this a custom hook
@@ -18,4 +18,5 @@ const List = () => {
     </div>
   );
 };
-export default List;
+
+export default Unprocessed;

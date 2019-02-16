@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
 import firebase from './firebase';
 import List from './List';
 import './App.css';
+import Header from './Header';
+import Unprocessed from './Unprocessed';
 
 const login = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -38,29 +42,25 @@ const App = () => {
   };
 
   return (
-    <React.Fragment>
-      {user && (
-        <React.Fragment>
-          <header>
-            <button onClick={logout} type="button" className="menu-btn">
-              <i className="material-icons">menu</i>
-            </button>
-            <div>
-              <button onClick={selectView} type="button">Main</button>
-            </div>
-          </header>
-          <main className="content">
-            <List />
-          </main>
-        </React.Fragment>
-      )}
-      {user === undefined && <div>Loading...</div>}
-      {user === false && (
-        <button onClick={login} type="button">
-          Login
-        </button>
-      )}
-    </React.Fragment>
+    <Router>
+      <React.Fragment>
+        {user && (
+          <React.Fragment>
+            <Header logout={logout} selectView={selectView} />
+            <main className="content">
+              <Route exact path="/" component={List} />
+              <Route path="/unprocessed" component={Unprocessed} />
+            </main>
+          </React.Fragment>
+        )}
+        {user === undefined && <div>Loading...</div>}
+        {user === false && (
+          <button onClick={login} type="button">
+            Login
+          </button>
+        )}
+      </React.Fragment>
+    </Router>
   );
 };
 
