@@ -8,6 +8,8 @@
     "build": "parcel build ./src/index.html"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.7",
+    "babel-plugin-emotion": "^10.0.7",
     "draft-js": "^0.10.5",
     "firebase": "^5.8.2",
     "prop-types": "^15.6.2",

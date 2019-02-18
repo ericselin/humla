@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 const Head = styled.header`
   display: grid;
@@ -25,21 +27,37 @@ const ViewBtn = styled.button`
   border: none;
   font-size: 1.25rem;
   position: relative;
+  outline: none;
+  cursor: pointer;
+  text-transform: capitalize;
 `;
 
-const ViewsDiv = styled.div`
-  position: absolute;
-  top: 100%;
+const link = css`
+  display: block;
+  text-decoration: none;
+  padding: 0.25rem;
+  color: #000;
+  font-size: 1rem;
 `;
 
 const Views = () => (
-  <ViewsDiv>
-    <Link to="/">Main</Link>
-    <Link to="/unprocessed">Unprocessed</Link>
-  </ViewsDiv>
+  <div
+    css={css`
+      position: absolute;
+      top: 100%;
+      padding: 0.25rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      left: -1px;
+      text-align: left;
+      background: white;
+    `}
+  >
+    <Link to="/" css={link}>Main</Link>
+    <Link to="/unprocessed" css={link}>Unprocessed</Link>
+  </div>
 );
 
-const Header = ({ logout }) => {
+const Header = ({ logout, location }) => {
   const [selector, setSelector] = React.useState(false);
 
   const toggle = () => {
@@ -48,6 +66,8 @@ const Header = ({ logout }) => {
     });
   };
 
+  const title = (location.pathname && location.pathname.substring(1)) || 'main';
+
   return (
     <Head>
       <MenuBtn onClick={logout}>
@@ -55,7 +75,7 @@ const Header = ({ logout }) => {
       </MenuBtn>
       <div>
         <ViewBtn onClick={toggle} type="button">
-          Main
+          {title}
           {selector && <Views />}
         </ViewBtn>
       </div>
@@ -65,6 +85,9 @@ const Header = ({ logout }) => {
 
 Header.propTypes = {
   logout: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    path: PropTypes.string,
+  }).isRequired,
 };
 
-export default Header;
+export default withRouter(Header);
