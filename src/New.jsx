@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Editor, EditorState } from 'draft-js';
 import { add } from './firebase';
-import './Item.css';
 import './New.css';
 
 const New = () => {

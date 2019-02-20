@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 import firebase from './firebase';
 import List from './List';
 import './App.css';
 import Header from './Header';
-import Unprocessed from './Unprocessed';
 
 const login = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -48,8 +47,9 @@ const App = () => {
           <React.Fragment>
             <Header logout={logout} selectView={selectView} />
             <main className="content">
-              <Route exact path="/" component={List} />
-              <Route path="/unprocessed" component={Unprocessed} />
+              <Route exact path="/" render={() => <Redirect to="/today" />} />
+              <Route path="/today" component={List} />
+              <Route path="/unprocessed" component={List} />
             </main>
           </React.Fragment>
         )}

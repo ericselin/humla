@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Editor, EditorState, ContentState } from 'draft-js';
 import { update } from './firebase';
-import './Item.css';
 
 const Item = ({ todo, id }) => {
   const [editor, setEditor] = useState(
@@ -29,25 +30,59 @@ const Item = ({ todo, id }) => {
   };
 
   return (
-    <div className={`item ${todo.completed ? 'completed' : ''}`}>
-      <button className="checkbox" type="button" onClick={toggleComplete}>
+    <div
+      css={css`
+        padding: 0.4rem;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        margin-bottom: 0.2rem;
+        border-radius: 0.2rem;
+        display: grid;
+        gap: 0.4rem;
+        grid-template-columns: min-content repeat(3, 1fr);
+        ${todo.completed
+        ? css`
+              background: none;
+              box-shadow: none;
+              text-decoration: line-through;
+            `
+        : undefined}
+      `}
+    >
+      <button
+        css={css`
+          grid-row: 1 / 3;
+          align-self: start;
+          color: rgba(0, 0, 0, 0.6);
+          margin: 0;
+          padding: 0;
+          background: none;
+          border: none;
+        `}
+        type="button"
+        onClick={toggleComplete}
+      >
         <i className="material-icons">{todo.completed ? 'check_box' : 'check_box_outline_blank'}</i>
       </button>
-      <Editor editorState={editor} onChange={onChange} onBlur={onBlur} />
-      <div className="dates">
-        <label htmlFor="soft">
-          Soft date:
-          <input type="date" name="soft" id="soft" onChange={dateChange} defaultValue={todo.soft} />
-        </label>
-        <label htmlFor="hard">
-          Hard date:
-          <input type="date" name="hard" id="hard" onChange={dateChange} defaultValue={todo.hard} />
-        </label>
-        <label htmlFor="due">
-          Due date:
-          <input type="date" name="due" id="due" onChange={dateChange} defaultValue={todo.due} />
-        </label>
+      <div
+        css={css`
+          grid-column: 2 / -1;
+        `}
+      >
+        <Editor editorState={editor} onChange={onChange} onBlur={onBlur} />
       </div>
+      <label htmlFor="soft">
+        Soft date:
+        <input type="date" name="soft" id="soft" onChange={dateChange} defaultValue={todo.soft} />
+      </label>
+      <label htmlFor="hard">
+        Hard date:
+        <input type="date" name="hard" id="hard" onChange={dateChange} defaultValue={todo.hard} />
+      </label>
+      <label htmlFor="due">
+        Due date:
+        <input type="date" name="due" id="due" onChange={dateChange} defaultValue={todo.due} />
+      </label>
     </div>
   );
 };

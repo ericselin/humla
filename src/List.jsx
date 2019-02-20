@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { list } from './firebase';
+import PropTypes from 'prop-types';
+import { lists } from './firebase';
 import Item from './Item';
 import New from './New';
 
-const List = () => {
+const List = ({ location }) => {
   const [todos, setTodos] = useState({});
 
-  useEffect(list(setTodos), []);
+  const view = location.pathname.substring(1);
+  useEffect(lists[view](setTodos), []);
 
   return (
     <div>
@@ -17,4 +19,10 @@ const List = () => {
     </div>
   );
 };
+List.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
 export default List;
