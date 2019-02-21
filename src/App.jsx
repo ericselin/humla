@@ -1,57 +1,77 @@
-import React, { useEffect, useState } from 'react';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import { useEffect, useState, Fragment } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
-import firebase from './firebase';
+import { auth, authProvider } from './firebase';
 import List from './List';
-import './App.css';
 import Header from './Header';
 
-const login = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
+export const login = () => {
+  console.log('Logging in');
   if (window.innerWidth <= 768) {
-    firebase.auth().signInWithRedirect(provider);
+    auth.signInWithRedirect(authProvider);
   } else {
-    firebase.auth().signInWithPopup(provider);
+    auth.signInWithPopup(authProvider);
   }
 };
 
-const logout = () => {
-  firebase.auth().signOut();
+export const logout = () => {
+  auth.signOut();
 };
 
 const App = () => {
   const [user, setUser] = useState(undefined);
+  let cancel = false;
 
-  useEffect(
-    () => firebase.auth().onAuthStateChanged((u) => {
-      if (u) {
-        console.info('User signed in', u);
-        setUser(u);
-      } else {
-        console.info('User signed out');
-        setUser(false);
-      }
-    }),
-    [],
-  );
-
-  const selectView = () => {
-    // todo: open view selector here
-    // todo: create view selector
-  };
+  useEffect(() => {
+    console.info('Adding auth state listener...');
+    const listener = auth.onAuthStateChanged(
+      (u) => {
+        if (cancel) {
+          console.warn('Auth state canceled');
+          return;
+        }
+        if (u) {
+          console.info('User signed in', u);
+          setUser(u);
+        } else {
+          console.info('User signed out');
+          setUser(false);
+        }
+      },
+      (error) => {
+        console.error('Could not sign in', error);
+      },
+      () => {
+        console.warn('Auth state listener removed');
+      },
+    );
+    return () => {
+      console.info('Removing auth state listener...');
+      cancel = true;
+      listener();
+    };
+  }, []);
 
   return (
     <Router>
-      <React.Fragment>
+      <Fragment>
         {user && (
-          <React.Fragment>
-            <Header logout={logout} selectView={selectView} />
-            <main className="content">
+          <Fragment>
+            <Header logout={logout} />
+            <main
+              css={css`
+                padding: 0 20px;
+                margin: auto;
+                max-width: 700px;
+              `}
+            >
               <Route exact path="/" render={() => <Redirect to="/today" />} />
               <Route path="/today" component={List} />
               <Route path="/unprocessed" component={List} />
             </main>
-          </React.Fragment>
+          </Fragment>
         )}
         {user === undefined && <div>Loading...</div>}
         {user === false && (
@@ -59,7 +79,7 @@ const App = () => {
             Login
           </button>
         )}
-      </React.Fragment>
+      </Fragment>
     </Router>
   );
 };
