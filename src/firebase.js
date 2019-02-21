@@ -46,28 +46,26 @@ const snapshotListener = setter => (querySnapshot) => {
   setter(t);
 };
 
-const unprocessed = setter => () => {
-  console.info('Adding query snapshot listener...');
-  return myTodos()
+export const list = ({ setTodos, where: [field, operand, value], orderBy }) => () => {
+  console.log('Adding query snapshot listener...', field, operand, value);
+  let listener = myTodos()
     .where('completed', '==', false)
-    .where('soft', '==', '')
-    .onSnapshot(snapshotListener(setter));
-};
-
-const today = setter => () => {
-  console.log('Adding query snapshot listener...');
-  const close = myTodos()
-    .where('completed', '==', false)
-    .where('soft', '>', '""')
-    .orderBy('soft')
-    .onSnapshot(snapshotListener(setter));
+    .where(field, operand, value);
+  if (orderBy) listener = listener.orderBy(orderBy);
+  listener = listener.onSnapshot(
+    snapshotListener(setTodos),
+    (error) => {
+      console.error(error);
+    },
+    () => {
+      console.log('Query snapshot listener completion');
+    },
+  );
   return () => {
-    console.log('Removing listener...');
-    close();
+    console.log('Removing query snapshot listener...');
+    listener();
   };
 };
-
-export const lists = { unprocessed, today };
 
 export const add = (todo) => {
   myTodos().add(todo);

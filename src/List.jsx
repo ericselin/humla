@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { lists } from './firebase';
+import { list } from './firebase';
 import Item from './Item';
 import New from './New';
+
+const views = {
+  today: { where: ['soft', '>', '""'], orderBy: 'soft' },
+  unprocessed: { where: ['soft', '==', ''] },
+};
 
 const List = ({ location }) => {
   const [todos, setTodos] = useState({});
 
   const view = location.pathname.substring(1);
-  useEffect(lists[view](setTodos), []);
+  const { where, orderBy } = views[view];
+  useEffect(list({ setTodos, where, orderBy }), []);
 
   return (
     <div>
