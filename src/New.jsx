@@ -1,31 +1,62 @@
-import React, { useState } from 'react';
-import { Editor, EditorState } from 'draft-js';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import { useState } from 'react';
 import { add } from './firebase';
-import './New.css';
 
 const New = () => {
-  const [editor, setEditor] = useState(EditorState.createEmpty());
-  let update = true;
+  const [title, setTitle] = useState('');
 
-  const onChange = (editorState) => {
-    if (update) setEditor(editorState);
-    else update = true;
+  const onChange = (e) => {
+    setTitle(e.target.value);
   };
 
-  const onBlur = () => {
-    const title = editor.getCurrentContent().getPlainText();
+  const update = () => {
     if (title) {
       add({ title, completed: false, soft: '' });
       console.log('Created', title);
-      setEditor(EditorState.createEmpty());
-      update = false;
+      setTitle('');
     }
   };
 
+  const onKey = (e) => {
+    if (e.key === 'Enter') update();
+  };
+
   return (
-    <div className="item new">
-      <i className="material-icons">add</i>
-      <Editor placeholder="New..." editorState={editor} onChange={onChange} onBlur={onBlur} />
+    <div
+      css={css`
+        padding: 0.4rem;
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        margin-bottom: 0.2rem;
+        border-radius: 0.2rem;
+        display: grid;
+        gap: 0.4rem;
+        grid-template-columns: min-content 1fr;
+      `}
+    >
+      <i
+        css={css`
+          color: rgb(0, 0, 0, 0.5);
+        `}
+        className="material-icons"
+      >
+        add
+      </i>
+      <input
+        css={css`
+          background: none;
+          font-family: inherit;
+          font-size: inherit;
+          border: none;
+        `}
+        type="text"
+        value={title}
+        onChange={onChange}
+        onBlur={update}
+        onKeyPress={onKey}
+        placeholder="New task..."
+      />
     </div>
   );
 };
