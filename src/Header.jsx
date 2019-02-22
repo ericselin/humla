@@ -61,6 +61,8 @@ const Header = ({ logout }) => (
         `}
       >
         <NavLink to="/today">Today</NavLink>
+        <NavLink to="/week">This week</NavLink>
+        <NavLink to="/later">Later</NavLink>
         <NavLink to="/unprocessed">Unprocessed</NavLink>
       </div>
     </div>

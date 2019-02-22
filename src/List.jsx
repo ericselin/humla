@@ -4,8 +4,16 @@ import { list } from './firebase';
 import Item from './Item';
 import New from './New';
 
+const date = d => `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate()}`;
+
+const today = new Date();
+const sunday = new Date();
+sunday.setDate(sunday.getDate() + (7 - sunday.getDay()));
+
 const views = {
-  today: { where: ['soft', '>', '""'], orderBy: 'soft' },
+  today: { where: [['soft', '<=', date(today)], ['soft', '>', '""']], orderBy: 'soft' },
+  week: { where: [['soft', '<=', date(sunday)], ['soft', '>', '""']], orderBy: 'soft' },
+  later: { where: ['soft', '>', date(sunday)], orderBy: 'soft' },
   unprocessed: { where: ['soft', '==', ''] },
 };
 

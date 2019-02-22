@@ -46,11 +46,19 @@ const snapshotListener = setter => (querySnapshot) => {
   setter(t);
 };
 
-export const list = ({ setTodos, where: [field, operand, value], orderBy }) => () => {
-  console.log('Adding query snapshot listener...', field, operand, value);
-  let listener = myTodos()
-    .where('completed', '==', false)
-    .where(field, operand, value);
+export const list = ({ setTodos, where, orderBy }) => () => {
+  console.log('Adding query snapshot listener...', where);
+  let listener = myTodos().where('completed', '==', false);
+  // check for filter
+  if (where && where.length) {
+    // check whether we have many wheres
+    if (Array.isArray(where[0])) {
+      listener = where.reduce((l, w) => l.where(...w), listener);
+    } else {
+      listener = listener.where(...where);
+    }
+  }
+  // check for sorting
   if (orderBy) listener = listener.orderBy(orderBy);
   listener = listener.onSnapshot(
     snapshotListener(setTodos),
