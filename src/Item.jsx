@@ -21,6 +21,8 @@ const Item = ({ todo, id }) => {
 
   const dateChange = e => setSoft(e.target.value);
 
+  const lines = (title.match(/\n/g) || []).length + 1;
+
   return (
     <div
       css={css`
@@ -53,22 +55,35 @@ const Item = ({ todo, id }) => {
         type="button"
         onClick={toggleComplete}
       >
-        <i className="material-icons">{todo.completed ? 'check_box' : 'check_box_outline_blank'}</i>
-      </button>
-      <div>
-        <input
+        <i
           css={css`
-            width: 100%;
-            font-size: inherit;
-            background: none;
-            border: none;
-            padding: 0.25rem;
+            display: block;
           `}
-          value={title}
-          onChange={onChange}
-          onBlur={onBlur}
-        />
-      </div>
+          className="material-icons"
+        >
+          {todo.completed ? 'check_box' : 'check_box_outline_blank'}
+        </i>
+      </button>
+      <textarea
+        css={css`
+          width: 100%;
+          font-size: 1rem;
+          line-height: 1.2;
+          font-family: inherit;
+          background: none;
+          border: none;
+          padding: 0.25rem;
+          height: 1.2rem;
+          resize: none;
+          overflow: hidden;
+          &:focus {
+            height: ${lines * 1.2}rem;
+          }
+        `}
+        value={title}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
       <input
         css={css`
           font-size: 0.75rem;
