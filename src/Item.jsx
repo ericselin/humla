@@ -2,32 +2,24 @@
 import { css, jsx } from '@emotion/core';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Editor, EditorState, ContentState } from 'draft-js';
 import { update } from './firebase';
 
 const Item = ({ todo, id }) => {
-  const [editor, setEditor] = useState(
-    EditorState.createWithContent(ContentState.createFromText(todo.title)),
-  );
+  const [title, setTitle] = useState(todo.title);
+  const [soft, setSoft] = useState(todo.soft);
 
-  const onChange = editorState => setEditor(editorState);
+  const onChange = e => setTitle(e.target.value);
 
   const onBlur = () => {
-    const title = editor.getCurrentContent().getPlainText();
-    update(id, { title });
-    console.log('Updated', id, 'to', title);
+    update(id, { title, soft });
   };
 
   const toggleComplete = () => {
     const c = !todo.completed;
     update(id, { completed: c });
-    console.log('Updated', id, 'completion to', c);
-    return c;
   };
 
-  const dateChange = (e) => {
-    update(id, { [e.target.name]: e.target.value });
-  };
+  const dateChange = e => setSoft(e.target.value);
 
   return (
     <div
@@ -39,7 +31,8 @@ const Item = ({ todo, id }) => {
         border-radius: 0.2rem;
         display: grid;
         gap: 0.4rem;
-        grid-template-columns: min-content repeat(3, 1fr);
+        grid-template-columns: min-content 1fr min-content;
+        align-items: center;
         ${todo.completed
         ? css`
               background: none;
@@ -51,8 +44,6 @@ const Item = ({ todo, id }) => {
     >
       <button
         css={css`
-          grid-row: 1 / 3;
-          align-self: start;
           color: rgba(0, 0, 0, 0.6);
           margin: 0;
           padding: 0;
@@ -64,25 +55,35 @@ const Item = ({ todo, id }) => {
       >
         <i className="material-icons">{todo.completed ? 'check_box' : 'check_box_outline_blank'}</i>
       </button>
-      <div
-        css={css`
-          grid-column: 2 / -1;
-        `}
-      >
-        <Editor editorState={editor} onChange={onChange} onBlur={onBlur} />
+      <div>
+        <input
+          css={css`
+            width: 100%;
+            font-size: inherit;
+            background: none;
+            border: none;
+            padding: 0.25rem;
+          `}
+          value={title}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
       </div>
-      <label htmlFor="soft">
-        Soft date:
-        <input type="date" name="soft" id="soft" onChange={dateChange} defaultValue={todo.soft} />
-      </label>
-      <label htmlFor="hard">
-        Hard date:
-        <input type="date" name="hard" id="hard" onChange={dateChange} defaultValue={todo.hard} />
-      </label>
-      <label htmlFor="due">
-        Due date:
-        <input type="date" name="due" id="due" onChange={dateChange} defaultValue={todo.due} />
-      </label>
+      <input
+        css={css`
+          font-size: 0.75rem;
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          border-radius: 0.125rem;
+          padding: 0.25rem;
+          width: 6em;
+          text-align: center;
+          background: none;
+        `}
+        onChange={dateChange}
+        onBlur={onBlur}
+        value={soft}
+        placeholder="No date..."
+      />
     </div>
   );
 };

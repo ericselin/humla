@@ -13,7 +13,8 @@ sunday.setDate(sunday.getDate() + (7 - sunday.getDay()));
 const views = {
   today: { where: [['soft', '<=', date(today)], ['soft', '>', '""']], orderBy: 'soft' },
   week: { where: [['soft', '<=', date(sunday)], ['soft', '>', '""']], orderBy: 'soft' },
-  later: { where: ['soft', '>', date(sunday)], orderBy: 'soft' },
+  later: { where: [['soft', '>', date(sunday)], ['soft', '<', 'someday']], orderBy: 'soft' },
+  someday: { where: ['soft', '>=', 'someday'], orderBy: 'soft' },
   unprocessed: { where: ['soft', '==', ''] },
 };
 

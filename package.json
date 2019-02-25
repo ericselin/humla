@@ -15,7 +15,6 @@
     "@firebase/firestore": "^1.0.3",
     "@firebase/util": "^0.2.7",
     "babel-plugin-emotion": "^10.0.7",
-    "draft-js": "^0.10.5",
     "prop-types": "^15.6.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",

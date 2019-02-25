@@ -71,6 +71,7 @@ const App = () => {
               <Route path="/today" component={List} />
               <Route path="/week" component={List} />
               <Route path="/later" component={List} />
+              <Route path="/someday" component={List} />
               <Route path="/unprocessed" component={List} />
             </main>
           </Fragment>
