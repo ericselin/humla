@@ -95,6 +95,7 @@ const Item = ({ todo, id }) => {
       {todo.tags
         && todo.tags.map(tag => (
           <div
+            key={tag}
             css={css`
               font-size: 0.75rem;
               border: 1px solid rgba(0, 0, 0, 0.3);

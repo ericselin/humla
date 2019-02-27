@@ -91,3 +91,23 @@ export const update = (id, updates) => {
     .update(updates);
   console.log('Updated', id, 'to', updates);
 };
+
+export const getTags = (setter) => {
+  const tagsMap = {};
+  myTodos()
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const todo = doc.data();
+        if (todo.tags) {
+          todo.tags.forEach((tag) => {
+            tagsMap[tag] = tag;
+          });
+        }
+      });
+      setter(Object.keys(tagsMap));
+    })
+    .catch((error) => {
+      console.log('Error getting tags: ', error);
+    });
+};

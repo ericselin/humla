@@ -10,20 +10,25 @@ const today = new Date();
 const sunday = new Date();
 sunday.setDate(sunday.getDate() + (7 - sunday.getDay()));
 
-const views = {
-  today: { where: [['soft', '<=', date(today)], ['soft', '>', '""']], orderBy: 'soft' },
-  week: { where: [['soft', '<=', date(sunday)], ['soft', '>', '""']], orderBy: 'soft' },
-  later: { where: [['soft', '>', date(sunday)], ['soft', '<', 'someday']], orderBy: 'soft' },
-  someday: { where: ['soft', '>=', 'someday'], orderBy: 'soft' },
-  unprocessed: { where: ['soft', '==', ''] },
-};
-
 const List = ({ location }) => {
+  const views = {
+    today: { where: [['soft', '<=', date(today)], ['soft', '>', '""']], orderBy: 'soft' },
+    week: { where: [['soft', '<=', date(sunday)], ['soft', '>', '""']], orderBy: 'soft' },
+    later: { where: [['soft', '>', date(sunday)], ['soft', '<', 'someday']], orderBy: 'soft' },
+    someday: { where: [['soft', '>=', 'someday']], orderBy: 'soft' },
+    all: { where: [], orderBy: 'soft' },
+    unprocessed: { where: ['soft', '==', ''] },
+  };
+
   const [todos, setTodos] = useState({});
 
-  const view = location.pathname.substring(1);
+  const [, view, tag] = location.pathname.split('/');
   const { where, orderBy } = views[view];
-  useEffect(list({ setTodos, where, orderBy }), []);
+  if (tag) {
+    where.push(['tags', 'array-contains', `#${tag}`]);
+  }
+
+  useEffect(list({ setTodos, where, orderBy }), [tag]);
 
   return (
     <div>
