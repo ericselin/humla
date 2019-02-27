@@ -14,6 +14,12 @@ const Item = ({ todo, id }) => {
     update(id, { title, soft });
   };
 
+  const onKeyDown = (e) => {
+    if (e.altKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+      console.log('TODO: Line should be moved here...');
+    }
+  };
+
   const toggleComplete = () => {
     const c = !todo.completed;
     update(id, { completed: c });
@@ -33,7 +39,8 @@ const Item = ({ todo, id }) => {
         border-radius: 0.2rem;
         display: grid;
         gap: 0.4rem;
-        grid-template-columns: min-content 1fr min-content;
+        grid-template-columns: min-content 1fr;
+        grid-auto-flow: column;
         align-items: center;
         ${todo.completed
         ? css`
@@ -72,7 +79,7 @@ const Item = ({ todo, id }) => {
           font-family: inherit;
           background: none;
           border: none;
-          padding: 0.25rem;
+          padding: 0.1875rem;
           height: 1.2rem;
           resize: none;
           overflow: hidden;
@@ -83,7 +90,24 @@ const Item = ({ todo, id }) => {
         value={title}
         onChange={onChange}
         onBlur={onBlur}
+        onKeyDown={onKeyDown}
       />
+      {todo.tags
+        && todo.tags.map(tag => (
+          <div
+            css={css`
+              font-size: 0.75rem;
+              border: 1px solid rgba(0, 0, 0, 0.3);
+              border-radius: 0.125rem;
+              padding: 0.25rem;
+              background: #798caf;
+              line-height: 1;
+              color: white;
+            `}
+          >
+            {tag}
+          </div>
+        ))}
       <input
         css={css`
           font-size: 0.75rem;

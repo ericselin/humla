@@ -80,6 +80,12 @@ export const add = (todo) => {
 };
 
 export const update = (id, updates) => {
+  // check if we need to add tags
+  const tags = /#\w+/g;
+  if (updates.title && tags.test(updates.title)) {
+    const match = updates.title.match(tags);
+    Object.assign(updates, { tags: match });
+  }
   myTodos()
     .doc(id)
     .update(updates);
