@@ -42,7 +42,7 @@ const Header = ({ logout, location }) => {
       <div
         css={css`
           color: white;
-          font-size: 1rem;
+          font-size: 1.25rem;
           font-weight: 200;
           text-transform: capitalize;
         `}

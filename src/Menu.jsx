@@ -11,11 +11,11 @@ import { getTags } from './firebase';
 const MenuLink = ({ children, to }) => (
   <Link
     css={css`
-      color: white;
       text-decoration: none;
-      margin: 0.5rem;
-      padding: 0.5rem;
+      margin: 0.5rem 0;
+      padding: 0.5rem 0;
       display: block;
+      color: #000;
     `}
     to={to}
   >
@@ -43,29 +43,62 @@ const Menu = ({ close, logout, visible }) => {
         `}
         onClick={close}
       >
-        <MenuLink to="/all">All</MenuLink>
-        {tags
-          && tags.map(t => (
-            <MenuLink key={t} to={`/all/${t.substring(1)}`}>
-              {t}
-            </MenuLink>
-          ))}
-        <button
+        <div
           css={css`
-            margin: 20px;
-            color: white;
-            padding: 0;
-            background: none;
-            border: none;
-            cursor: pointer;
-            position: absolute;
-            bottom: 0;
+            height: 100%;
+            background: white;
+            width: 15rem;
+            & > * {
+              padding: 1rem;
+            }
+            & > * + * {
+              border-top: 1px solid rgba(0, 0, 0, 0.15);
+            }
           `}
-          onClick={logout}
-          type="button"
         >
-          Logout
-        </button>
+          <h1
+            css={css`
+              font-weight: 200;
+              font-size: 1.25rem;
+              color: rgba(0, 0, 0, 0.9);
+              margin: 0;
+            `}
+          >
+            Super Todo
+          </h1>
+          <div>
+            <MenuLink to="/today">Today</MenuLink>
+            <MenuLink to="/week">This week</MenuLink>
+            <MenuLink to="/later">Later</MenuLink>
+            <MenuLink to="/someday">Someday</MenuLink>
+            <MenuLink to="/all">All</MenuLink>
+          </div>
+          {tags && (
+            <div>
+              {tags.map(t => (
+                <MenuLink key={t} to={`/all/${t.substring(1)}`}>
+                  {t}
+                </MenuLink>
+              ))}
+            </div>
+          )}
+          <button
+            css={css`
+              margin: 0;
+              background: none;
+              border: none;
+              cursor: pointer;
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              right: 0;
+            `}
+            onClick={logout}
+            type="button"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     )
   );
