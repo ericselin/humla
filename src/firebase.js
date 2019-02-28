@@ -28,13 +28,14 @@ if (firebase.apps.length === 0) {
     });
 }
 
-const db = firebase.firestore();
+const todos = firebase.firestore().collection('todos');
+
 export const auth = firebase.auth();
 export const authProvider = new firebase.auth.GoogleAuthProvider();
 
 const myTodos = () => {
   const { uid } = firebase.auth().currentUser;
-  return db.collection(uid);
+  return todos.where('owner', '==', uid);
 };
 
 const snapshotListener = setter => (querySnapshot) => {
@@ -76,7 +77,7 @@ export const list = ({ setTodos, where, orderBy }) => () => {
 };
 
 export const add = (todo) => {
-  myTodos().add(todo);
+  todos.add({ ...todo, owner: firebase.auth().currentUser.uid });
 };
 
 export const update = (id, updates) => {
@@ -86,9 +87,7 @@ export const update = (id, updates) => {
     const match = updates.title.match(tags);
     Object.assign(updates, { tags: match });
   }
-  myTodos()
-    .doc(id)
-    .update(updates);
+  todos.doc(id).update(updates);
   console.log('Updated', id, 'to', updates);
 };
 

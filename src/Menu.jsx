@@ -73,6 +73,9 @@ const Menu = ({ close, logout, visible }) => {
             <MenuLink to="/someday">Someday</MenuLink>
             <MenuLink to="/all">All</MenuLink>
           </div>
+          <div>
+            <MenuLink to="/unprocessed">Unprocessed</MenuLink>
+          </div>
           {tags && (
             <div>
               {tags.map(t => (

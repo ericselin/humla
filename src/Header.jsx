@@ -24,7 +24,7 @@ const button = css`
 
 const Header = ({ logout, location }) => {
   const [menu, setMenu] = useState(false);
-  const [, view] = location.pathname.split('/');
+  const [, view, tag] = location.pathname.split('/');
 
   return (
     <header
@@ -44,10 +44,9 @@ const Header = ({ logout, location }) => {
           color: white;
           font-size: 1.25rem;
           font-weight: 200;
-          text-transform: capitalize;
         `}
       >
-        {viewNames[view] || view}
+        {tag ? `#${tag}` : viewNames[view] || view}
       </div>
     </header>
   );
