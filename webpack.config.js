@@ -21,6 +21,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['jsx', '.js', '.json'],
+    extensions: ['.js', '.json', '.jsx'],
   },
 };
