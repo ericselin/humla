@@ -11,6 +11,7 @@ const viewNames = {
   later: 'Later',
   someday: 'Someday',
   all: 'All',
+  unprocessed: 'Unprocessed',
 };
 
 const button = css`
