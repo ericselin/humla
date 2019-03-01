@@ -1,17 +1,19 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { update } from './firebase';
 
 const Item = ({ todo, id }) => {
   const [title, setTitle] = useState(todo.title);
   const [soft, setSoft] = useState(todo.soft);
+  const datePicker = useRef(null);
 
   const onChange = e => setTitle(e.target.value);
 
   const onBlur = () => {
-    update(id, { title, soft });
+    const { soft: s } = update(id, { title, soft });
+    setSoft(s);
   };
 
   const onKeyDown = (e) => {
@@ -79,7 +81,7 @@ const Item = ({ todo, id }) => {
           font-family: inherit;
           background: none;
           border: none;
-          padding: 0.1875rem;
+          padding: 0.125rem;
           height: 1.2rem;
           resize: none;
           overflow: hidden;
@@ -121,8 +123,12 @@ const Item = ({ todo, id }) => {
         `}
         onChange={dateChange}
         onBlur={onBlur}
+        onFocus={() => {
+          datePicker.current.select();
+        }}
         value={soft}
         placeholder="No date..."
+        ref={datePicker}
       />
     </div>
   );

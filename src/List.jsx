@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { list } from './firebase';
 import Item from './Item';
 import New from './New';
-
-const date = d => `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
-
-const today = new Date();
-const sunday = new Date();
-sunday.setDate(sunday.getDate() + (7 - sunday.getDay()));
+import { today, sunday } from './date';
 
 const List = ({ location }) => {
-  console.log(today, date(today));
   const views = {
-    today: { where: [['soft', '<=', date(today)], ['soft', '>', '""']], orderBy: 'soft' },
-    week: { where: [['soft', '<=', date(sunday)], ['soft', '>', '""']], orderBy: 'soft' },
-    later: { where: [['soft', '>', date(sunday)], ['soft', '<', 'someday']], orderBy: 'soft' },
+    today: { where: [['soft', '<=', today], ['soft', '>', '""']], orderBy: 'soft' },
+    week: { where: [['soft', '<=', sunday], ['soft', '>', '""']], orderBy: 'soft' },
+    later: { where: [['soft', '>', sunday], ['soft', '<', 'someday']], orderBy: 'soft' },
     someday: { where: [['soft', '>=', 'someday']], orderBy: 'soft' },
     all: { where: [], orderBy: 'soft' },
     unprocessed: { where: ['soft', '==', ''] },
@@ -31,10 +27,42 @@ const List = ({ location }) => {
 
   useEffect(list({ setTodos, where, orderBy }), [tag]);
 
+  const todoArray = Object.keys(todos)
+    .map((id) => {
+      const { context, ...todo } = todos[id];
+      return { id, context: context || '', ...todo };
+    })
+    .sort((a, b) => {
+      if (a.context > b.context) return -1;
+      if (a.context < b.context) return 1;
+      return 0;
+    });
+
+  console.log(todoArray);
+
   return (
     <div>
-      {Object.keys(todos).map(id => (
-        <Item key={id} todo={todos[id]} id={id} />
+      {todoArray.map((todo, i, arr) => (
+        <Fragment key={todo.id}>
+          {(i === 0 || todo.context !== arr[i - 1].context) && (
+            <div
+              css={css`
+                font-family: Roboto;
+                font-style: normal;
+                font-weight: 200;
+                line-height: normal;
+                font-size: 16px;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+                color: white;
+                margin: 1.5rem 0 0.75rem;
+              `}
+            >
+              {todo.context || 'no context'}
+            </div>
+          )}
+          <Item todo={todo} id={todo.id} />
+        </Fragment>
       ))}
       <New />
     </div>

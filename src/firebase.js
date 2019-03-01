@@ -2,6 +2,7 @@ import { firebase } from '@firebase/app';
 
 import '@firebase/auth';
 import '@firebase/firestore';
+import { getDate } from './date';
 
 // Initialize Firebase
 if (firebase.apps.length === 0) {
@@ -81,14 +82,26 @@ export const add = (todo) => {
 };
 
 export const update = (id, updates) => {
-  // check if we need to add tags
-  const tags = /#\w+/g;
-  if (updates.title && tags.test(updates.title)) {
-    const match = updates.title.match(tags);
-    Object.assign(updates, { tags: match });
+  if (updates.title) {
+    // check if we need to add tags
+    const tags = /#\w+/g;
+    Object.assign(updates, { tags: updates.title.match(tags) });
+    // check for context
+    const context = /@\w+/;
+    const match = updates.title.match(context);
+    Object.assign(updates, { context: match ? match[0] : null });
   }
+
+  // check special formatted dates
+  if (updates.soft) {
+    const soft = getDate(updates.soft);
+    Object.assign(updates, { soft });
+  }
+
   todos.doc(id).update(updates);
   console.log('Updated', id, 'to', updates);
+
+  return updates;
 };
 
 export const getTags = (setter) => {
