@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import { useState } from 'react';
 
 // eslint-disable-next-line react/prop-types
-const Title = ({ title: initialTitle, update: updateFn }) => {
+const Title = ({ title: initialTitle, update: updateFn, focus }) => {
   const [title, setTitle] = useState(initialTitle);
 
   const onChange = e => setTitle(e.target.value);
@@ -15,7 +15,7 @@ const Title = ({ title: initialTitle, update: updateFn }) => {
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && e.ctrlKey) {
       console.log('Firing update function');
-      updateFn(title);
+      if (updateFn(title, e.shiftKey)) setTitle('');
     }
     if (e.altKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
       console.log('TODO: Line should be moved here...');
@@ -46,6 +46,9 @@ const Title = ({ title: initialTitle, update: updateFn }) => {
       onChange={onChange}
       onBlur={onBlur}
       onKeyDown={onKeyDown}
+      ref={(ref) => {
+        if (ref && focus) ref.focus();
+      }}
     />
   );
 };

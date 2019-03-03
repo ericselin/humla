@@ -8,6 +8,9 @@ const Overlay = ({ children, close }) => {
   const closing = (e) => {
     if (e.target === e.currentTarget) close();
   };
+  const onKey = (e) => {
+    if (e.key === 'Escape') close();
+  };
 
   return (
     <div
@@ -21,6 +24,7 @@ const Overlay = ({ children, close }) => {
         display: flex;
       `}
       onClick={closing}
+      onKeyDown={onKey}
     >
       {children}
     </div>

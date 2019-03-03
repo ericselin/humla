@@ -37,8 +37,6 @@ const List = ({ location }) => {
       return 0;
     });
 
-  console.log(todoArray);
-
   return (
     <div>
       {todoArray.map((todo, i, arr) => (
