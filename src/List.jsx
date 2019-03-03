@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { useEffect, useState, Fragment } from 'react';
@@ -61,6 +62,27 @@ const List = ({ location }) => {
           <Item todo={todo} id={todo.id} />
         </Fragment>
       ))}
+      {!todoArray.length && (
+        <div
+          css={css`
+            text-align: center;
+            color: white;
+            margin: 5rem;
+            font-weight: 200;
+          `}
+        >
+          <i
+            css={css`
+              font-size: 5rem;
+              display: block;
+            `}
+            className="material-icons"
+          >
+            sentiment_very_satisfied
+          </i>
+          You're done - congratulations!
+        </div>
+      )}
     </div>
   );
 };

@@ -5,7 +5,7 @@ export const formatDM = (d, m) => `${new Date().getFullYear()}-${pad(m)}-${pad(d
 
 const todayDate = new Date();
 const sundayDate = new Date();
-sundayDate.setDate(sundayDate.getDate() + (7 - sundayDate.getDay()));
+sundayDate.setDate(sundayDate.getDate() + (7 - (sundayDate.getDay() || 7)));
 
 export const today = format(todayDate);
 export const sunday = format(sundayDate);
