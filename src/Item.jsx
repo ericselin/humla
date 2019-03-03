@@ -3,23 +3,19 @@ import { css, jsx } from '@emotion/core';
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { update } from './firebase';
+import Title from './Title';
 
 const Item = ({ todo, id }) => {
-  const [title, setTitle] = useState(todo.title);
   const [soft, setSoft] = useState(todo.soft);
   const datePicker = useRef(null);
 
-  const onChange = e => setTitle(e.target.value);
-
   const onBlur = () => {
-    const { soft: s } = update(id, { title, soft });
+    const { soft: s } = update(id, { soft });
     setSoft(s);
   };
 
-  const onKeyDown = (e) => {
-    if (e.altKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
-      console.log('TODO: Line should be moved here...');
-    }
+  const updateTitle = (title) => {
+    update(id, { title });
   };
 
   const toggleComplete = () => {
@@ -28,8 +24,6 @@ const Item = ({ todo, id }) => {
   };
 
   const dateChange = e => setSoft(e.target.value);
-
-  const lines = (title.match(/\n/g) || []).length + 1;
 
   return (
     <div
@@ -73,27 +67,7 @@ const Item = ({ todo, id }) => {
           {todo.completed ? 'check_box' : 'check_box_outline_blank'}
         </i>
       </button>
-      <textarea
-        css={css`
-          width: 100%;
-          font-size: 1rem;
-          line-height: 1.2;
-          font-family: inherit;
-          background: none;
-          border: none;
-          padding: 0.125rem;
-          height: 1.2rem;
-          resize: none;
-          overflow: hidden;
-          &:focus {
-            height: ${lines * 1.2}rem;
-          }
-        `}
-        value={title}
-        onChange={onChange}
-        onBlur={onBlur}
-        onKeyDown={onKeyDown}
-      />
+      <Title title={todo.title} update={updateTitle} />
       {todo.tags
         && todo.tags.map(tag => (
           <div

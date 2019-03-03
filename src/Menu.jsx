@@ -1,11 +1,10 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getTags } from './firebase';
+import Overlay from './Overlay';
 
 // eslint-disable-next-line react/prop-types
 const MenuLink = ({ children, to }) => (
@@ -32,17 +31,7 @@ const Menu = ({ close, logout, visible }) => {
 
   return (
     visible && (
-      <div
-        css={css`
-          position: fixed;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          background: rgba(0, 0, 0, 0.3);
-        `}
-        onClick={close}
-      >
+      <Overlay close={close}>
         <div
           css={css`
             height: 100%;
@@ -102,7 +91,7 @@ const Menu = ({ close, logout, visible }) => {
             Logout
           </button>
         </div>
-      </div>
+      </Overlay>
     )
   );
 };

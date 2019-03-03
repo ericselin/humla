@@ -4,7 +4,6 @@ import { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { list } from './firebase';
 import Item from './Item';
-import New from './New';
 import { today, sunday } from './date';
 
 const List = ({ location }) => {
@@ -64,7 +63,6 @@ const List = ({ location }) => {
           <Item todo={todo} id={todo.id} />
         </Fragment>
       ))}
-      <New />
     </div>
   );
 };

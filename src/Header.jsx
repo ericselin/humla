@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Menu from './Menu';
+import New from './New';
 
 const viewNames = {
   today: 'Today',
@@ -25,6 +26,7 @@ const button = css`
 
 const Header = ({ logout, location }) => {
   const [menu, setMenu] = useState(false);
+  const [newVisible, setNewVisible] = useState(false);
   const [, view, tag] = location.pathname.split('/');
 
   return (
@@ -49,6 +51,10 @@ const Header = ({ logout, location }) => {
       >
         {tag ? `#${tag}` : viewNames[view] || view}
       </div>
+      <button css={button} onClick={() => setNewVisible(n => !n)} type="button">
+        <i className="material-icons">add_circle_outline</i>
+      </button>
+      <New close={() => setNewVisible(false)} visible={newVisible} />
     </header>
   );
 };
