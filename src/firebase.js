@@ -88,7 +88,7 @@ const processUpdates = (originalUpdates) => {
     const match = updates.title.match(context);
     Object.assign(updates, { context: match ? match[0] : null });
     // check for date
-    const dateRegex = /\B!(\w+)\b/;
+    const dateRegex = /\B!(\w+\.?\w*)\b/;
     const dateMatch = updates.title.match(dateRegex);
     if (dateMatch) {
       const [, dateStr] = dateMatch;
@@ -115,9 +115,9 @@ export const add = (todo) => {
 export const update = (id, updates) => {
   const u = processUpdates(updates);
   todos.doc(id).update(u);
-  console.log('Updated', id, 'to', updates);
+  console.log('Updated', id, 'to', u);
 
-  return updates;
+  return u;
 };
 
 export const getTags = (setter) => {

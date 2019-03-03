@@ -1,10 +1,15 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // eslint-disable-next-line react/prop-types
 const Title = ({ title: initialTitle, update: updateFn, focus }) => {
   const [title, setTitle] = useState(initialTitle);
+
+  // re-set title when the title prop changes
+  useEffect(() => {
+    setTitle(initialTitle);
+  }, [initialTitle]);
 
   const onChange = e => setTitle(e.target.value);
 

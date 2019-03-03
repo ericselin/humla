@@ -15,7 +15,8 @@ const Item = ({ todo, id }) => {
   };
 
   const updateTitle = (title) => {
-    update(id, { title });
+    const { soft: newSoft } = update(id, { title });
+    setSoft(newSoft);
   };
 
   const toggleComplete = () => {
