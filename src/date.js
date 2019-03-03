@@ -1,6 +1,7 @@
 const pad = nr => nr.toString().padStart(2, '0');
 
 export const format = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+export const formatDM = (d, m) => `${new Date().getFullYear()}-${pad(m)}-${pad(d)}`;
 
 const todayDate = new Date();
 const sundayDate = new Date();
@@ -29,7 +30,14 @@ export const getDate = (dateStr) => {
       d.setDate(sundayDate.getDate() + 1);
       return format(d);
     }
-    default:
+    default: {
+      const date = /^(\d{1,2})\.(\d{1,2})/;
+      const match = dateStr.match(date);
+      if (match) {
+        const [, day, month] = match;
+        return formatDM(day, month);
+      }
       return dateStr;
+    }
   }
 };
