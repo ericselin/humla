@@ -77,11 +77,8 @@ export const list = ({ setTodos, where, orderBy }) => () => {
   };
 };
 
-export const add = (todo) => {
-  todos.add({ ...todo, owner: firebase.auth().currentUser.uid });
-};
-
-export const update = (id, updates) => {
+const processUpdates = (originalUpdates) => {
+  const updates = Object.assign({}, originalUpdates);
   if (updates.title) {
     // check if we need to add tags
     const tags = /#\w+/g;
@@ -90,6 +87,15 @@ export const update = (id, updates) => {
     const context = /@\w+/;
     const match = updates.title.match(context);
     Object.assign(updates, { context: match ? match[0] : null });
+    // check for date
+    const dateRegex = /\B!(\w+)\b/;
+    const dateMatch = updates.title.match(dateRegex);
+    if (dateMatch) {
+      const [, dateStr] = dateMatch;
+      const date = getDate(dateStr);
+      updates.title = updates.title.replace(dateRegex, '');
+      Object.assign(updates, { soft: date });
+    }
   }
 
   // check special formatted dates
@@ -98,7 +104,17 @@ export const update = (id, updates) => {
     Object.assign(updates, { soft });
   }
 
-  todos.doc(id).update(updates);
+  return updates;
+};
+
+export const add = (todo) => {
+  const t = processUpdates(todo);
+  todos.add({ ...t, owner: firebase.auth().currentUser.uid });
+};
+
+export const update = (id, updates) => {
+  const u = processUpdates(updates);
+  todos.doc(id).update(u);
   console.log('Updated', id, 'to', updates);
 
   return updates;

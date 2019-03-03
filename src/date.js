@@ -11,23 +11,27 @@ export const today = format(todayDate);
 export const sunday = format(sundayDate);
 
 export const getDate = (dateStr) => {
-  switch (dateStr) {
-    case 't':
-      return today;
+  switch (dateStr.toLowerCase()) {
     case 'l':
       return 'later';
     case 's':
       return 'someday';
+    case 'today':
+    case 't':
+      return today;
+    case 'tomorrow':
     case 'tm': {
       const d = new Date();
       d.setDate(todayDate.getDate() + 1);
       return format(d);
     }
+    case 'this week':
     case 'tw':
       return sunday;
+    case 'next week':
     case 'nw': {
       const d = new Date();
-      d.setDate(sundayDate.getDate() + 1);
+      d.setDate(sundayDate.getDate() + 7);
       return format(d);
     }
     default: {
