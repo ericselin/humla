@@ -62,7 +62,7 @@ const App = () => {
             <Header logout={logout} />
             <main
               css={css`
-                padding: 0 20px;
+                padding: 0 20px 20px;
                 margin: auto;
                 max-width: 700px;
               `}
