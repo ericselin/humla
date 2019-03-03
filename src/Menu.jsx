@@ -7,7 +7,7 @@ import { getTags } from './firebase';
 import Overlay from './Overlay';
 
 // eslint-disable-next-line react/prop-types
-const MenuLink = ({ children, to }) => (
+const MenuLink = ({ children, to, close }) => (
   <Link
     css={css`
       text-decoration: none;
@@ -17,6 +17,9 @@ const MenuLink = ({ children, to }) => (
       color: #000;
     `}
     to={to}
+    onClick={() => {
+      if (close) close();
+    }}
   >
     {children}
   </Link>
@@ -56,19 +59,29 @@ const Menu = ({ close, logout, visible }) => {
             Super Todo
           </h1>
           <div>
-            <MenuLink to="/today">Today</MenuLink>
-            <MenuLink to="/week">This week</MenuLink>
-            <MenuLink to="/later">Later</MenuLink>
-            <MenuLink to="/someday">Someday</MenuLink>
-            <MenuLink to="/all">All</MenuLink>
+            <MenuLink close={close} to="/today">
+              Today
+            </MenuLink>
+            <MenuLink close={close} to="/week">
+              This week
+            </MenuLink>
+            <MenuLink close={close} to="/later">
+              Later
+            </MenuLink>
+            <MenuLink close={close} to="/someday">
+              Someday
+            </MenuLink>
+            <MenuLink close={close} to="/all">
+              All
+            </MenuLink>
           </div>
           <div>
-            <MenuLink to="/unprocessed">Unprocessed</MenuLink>
+            <MenuLink close={close} to="/unprocessed">Unprocessed</MenuLink>
           </div>
           {tags && (
             <div>
               {tags.map(t => (
-                <MenuLink key={t} to={`/all/${t.substring(1)}`}>
+                <MenuLink key={t} close={close} to={`/all/${t.substring(1)}`}>
                   {t}
                 </MenuLink>
               ))}
