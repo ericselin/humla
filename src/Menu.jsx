@@ -37,11 +37,15 @@ const Menu = ({ close, logout, visible }) => {
       <Overlay close={close}>
         <div
           css={css`
-            height: 100%;
+            min-height: 100%;
             background: white;
             width: 15rem;
+            overflow: auto;
+            padding-bottom: 2rem;
+            box-sizing: border-box;
+            display: flex;
             & > * {
-              padding: 1rem;
+              padding: 1rem 0.75rem;
             }
             & > * + * {
               border-top: 1px solid rgba(0, 0, 0, 0.15);
@@ -76,7 +80,9 @@ const Menu = ({ close, logout, visible }) => {
             </MenuLink>
           </div>
           <div>
-            <MenuLink close={close} to="/unprocessed">Unprocessed</MenuLink>
+            <MenuLink close={close} to="/unprocessed">
+              Unprocessed
+            </MenuLink>
           </div>
           {tags && (
             <div>
