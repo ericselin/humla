@@ -1,36 +1,27 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
 // eslint-disable-next-line react/prop-types
-const Title = ({ title: initialTitle, update: updateFn, focus }) => {
-  const [title, setTitle] = useState(initialTitle);
+const Title = ({ title, update: updateFn, focus }) => {
+  const [updated, forceUpdate] = useState(true);
+  const div = useRef(null);
 
-  // re-set title when the title prop changes
-  useEffect(() => {
-    setTitle(initialTitle);
-  }, [initialTitle]);
-
-  const onChange = e => setTitle(e.target.value);
-
-  const onBlur = () => {
-    updateFn(title);
+  const update = (keepOpen) => {
+    updateFn(div.current.innerText, keepOpen);
+    forceUpdate(prev => !prev);
   };
 
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && e.ctrlKey) {
-      console.log('Firing update function');
-      if (updateFn(title, e.shiftKey)) setTitle('');
-    }
-    if (e.altKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
-      console.log('TODO: Line should be moved here...');
+      update(e.shiftKey);
     }
   };
 
-  const lines = (title.match(/\n/g) || []).length + 1;
-
   return (
-    <textarea
+    <div
+      role="textbox"
+      tabIndex="0"
       css={css`
         width: 100%;
         font-size: 1rem;
@@ -39,21 +30,24 @@ const Title = ({ title: initialTitle, update: updateFn, focus }) => {
         background: none;
         border: none;
         padding: 0.125rem;
-        height: 1.2rem;
         resize: none;
         overflow: hidden;
+        white-space: pre-wrap;
         &:focus {
-          height: ${lines * 1.2}rem;
+          outline: none;
         }
       `}
-      placeholder="New task..."
-      value={title}
-      onChange={onChange}
-      onBlur={onBlur}
+      contentEditable
+      onBlur={update}
       onKeyDown={onKeyDown}
       ref={(ref) => {
-        if (ref && focus) ref.focus();
+        if (ref) {
+          div.current = ref;
+          if (focus) ref.focus();
+        }
       }}
+      key={focus ? updated : false}
+      dangerouslySetInnerHTML={{ __html: title }}
     />
   );
 };

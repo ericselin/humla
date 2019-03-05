@@ -18,6 +18,7 @@ const List = ({ location }) => {
   };
 
   const [todos, setTodos] = useState({});
+  const [selected, setSelected] = useState();
 
   const [, view, tag] = location.pathname.split('/');
   const { where, orderBy } = views[view];
@@ -59,7 +60,14 @@ const List = ({ location }) => {
               {todo.context || 'no context'}
             </div>
           )}
-          <Item todo={todo} id={todo.id} />
+          <Item
+            todo={todo}
+            id={todo.id}
+            selected={todo.id === selected}
+            onSelected={() => {
+              setSelected(todo.id);
+            }}
+          />
         </Fragment>
       ))}
       {!todoArray.length && (

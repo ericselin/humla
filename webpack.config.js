@@ -29,4 +29,7 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
   },
+  devServer: {
+    historyApiFallback: true,
+  },
 });

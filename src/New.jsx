@@ -55,8 +55,7 @@ const New = ({ visible, close }) => {
               color: rgba(0, 0, 0, 0.8);
             `}
           >
-            Press Ctrl+Enter to create (Ctrl+Shift+Enter to immediately add another task). This task
-            will go to your "Unprocessed" list.
+            Press Ctrl+Enter to create (Ctrl+Shift+Enter to immediately add another task).
           </div>
         </div>
       </Overlay>

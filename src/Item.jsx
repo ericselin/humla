@@ -5,18 +5,20 @@ import PropTypes from 'prop-types';
 import { update } from './firebase';
 import Title from './Title';
 
-const Item = ({ todo, id }) => {
+const Item = ({
+  todo, id, selected, onSelected,
+}) => {
   const [soft, setSoft] = useState(todo.soft);
   const datePicker = useRef(null);
 
-  const onBlur = () => {
+  const updateSoft = () => {
     const { soft: s } = update(id, { soft });
     setSoft(s);
   };
 
   const updateTitle = (title) => {
     const { soft: newSoft } = update(id, { title });
-    setSoft(newSoft);
+    if (typeof newSoft !== 'undefined') setSoft(newSoft);
   };
 
   const toggleComplete = () => {
@@ -25,6 +27,8 @@ const Item = ({ todo, id }) => {
   };
 
   const dateChange = e => setSoft(e.target.value);
+
+  const title = `${todo.title.replace('\n', '\n<span class="rest">')}</span>`;
 
   return (
     <div
@@ -39,14 +43,25 @@ const Item = ({ todo, id }) => {
         grid-template-columns: min-content 1fr;
         grid-auto-flow: column;
         align-items: center;
-        ${todo.completed
+        border-left: 0.2rem solid transparent;
+        ${selected
         ? css`
+              border-color: #132640;
+            `
+        : css`
+              & .rest {
+                display: none;
+              }
+            `}
+        ${todo.completed
+          ? css`
               background: none;
               box-shadow: none;
               text-decoration: line-through;
             `
-        : undefined}
+          : undefined}
       `}
+      onFocus={onSelected}
     >
       <button
         css={css`
@@ -68,7 +83,7 @@ const Item = ({ todo, id }) => {
           {todo.completed ? 'check_box' : 'check_box_outline_blank'}
         </i>
       </button>
-      <Title title={todo.title} update={updateTitle} />
+      <Title title={title} update={updateTitle} />
       {todo.tags
         && todo.tags.map(tag => (
           <div
@@ -97,7 +112,7 @@ const Item = ({ todo, id }) => {
           background: none;
         `}
         onChange={dateChange}
-        onBlur={onBlur}
+        onBlur={updateSoft}
         onFocus={() => {
           datePicker.current.select();
         }}
@@ -114,6 +129,8 @@ Item.propTypes = {
     title: PropTypes.string,
   }).isRequired,
   id: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
+  onSelected: PropTypes.func.isRequired,
 };
 
 export default Item;
