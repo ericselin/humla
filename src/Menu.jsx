@@ -43,7 +43,6 @@ const Menu = ({ close, logout, visible }) => {
             overflow: auto;
             padding-bottom: 2rem;
             box-sizing: border-box;
-            display: flex;
             & > * {
               padding: 1rem 0.75rem;
             }

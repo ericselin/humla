@@ -1,10 +1,8 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackTemplate = require('html-webpack-template');
 
 module.exports = {
-  entry: './src/index.jsx',
+  entry: './src/index-wp.jsx',
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
@@ -16,31 +14,14 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-react'],
-          plugins: ['emotion'],
-        },
-      },
-      {
-        test: /\.jsx?$/,
-        include: /node_modules/,
-        use: ['react-hot-loader/webpack'],
+        use: ['react-hot-loader/webpack', 'babel-loader'],
       },
     ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      // inject: false,
-      template: HtmlWebpackTemplate,
-      title: 'Valmis',
-      appMountId: 'root',
-      mobile: true,
-      links: [
-        'https://fonts.googleapis.com/css?family=Roboto:200,300,400,500',
-        'https://fonts.googleapis.com/icon?family=Material+Icons',
-      ],
+      title: 'Super Todo',
+      template: './src/index-wp.html',
     }),
   ],
   resolve: {
