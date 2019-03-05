@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import { useEffect, useState, Fragment } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-
+import { hot } from 'react-hot-loader/root';
 import { auth, authProvider } from './firebase';
 import List from './List';
 import Header from './Header';
@@ -88,4 +88,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default hot(App);

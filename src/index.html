@@ -12,12 +12,34 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="index.css" />
-    <title>Super Todo</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+      html {
+        min-height: 100%;
+      }
+
+      body {
+        min-height: 100%;
+        padding: 0;
+        margin: 0;
+        background-image: linear-gradient(to top, #a3bded 0%, #6991c7 100%);
+        line-height: 1.5rem;
+        font-size: 1rem;
+        font-family: Roboto, sans-serif;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        font-weight: 400;
+        letter-spacing: 0.03125em;
+        text-decoration: inherit;
+        text-transform: inherit;
+      }
+    </style>
   </head>
 
   <body>
     <div id="root"></div>
-    <script src="index.jsx"></script>
+    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+    <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+    <% } %>
   </body>
 </html>
