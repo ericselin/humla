@@ -19,7 +19,7 @@ const List = ({ location }) => {
     unprocessed: { where: ['soft', '==', ''] },
   };
 
-  const [todos, setTodos] = useState({});
+  const [todos, setTodos] = useState(undefined);
   const [selected, setSelected] = useState();
   const selectedNode = useRef();
 
@@ -44,16 +44,18 @@ const List = ({ location }) => {
 
   useEffect(list({ setTodos, where, orderBy }), [tag]);
 
-  const todoArray = Object.keys(todos)
-    .map((id) => {
-      const { context, ...todo } = todos[id];
-      return { id, context: context || '', ...todo };
-    })
-    .sort((a, b) => {
-      if (a.context > b.context) return -1;
-      if (a.context < b.context) return 1;
-      return 0;
-    });
+  const todoArray = todos
+    ? Object.keys(todos)
+      .map((id) => {
+        const { context, ...todo } = todos[id];
+        return { id, context: context || '', ...todo };
+      })
+      .sort((a, b) => {
+        if (a.context > b.context) return -1;
+        if (a.context < b.context) return 1;
+        return 0;
+      })
+    : undefined;
 
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -64,37 +66,38 @@ const List = ({ location }) => {
         }
       }}
     >
-      {todoArray.map((todo, i, arr) => (
-        <Fragment key={todo.id}>
-          {(i === 0 || todo.context !== arr[i - 1].context) && (
-            <div
-              css={css`
-                font-family: Roboto;
-                font-style: normal;
-                font-weight: 200;
-                line-height: normal;
-                font-size: 16px;
-                letter-spacing: 0.05em;
-                text-transform: uppercase;
-                color: white;
-                margin: 1.5rem 0 0.75rem;
-              `}
-            >
-              {todo.context || 'no context'}
-            </div>
-          )}
-          <Item
-            todo={todo}
-            id={todo.id}
-            selected={todo.id === selected}
-            onSelected={() => {
-              setSelected(todo.id);
-            }}
-            ref={todo.id === selected ? selectedNode : undefined}
-          />
-        </Fragment>
-      ))}
-      {!todoArray.length && (
+      {todoArray
+        && todoArray.map((todo, i, arr) => (
+          <Fragment key={todo.id}>
+            {(i === 0 || todo.context !== arr[i - 1].context) && (
+              <div
+                css={css`
+                  font-family: Roboto;
+                  font-style: normal;
+                  font-weight: 200;
+                  line-height: normal;
+                  font-size: 16px;
+                  letter-spacing: 0.05em;
+                  text-transform: uppercase;
+                  color: white;
+                  margin: 1.5rem 0 0.75rem;
+                `}
+              >
+                {todo.context || 'no context'}
+              </div>
+            )}
+            <Item
+              todo={todo}
+              id={todo.id}
+              selected={todo.id === selected}
+              onSelected={() => {
+                setSelected(todo.id);
+              }}
+              ref={todo.id === selected ? selectedNode : undefined}
+            />
+          </Fragment>
+        ))}
+      {todoArray && !todoArray.length && (
         <div
           css={css`
             text-align: center;
@@ -114,9 +117,7 @@ const List = ({ location }) => {
           >
             😁
           </span>
-          <div>
-            You're done - congratulations!
-          </div>
+          <div>You're done - congratulations!</div>
         </div>
       )}
     </div>
