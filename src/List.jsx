@@ -1,7 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { useEffect, useState, Fragment } from 'react';
+import {
+  useEffect, useState, Fragment,
+} from 'react';
 import PropTypes from 'prop-types';
 import { list } from './firebase';
 import Item from './Item';
@@ -19,6 +21,20 @@ const List = ({ location }) => {
 
   const [todos, setTodos] = useState({});
   const [selected, setSelected] = useState();
+
+  // set document onclick to unselect when clicked outside selected
+  useEffect(() => {
+    const cb = (e) => {
+      const selectedNode = document.querySelector(`#${selected}`);
+      if (!selectedNode.contains(e.target)) {
+        setSelected(null);
+      }
+    };
+    document.addEventListener('click', cb);
+    return () => {
+      document.removeEventListener('click', cb);
+    };
+  });
 
   const [, view, tag] = location.pathname.split('/');
   const { where, orderBy } = views[view];
@@ -40,7 +56,14 @@ const List = ({ location }) => {
     });
 
   return (
-    <div>
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div
+      onKeyDown={(e) => {
+        if ((e.key === 'Enter' && e.ctrlKey) || e.key === 'Escape') {
+          setSelected(null);
+        }
+      }}
+    >
       {todoArray.map((todo, i, arr) => (
         <Fragment key={todo.id}>
           {(i === 0 || todo.context !== arr[i - 1].context) && (

@@ -32,6 +32,7 @@ const Item = ({
 
   return (
     <div
+      id={id}
       css={css`
         padding: 0.4rem;
         background: rgba(255, 255, 255, 0.8);
@@ -42,7 +43,7 @@ const Item = ({
         gap: 0.4rem;
         grid-template-columns: min-content 1fr;
         grid-auto-flow: column;
-        align-items: center;
+        align-items: flex-start;
         border-left: 0.2rem solid transparent;
         ${selected
         ? css`

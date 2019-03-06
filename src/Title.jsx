@@ -13,8 +13,9 @@ const Title = ({ title, update: updateFn, focus }) => {
   };
 
   const onKeyDown = (e) => {
-    if (e.key === 'Enter' && e.ctrlKey) {
+    if ((e.key === 'Enter' && e.ctrlKey) || e.key === 'Escape') {
       update(e.shiftKey);
+      if (!focus) div.current.blur();
     }
   };
 
