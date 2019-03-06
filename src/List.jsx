@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import {
-  useEffect, useState, Fragment,
+  useEffect, useState, Fragment, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import { list } from './firebase';
@@ -21,12 +21,12 @@ const List = ({ location }) => {
 
   const [todos, setTodos] = useState({});
   const [selected, setSelected] = useState();
+  const selectedNode = useRef();
 
   // set document onclick to unselect when clicked outside selected
   useEffect(() => {
     const cb = (e) => {
-      const selectedNode = document.querySelector(`#${selected}`);
-      if (!selectedNode.contains(e.target)) {
+      if (selectedNode.current && !selectedNode.current.contains(e.target)) {
         setSelected(null);
       }
     };
@@ -90,6 +90,7 @@ const List = ({ location }) => {
             onSelected={() => {
               setSelected(todo.id);
             }}
+            ref={todo.id === selected ? selectedNode : undefined}
           />
         </Fragment>
       ))}

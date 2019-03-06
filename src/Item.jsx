@@ -1,13 +1,13 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { update } from './firebase';
 import Title from './Title';
 
-const Item = ({
+const Item = React.forwardRef(({
   todo, id, selected, onSelected,
-}) => {
+}, ref) => {
   const [soft, setSoft] = useState(todo.soft);
   const datePicker = useRef(null);
 
@@ -32,7 +32,7 @@ const Item = ({
 
   return (
     <div
-      id={id}
+      ref={ref}
       css={css`
         padding: 0.4rem;
         background: rgba(255, 255, 255, 0.8);
@@ -123,7 +123,7 @@ const Item = ({
       />
     </div>
   );
-};
+});
 
 Item.propTypes = {
   todo: PropTypes.shape({
