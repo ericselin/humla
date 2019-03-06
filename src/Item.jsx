@@ -41,9 +41,9 @@ const Item = React.forwardRef(({
         border-radius: 0.2rem;
         display: grid;
         gap: 0.4rem;
-        grid-template-columns: min-content 1fr;
+        grid-template-columns: min-content 1fr minmax(min-content, 35%);
         grid-auto-flow: column;
-        align-items: flex-start;
+        align-items: center;
         border-left: 0.2rem solid transparent;
         ${selected
         ? css`
@@ -85,42 +85,61 @@ const Item = React.forwardRef(({
         </i>
       </button>
       <Title title={title} update={updateTitle} />
-      {todo.tags
-        && todo.tags.map(tag => (
-          <div
-            key={tag}
-            css={css`
-              font-size: 0.75rem;
-              border: 1px solid rgba(0, 0, 0, 0.3);
-              border-radius: 0.125rem;
-              padding: 0.25rem;
-              background: #798caf;
-              line-height: 1;
-              color: white;
-            `}
-          >
-            {tag}
-          </div>
-        ))}
-      <input
+      <div
         css={css`
-          font-size: 0.75rem;
-          border: 1px solid rgba(0, 0, 0, 0.3);
-          border-radius: 0.125rem;
-          padding: 0.25rem;
-          width: 6em;
-          text-align: center;
-          background: none;
+          direction: rtl;
+          margin: -0.125rem;
         `}
-        onChange={dateChange}
-        onBlur={updateSoft}
-        onFocus={() => {
-          datePicker.current.select();
-        }}
-        value={soft}
-        placeholder="No date..."
-        ref={datePicker}
-      />
+      >
+        <input
+          css={css`
+            font-size: 0.75rem;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: 0.125rem;
+            padding: 0.25rem;
+            width: 6em;
+            text-align: center;
+            background: none;
+            font-family: inherit;
+            margin: 0.125rem;
+            direction: initial;
+          `}
+          onChange={dateChange}
+          onBlur={updateSoft}
+          onFocus={() => {
+            datePicker.current.select();
+          }}
+          value={soft}
+          placeholder="No date..."
+          ref={datePicker}
+        />
+        <div
+          css={css`
+            display: inline-block;
+          `}
+        >
+          {todo.tags
+            && todo.tags.map(tag => (
+              <div
+                key={tag}
+                css={css`
+                  display: inline-block;
+                  font-size: 0.75rem;
+                  border: 1px solid rgba(0, 0, 0, 0.3);
+                  border-radius: 0.125rem;
+                  padding: 0.25rem;
+                  background: #798caf;
+                  line-height: 1;
+                  color: white;
+                  margin: 0.125rem;
+                  direction: initial;
+                `}
+              >
+                {tag}
+              </div>
+            ))}
+        </div>
+      </div>
     </div>
   );
 });

@@ -6,16 +6,18 @@ import { Link } from 'react-router-dom';
 import { getTags } from './firebase';
 import Overlay from './Overlay';
 
+const linkCss = css`
+  text-decoration: none;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  display: block;
+  color: #000;
+`;
+
 // eslint-disable-next-line react/prop-types
 const MenuLink = ({ children, to, close }) => (
   <Link
-    css={css`
-      text-decoration: none;
-      margin: 0.5rem 0;
-      padding: 0.5rem 0;
-      display: block;
-      color: #000;
-    `}
+    css={linkCss}
     to={to}
     onClick={() => {
       if (close) close();
@@ -41,8 +43,9 @@ const Menu = ({ close, logout, visible }) => {
             background: white;
             width: 15rem;
             overflow: auto;
-            padding-bottom: 2rem;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
             & > * {
               padding: 1rem 0.75rem;
             }
@@ -77,8 +80,6 @@ const Menu = ({ close, logout, visible }) => {
             <MenuLink close={close} to="/all">
               All
             </MenuLink>
-          </div>
-          <div>
             <MenuLink close={close} to="/unprocessed">
               Unprocessed
             </MenuLink>
@@ -92,22 +93,31 @@ const Menu = ({ close, logout, visible }) => {
               ))}
             </div>
           )}
-          <button
+          <div
             css={css`
-              margin: 0;
-              background: none;
-              border: none;
-              cursor: pointer;
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              right: 0;
+              flex: 1;
+              border-top: none;
+              padding: 0;
             `}
-            onClick={logout}
-            type="button"
-          >
-            Logout
-          </button>
+          />
+          <div>
+            <button
+              css={[
+                linkCss,
+                css`
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  text-align: left;
+                  font-size: 1rem;
+                `,
+              ]}
+              onClick={logout}
+              type="button"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </Overlay>
     )
