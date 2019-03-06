@@ -17,6 +17,10 @@ module.exports = (env, argv) => ({
         exclude: /node_modules/,
         use: ['react-hot-loader/webpack', 'babel-loader'],
       },
+      {
+        test: /\.svg$/,
+        loader: 'react-svg-loader',
+      },
     ],
   },
   plugins: [

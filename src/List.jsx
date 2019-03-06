@@ -103,16 +103,20 @@ const List = ({ location }) => {
             font-weight: 200;
           `}
         >
-          <i
+          <span
+            role="img"
+            aria-label="SMILE!"
             css={css`
               font-size: 5rem;
+              height: 5rem;
               display: block;
             `}
-            className="material-icons"
           >
-            sentiment_very_satisfied
-          </i>
-          You're done - congratulations!
+            😁
+          </span>
+          <div>
+            You're done - congratulations!
+          </div>
         </div>
       )}
     </div>

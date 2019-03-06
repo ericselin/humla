@@ -4,6 +4,12 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { update } from './firebase';
 import Title from './Title';
+import IconChecked from './icons/checked.svg';
+import IconUnchecked from './icons/unchecked.svg';
+
+const icon = css`
+  fill: rgba(0, 0, 0, 0.6);
+`;
 
 const Item = React.forwardRef(({
   todo, id, selected, onSelected,
@@ -75,14 +81,7 @@ const Item = React.forwardRef(({
         type="button"
         onClick={toggleComplete}
       >
-        <i
-          css={css`
-            display: block;
-          `}
-          className="material-icons"
-        >
-          {todo.completed ? 'check_box' : 'check_box_outline_blank'}
-        </i>
+        {todo.completed ? <IconChecked css={icon} /> : <IconUnchecked css={icon} />}
       </button>
       <Title title={title} update={updateTitle} />
       <div

@@ -26,7 +26,8 @@ const New = ({ visible, close }) => {
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
             border-radius: 0.2rem;
             margin: auto;
-            max-width: 35rem;
+            width: 30rem;
+            max-width: calc(100% - 4rem);
           `}
         >
           <div
@@ -43,11 +44,7 @@ const New = ({ visible, close }) => {
               margin: 1rem 0;
             `}
           >
-            <Title
-              title=""
-              update={update}
-              focus
-            />
+            <Title title="" update={update} focus />
           </div>
           <div
             css={css`
@@ -55,7 +52,8 @@ const New = ({ visible, close }) => {
               color: rgba(0, 0, 0, 0.8);
             `}
           >
-            Press Ctrl+Enter to create (Ctrl+Shift+Enter to immediately add another task).
+            <div>Ctrl+Enter to create</div>
+            <div>Ctrl+Shift+Enter to immediately add another task</div>
           </div>
         </div>
       </Overlay>

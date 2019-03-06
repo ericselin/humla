@@ -1,10 +1,12 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import Menu from './Menu';
 import New from './New';
+import IconMenu from './icons/menu.svg';
+import IconAdd from './icons/add.svg';
 
 const viewNames = {
   today: 'Today',
@@ -24,10 +26,54 @@ const button = css`
   cursor: pointer;
 `;
 
-const Header = ({ logout, location }) => {
+const icon = css`
+  fill: white;
+`;
+
+const Header = ({ logout, location, history }) => {
   const [menu, setMenu] = useState(false);
   const [newVisible, setNewVisible] = useState(false);
   const [, view, tag] = location.pathname.split('/');
+
+  useEffect(() => {
+    const listener = (e) => {
+      if (e.altKey) {
+        switch (e.key) {
+          case 'n':
+            setNewVisible(true);
+            break;
+          case 't':
+            history.push('/today');
+            break;
+          case 'w':
+            history.push('/week');
+            break;
+          case 'l':
+            history.push('/later');
+            break;
+          case 's':
+            history.push('/someday');
+            break;
+          case 'a':
+            history.push('/all');
+            break;
+          case 'u':
+            history.push('/unprocessed');
+            break;
+          default:
+            break;
+        }
+      }
+      document.addEventListener('keydown', listener);
+      return () => {
+        document.removeEventListener('keydown', listener);
+      };
+    };
+    document.addEventListener('keydown', listener);
+    return () => {
+      document.removeEventListener('keydown', listener);
+    };
+  });
 
   return (
     <header
@@ -40,7 +86,7 @@ const Header = ({ logout, location }) => {
     >
       <Menu close={() => setMenu(false)} logout={logout} visible={menu} />
       <button css={button} onClick={() => setMenu(m => !m)} type="button">
-        <i className="material-icons">menu</i>
+        <IconMenu css={icon} />
       </button>
       <div
         css={css`
@@ -52,7 +98,7 @@ const Header = ({ logout, location }) => {
         {tag ? `#${tag}` : viewNames[view] || view}
       </div>
       <button css={button} onClick={() => setNewVisible(n => !n)} type="button">
-        <i className="material-icons">add_circle_outline</i>
+        <IconAdd css={icon} />
       </button>
       <New close={() => setNewVisible(false)} visible={newVisible} />
     </header>
@@ -63,6 +109,9 @@ Header.propTypes = {
   logout: PropTypes.func.isRequired,
   location: PropTypes.shape({
     path: PropTypes.string,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
