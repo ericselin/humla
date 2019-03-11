@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { list } from './firebase';
 import Item from './Item';
 import { today, sunday } from './date';
+import IconSmile from './icons/smile.svg';
 
 const List = ({ location }) => {
   const views = {
@@ -106,17 +107,13 @@ const List = ({ location }) => {
             font-weight: 200;
           `}
         >
-          <span
-            role="img"
-            aria-label="SMILE!"
+          <IconSmile
             css={css`
-              font-size: 5rem;
+              fill: white;
               height: 5rem;
-              display: block;
+              width: auto;
             `}
-          >
-            😁
-          </span>
+          />
           <div>You're done - congratulations!</div>
         </div>
       )}

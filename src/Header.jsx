@@ -64,10 +64,6 @@ const Header = ({ logout, location, history }) => {
             break;
         }
       }
-      document.addEventListener('keydown', listener);
-      return () => {
-        document.removeEventListener('keydown', listener);
-      };
     };
     document.addEventListener('keydown', listener);
     return () => {
@@ -97,7 +93,7 @@ const Header = ({ logout, location, history }) => {
       >
         {tag ? `#${tag}` : viewNames[view] || view}
       </div>
-      <button css={button} onClick={() => setNewVisible(n => !n)} type="button">
+      <button css={button} onClick={() => setNewVisible(true)} type="button">
         <IconAdd css={icon} />
       </button>
       <New close={() => setNewVisible(false)} visible={newVisible} />
