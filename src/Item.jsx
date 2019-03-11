@@ -32,6 +32,11 @@ const Item = React.forwardRef(({
     update(id, { completed: c });
   };
 
+  const onFocus = (e) => {
+    // if this fired because of complete button click, do not select
+    if (e.target.type !== 'button') onSelected(e);
+  };
+
   const dateChange = e => setSoft(e.target.value);
 
   const title = `${todo.title.replace('\n', '\n<span class="rest">')}</span>`;
@@ -68,7 +73,7 @@ const Item = React.forwardRef(({
             `
           : undefined}
       `}
-      onFocus={onSelected}
+      onFocus={onFocus}
     >
       <button
         css={css`
