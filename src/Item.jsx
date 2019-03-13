@@ -52,7 +52,7 @@ const Item = React.forwardRef(({
         border-radius: 0.2rem;
         display: grid;
         gap: 0.4rem;
-        grid-template-columns: min-content 1fr minmax(min-content, 35%);
+        grid-template-columns: min-content minmax(0,1fr) fit-content(35%);
         grid-auto-flow: column;
         align-items: center;
         border-left: 0.2rem solid transparent;

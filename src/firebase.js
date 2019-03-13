@@ -133,7 +133,12 @@ export const getTags = (setter) => {
           });
         }
       });
-      setter(Object.keys(tagsMap));
+      const tags = Object.keys(tagsMap).sort((a, b) => {
+        if (a > b) return 1;
+        if (a < b) return -1;
+        return 0;
+      });
+      setter(tags);
     })
     .catch((error) => {
       console.log('Error getting tags: ', error);
