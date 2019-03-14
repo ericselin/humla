@@ -9,6 +9,8 @@ import { list } from './firebase';
 import Item from './Item';
 import { today, sunday } from './date';
 import IconSmile from './icons/smile.svg';
+import IconArrowUp from './icons/arrow-up.svg';
+import IconArrowDown from './icons/arrow-down.svg';
 
 const List = ({ location }) => {
   const views = {
@@ -22,6 +24,7 @@ const List = ({ location }) => {
 
   const [todos, setTodos] = useState(undefined);
   const [selected, setSelected] = useState();
+  const [closedContexts, setClosedContexts] = useState({});
   const selectedNode = useRef();
 
   // set document onclick to unselect when clicked outside selected
@@ -81,21 +84,42 @@ const List = ({ location }) => {
                   letter-spacing: 0.05em;
                   text-transform: uppercase;
                   color: white;
+                  fill: white;
                   margin: 1.5rem 0 0.75rem;
+                  display: grid;
+                  grid-template-columns: 1fr min-content;
+                  align-items: center;
                 `}
               >
-                {todo.context || 'no context'}
+                <div>{todo.context || 'no context'}</div>
+                <button
+                  css={css`
+                    padding: 0;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                  `}
+                  onClick={() => {
+                    // eslint-disable-next-line max-len
+                    setClosedContexts(c => Object.assign({}, c, { [todo.context]: !c[todo.context] }));
+                  }}
+                  type="button"
+                >
+                  {closedContexts[todo.context] ? <IconArrowDown /> : <IconArrowUp />}
+                </button>
               </div>
             )}
-            <Item
-              todo={todo}
-              id={todo.id}
-              selected={todo.id === selected}
-              onSelected={() => {
-                setSelected(todo.id);
-              }}
-              ref={todo.id === selected ? selectedNode : undefined}
-            />
+            {!closedContexts[todo.context] && (
+              <Item
+                todo={todo}
+                id={todo.id}
+                selected={todo.id === selected}
+                onSelected={() => {
+                  setSelected(todo.id);
+                }}
+                ref={todo.id === selected ? selectedNode : undefined}
+              />
+            )}
           </Fragment>
         ))}
       {todoArray && !todoArray.length && (

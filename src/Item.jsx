@@ -82,6 +82,7 @@ const Item = React.forwardRef(({
           padding: 0;
           background: none;
           border: none;
+          cursor: pointer;
         `}
         type="button"
         onClick={toggleComplete}
