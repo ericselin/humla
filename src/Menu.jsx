@@ -62,7 +62,7 @@ const Menu = ({ close, logout, visible }) => {
               margin: 0;
             `}
           >
-            Super Todo
+            Humla App
           </h1>
           <div>
             <MenuLink close={close} to="/today">

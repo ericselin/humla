@@ -26,7 +26,7 @@ module.exports = (env, argv) => ({
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Super Todo',
+      title: 'Humla App',
       template: './src/index.html',
     }),
   ],

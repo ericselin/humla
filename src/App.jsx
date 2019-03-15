@@ -57,7 +57,7 @@ const App = () => {
   return (
     <Router>
       <Fragment>
-        {user && (
+        {user ? (
           <Fragment>
             <Header logout={logout} />
             <main
@@ -76,12 +76,38 @@ const App = () => {
               <Route path="/unprocessed" component={List} />
             </main>
           </Fragment>
-        )}
-        {user === undefined && <div>Loading...</div>}
-        {user === false && (
-          <button onClick={login} type="button">
-            Login
-          </button>
+        ) : (
+          <div
+            css={css`
+              display: flex;
+              height: 100vh;
+              align-items: center;
+              justify-content: center;
+              color: white;
+            `}
+          >
+            {user === undefined && <div>Logging you in...</div>}
+            {user === false && (
+              <button
+                css={css`
+                  background: white;
+                  border: 1px solid white;
+                  padding: 1em 2em;
+                  color: #6991c7;
+                  font-family: inherit;
+                  font-weight: 500;
+                  font-size: 1.125rem;
+                  letter-spacing: 0.05em;
+                  cursor: pointer;
+                  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+                `}
+                onClick={login}
+                type="button"
+              >
+                Sign in with Google
+              </button>
+            )}
+          </div>
         )}
       </Fragment>
     </Router>

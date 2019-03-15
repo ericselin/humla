@@ -9,7 +9,7 @@ if (firebase.apps.length === 0) {
   console.log('Initializing firebase');
   const config = {
     apiKey: 'AIzaSyA8T1qoF1G2NQ4eN946MDlsEfZFyaoiPNU',
-    authDomain: 'super-todo-230614.firebaseapp.com',
+    authDomain: 'www.humla.app',
     databaseURL: 'https://super-todo-230614.firebaseio.com',
     projectId: 'super-todo-230614',
     storageBucket: 'super-todo-230614.appspot.com',
