@@ -3,17 +3,18 @@ const pad = nr => nr.toString().padStart(2, '0');
 const format = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const formatDM = (d, m) => `${new Date().getFullYear()}-${pad(m)}-${pad(d)}`;
 
+const sundayDate = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + (7 - (d.getDay() || 7)));
+  return d;
+};
+
 export const today = () => format(new Date());
 export const sunday = () => {
-  const sundayDate = new Date();
-  sundayDate.setDate(sundayDate.getDate() + (7 - (sundayDate.getDay() || 7)));
-  return format(sundayDate);
+  return format(sundayDate());
 };
 
 export const getDate = (dateStr) => {
-  const sundayDate = new Date();
-  sundayDate.setDate(sundayDate.getDate() + (7 - (sundayDate.getDay() || 7)));
-
   switch (dateStr.toLowerCase()) {
     case 'l':
       return 'later';
@@ -30,11 +31,11 @@ export const getDate = (dateStr) => {
     }
     case 'this week':
     case 'tw':
-      return format(sundayDate);
+      return format(sundayDate());
     case 'next week':
     case 'nw': {
       const d = new Date();
-      d.setDate(sundayDate.getDate() + 7);
+      d.setDate(sundayDate().getDate() + 7);
       return format(d);
     }
     default: {

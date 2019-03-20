@@ -12,7 +12,30 @@ test('returns correct today', (t) => {
   t.is(today(), '2019-03-20');
 });
 
-test('returns correct sunday today', (t) => {
+const sundayMacro = (t, input, expected) => {
+  mockdate.set(input);
+  t.is(sunday(), expected);
+};
+
+test('sunday correct today', sundayMacro, '2019-03-20', '2019-03-24');
+test('sunday today on sunday', sundayMacro, '2019-03-24', '2019-03-24');
+test('sunday correct on monday', sundayMacro, '2019-03-25', '2019-03-31');
+test('sunday correct across month', sundayMacro, '2019-02-28', '2019-03-03');
+
+const date = (t, input, expected) => {
   mockdate.set('2019-03-20');
-  t.is(sunday(), '2019-03-24');
-});
+  t.is(getDate(input), expected);
+};
+date.title = (providedTitle = '', input, expected) => `${providedTitle} ${input} = ${expected}`.trim();
+
+test(date, 't', '2019-03-20');
+test(date, 'today', '2019-03-20');
+test(date, 'tm', '2019-03-21');
+test(date, 'tomorrow', '2019-03-21');
+test(date, 'tw', '2019-03-24');
+test(date, 'nw', '2019-03-31');
+test(date, 'l', 'later');
+test(date, 's', 'someday');
+test(date, '1.5', '2019-05-01');
+
+test(date, 'something', 'something');
