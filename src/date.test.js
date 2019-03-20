@@ -7,7 +7,12 @@ test.afterEach(() => {
   mockdate.reset();
 });
 
-test('exports correct today', (t) => {
+test('returns correct today', (t) => {
   mockdate.set('2019-03-20');
   t.is(today(), '2019-03-20');
+});
+
+test('returns correct sunday today', (t) => {
+  mockdate.set('2019-03-20');
+  t.is(sunday(), '2019-03-24');
 });
