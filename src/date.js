@@ -1,16 +1,19 @@
 const pad = nr => nr.toString().padStart(2, '0');
 
-export const format = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-export const formatDM = (d, m) => `${new Date().getFullYear()}-${pad(m)}-${pad(d)}`;
+const format = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const formatDM = (d, m) => `${new Date().getFullYear()}-${pad(m)}-${pad(d)}`;
 
-const todayDate = new Date();
-const sundayDate = new Date();
-sundayDate.setDate(sundayDate.getDate() + (7 - (sundayDate.getDay() || 7)));
-
-export const today = format(todayDate);
-export const sunday = format(sundayDate);
+export const today = () => format(new Date());
+export const sunday = () => {
+  const sundayDate = new Date();
+  sundayDate.setDate(sundayDate.getDate() + (7 - (sundayDate.getDay() || 7)));
+  return format(sundayDate);
+};
 
 export const getDate = (dateStr) => {
+  const sundayDate = new Date();
+  sundayDate.setDate(sundayDate.getDate() + (7 - (sundayDate.getDay() || 7)));
+
   switch (dateStr.toLowerCase()) {
     case 'l':
       return 'later';
@@ -18,16 +21,16 @@ export const getDate = (dateStr) => {
       return 'someday';
     case 'today':
     case 't':
-      return today;
+      return format(new Date());
     case 'tomorrow':
     case 'tm': {
       const d = new Date();
-      d.setDate(todayDate.getDate() + 1);
+      d.setDate(new Date().getDate() + 1);
       return format(d);
     }
     case 'this week':
     case 'tw':
-      return sunday;
+      return format(sundayDate);
     case 'next week':
     case 'nw': {
       const d = new Date();

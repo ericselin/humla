@@ -14,9 +14,9 @@ import IconArrowDown from './icons/arrow-down.svg';
 
 const List = ({ location }) => {
   const views = {
-    today: { where: [['soft', '<=', today], ['soft', '>', '""']], orderBy: 'soft' },
-    week: { where: [['soft', '<=', sunday], ['soft', '>', '""']], orderBy: 'soft' },
-    later: { where: [['soft', '>', sunday], ['soft', '<', 'someday']], orderBy: 'soft' },
+    today: { where: [['soft', '<=', today()], ['soft', '>', '""']], orderBy: 'soft' },
+    week: { where: [['soft', '<=', sunday()], ['soft', '>', '""']], orderBy: 'soft' },
+    later: { where: [['soft', '>', sunday()], ['soft', '<', 'someday']], orderBy: 'soft' },
     someday: { where: [['soft', '>=', 'someday']], orderBy: 'soft' },
     all: { where: [], orderBy: 'soft' },
     unprocessed: { where: ['soft', '==', ''] },
