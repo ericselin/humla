@@ -31,6 +31,7 @@ const List = ({ location }) => {
   useEffect(() => {
     const cb = (e) => {
       if (selectedNode.current && !selectedNode.current.contains(e.target)) {
+        document.activeElement.blur();
         setSelected(null);
       }
     };
