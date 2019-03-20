@@ -10,9 +10,7 @@ const sundayDate = () => {
 };
 
 export const today = () => format(new Date());
-export const sunday = () => {
-  return format(sundayDate());
-};
+export const sunday = () => format(sundayDate());
 
 export const getDate = (dateStr) => {
   switch (dateStr.toLowerCase()) {
