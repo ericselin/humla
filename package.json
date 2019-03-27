@@ -10,6 +10,7 @@
     "deploy": "firebase deploy"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.4.2",
     "@emotion/core": "^10.0.7",
     "@firebase/app": "^0.3.9",
     "@firebase/app-types": "^0.3.4",
