@@ -1,11 +1,19 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { update } from './firebase';
 import Title from './Title';
 import IconChecked from './icons/checked.svg';
 import IconUnchecked from './icons/unchecked.svg';
+
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
 
 const icon = css`
   fill: rgba(0, 0, 0, 0.6);
@@ -15,16 +23,19 @@ const Item = React.forwardRef(({
   todo, id, selected, onSelected,
 }, ref) => {
   const [soft, setSoft] = useState(todo.soft);
+  const [title, setTitle] = useState(todo.title);
   const datePicker = useRef(null);
+
+  // update title when item is deselected
+  const prevSelected = usePrevious(selected);
+  if (prevSelected && !selected) {
+    const { soft: newSoft } = update(id, { title });
+    if (typeof newSoft !== 'undefined') setSoft(newSoft);
+  }
 
   const updateSoft = () => {
     const { soft: s } = update(id, { soft });
     setSoft(s);
-  };
-
-  const updateTitle = (title) => {
-    const { soft: newSoft } = update(id, { title });
-    if (typeof newSoft !== 'undefined') setSoft(newSoft);
   };
 
   const toggleComplete = () => {
@@ -38,8 +49,7 @@ const Item = React.forwardRef(({
   };
 
   const dateChange = e => setSoft(e.target.value);
-
-  const title = `${todo.title.replace('\n', '\n<span class="rest">')}</span>`;
+  const titleChange = t => setTitle(t);
 
   return (
     <div
@@ -52,7 +62,7 @@ const Item = React.forwardRef(({
         border-radius: 0.2rem;
         display: grid;
         gap: 0.4rem;
-        grid-template-columns: min-content minmax(0,1fr) fit-content(35%);
+        grid-template-columns: min-content minmax(0, 1fr) fit-content(35%);
         grid-auto-flow: column;
         align-items: center;
         border-left: 0.2rem solid transparent;
@@ -89,7 +99,7 @@ const Item = React.forwardRef(({
       >
         {todo.completed ? <IconChecked css={icon} /> : <IconUnchecked css={icon} />}
       </button>
-      <Title title={title} update={updateTitle} />
+      <Title title={todo.title} oneLine={!selected} onChange={titleChange} />
       <div
         css={css`
           direction: rtl;

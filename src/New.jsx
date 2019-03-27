@@ -1,25 +1,60 @@
-/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { useState } from 'react';
 import { add } from './firebase';
 import Overlay from './Overlay';
 import Title from './Title';
 
+const buttonCss = css`
+  background: #6991c7;
+  color: white;
+  border: 1px solid #6991c7;
+  padding: 0.5em 1em;
+  border-radius: 0.125rem;
+  cursor: pointer;
+`;
+
+const buttonSecondaryCss = [
+  buttonCss,
+  css`
+    background: white;
+    color: initial;
+    margin-right: 1rem;
+  `,
+];
+
+const buttonHintCss = css`
+  margin-top: 0.125rem;
+  font-size: 0.625rem;
+  font-style: italic;
+`;
+
 const New = ({ visible, close }) => {
-  const update = (title, keepOpen) => {
+  const [title, setTitle] = useState('');
+  const [forceUpdate, setForceUpdate] = useState(true);
+
+  const onChange = t => setTitle(t);
+
+  const addTask = (keepOpen) => {
     if (title) {
       add({ title, completed: false, soft: '' });
-      console.log('Created', title);
-      if (keepOpen) return true;
-      close();
+      if (keepOpen) setForceUpdate(f => !f);
+      else close();
     }
-    return undefined;
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      addTask(e.shiftKey);
+    }
   };
 
   return (
     visible && (
       <Overlay close={close}>
         <div
+          onKeyDown={onKeyDown}
           css={css`
             padding: 1rem;
             background: white;
@@ -44,16 +79,33 @@ const New = ({ visible, close }) => {
               margin: 1rem 0;
             `}
           >
-            <Title title="" update={update} focus />
+            <Title title="" focus oneLine={false} onChange={onChange} key={forceUpdate} />
           </div>
           <div
             css={css`
-              font-size: 0.75rem;
-              color: rgba(0, 0, 0, 0.8);
+              text-align: right;
             `}
           >
-            <div>Ctrl+Enter to create</div>
-            <div>Ctrl+Shift+Enter to immediately add another task</div>
+            <button
+              type="button"
+              css={buttonSecondaryCss}
+              onClick={() => {
+                addTask(true);
+              }}
+            >
+              Create and add new
+              <div css={buttonHintCss}>Ctrl+Shift+Enter</div>
+            </button>
+            <button
+              type="button"
+              css={buttonCss}
+              onClick={() => {
+                addTask(false);
+              }}
+            >
+              Create
+              <div css={buttonHintCss}>Ctrl+Enter</div>
+            </button>
           </div>
         </div>
       </Overlay>

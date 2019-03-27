@@ -1,23 +1,24 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import PropTypes from 'prop-types';
 
-// eslint-disable-next-line react/prop-types
-const Title = ({ title, update: updateFn, focus }) => {
-  const [updated, forceUpdate] = useState(true);
+const Title = ({
+  title, onChange, oneLine, focus,
+}) => {
   const div = useRef(null);
 
-  const update = (keepOpen) => {
-    updateFn(div.current.innerText, keepOpen);
-    forceUpdate(prev => !prev);
+  const onKeyUp = () => {
+    // safety: only update if not one-liner
+    if (!oneLine) onChange(div.current.innerText);
   };
 
-  const onKeyDown = (e) => {
-    if ((e.key === 'Enter' && e.ctrlKey) || e.key === 'Escape') {
-      update(e.shiftKey);
-      if (!focus) div.current.blur();
-    }
-  };
+  // always blur if this is a one-liner
+  if (oneLine && div.current) {
+    div.current.blur();
+  }
+
+  const titleDiv = title ? title.replace(/^(.*)$/gm, '<div>$1</div>') : '';
 
   return (
     <div
@@ -33,24 +34,45 @@ const Title = ({ title, update: updateFn, focus }) => {
         padding: 0.125rem;
         resize: none;
         overflow: hidden;
-        white-space: pre-wrap;
+        &:empty::before {
+          content: 'New task...';
+          color: rgba(0, 0, 0, 0.3);
+        }
         &:focus {
           outline: none;
         }
+        ${oneLine
+          && css`
+            & > div:not(:first-of-type) {
+              display: none;
+            }
+          `}
       `}
       contentEditable
-      onBlur={update}
-      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
       ref={(ref) => {
         if (ref) {
           div.current = ref;
           if (focus) ref.focus();
+        } else {
+          div.current = null;
         }
       }}
-      key={focus ? updated : false}
-      dangerouslySetInnerHTML={{ __html: title }}
+      dangerouslySetInnerHTML={{ __html: titleDiv }}
     />
   );
+};
+
+Title.propTypes = {
+  title: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  oneLine: PropTypes.bool,
+  focus: PropTypes.bool,
+};
+
+Title.defaultProps = {
+  oneLine: undefined,
+  focus: undefined,
 };
 
 export default Title;
