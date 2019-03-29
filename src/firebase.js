@@ -39,6 +39,24 @@ const myTodos = () => {
   return todos.where('owner', '==', uid);
 };
 
+export const updateCompleted = () => myTodos()
+  .where('completed', '==', false)
+  .get()
+  .then((snapshot) => {
+    if (snapshot.size) {
+      console.warn(`Updating ${snapshot.size} old-style completed fields`);
+      const batch = firebase.firestore().batch();
+      snapshot.docs.forEach((doc) => {
+        batch.update(doc.ref, { completed: '' });
+      });
+      return batch.commit();
+    }
+    return false;
+  })
+  .catch((reason) => {
+    console.error('Could not update completed fields', reason);
+  });
+
 const snapshotListener = setter => (querySnapshot) => {
   console.info('Incoming query snapshot', querySnapshot);
   const t = {};
@@ -49,8 +67,10 @@ const snapshotListener = setter => (querySnapshot) => {
 };
 
 export const list = ({ setTodos, where, orderBy }) => () => {
+  console.warn('Checking for tasks to update');
+  updateCompleted();
   console.log('Adding query snapshot listener...', where);
-  let listener = myTodos().where('completed', '==', false);
+  let listener = myTodos();
   // check for filter
   if (where && where.length) {
     // check whether we have many wheres

@@ -7,22 +7,46 @@ import {
 import PropTypes from 'prop-types';
 import { list } from './firebase';
 import Item from './Item';
-import { today, sunday } from './date';
+import { today, sunday, thisMonday } from './date';
 import IconSmile from './icons/smile.svg';
 import IconArrowUp from './icons/arrow-up.svg';
 import IconArrowDown from './icons/arrow-down.svg';
 
 const List = ({ location }) => {
   const views = {
-    today: { where: [['soft', '<=', today()], ['soft', '>', '""']], orderBy: 'soft' },
-    week: { where: [['soft', '<=', sunday()], ['soft', '>', '""']], orderBy: 'soft' },
-    later: { where: [['soft', '>', sunday()], ['soft', '<', 'someday']], orderBy: 'soft' },
-    someday: { where: [['soft', '>=', 'someday']], orderBy: 'soft' },
-    all: { where: [], orderBy: 'soft' },
-    unprocessed: { where: ['soft', '==', ''] },
+    today: {
+      todo: {
+        where: [['completed', '==', ''], ['soft', '<=', today()], ['soft', '>', '""']],
+        orderBy: 'soft',
+      },
+      completed: {
+        where: ['completed', '==', today()],
+      },
+    },
+    week: {
+      todo: {
+        where: [['completed', '==', ''], ['soft', '<=', sunday()], ['soft', '>', '""']],
+        orderBy: 'soft',
+      },
+      completed: {
+        where: [['completed', '>=', thisMonday()], ['completed', '<=', sunday()]],
+      },
+    },
+    later: {
+      todo: {
+        where: [['completed', '==', ''], ['soft', '>', sunday()], ['soft', '<', 'someday']],
+        orderBy: 'soft',
+      },
+    },
+    someday: {
+      todo: { where: [['completed', '==', ''], ['soft', '>=', 'someday']], orderBy: 'soft' },
+    },
+    all: { todo: { where: ['completed', '==', ''], orderBy: 'soft' } },
+    unprocessed: { todo: { where: [['completed', '==', ''], ['soft', '==', '']] } },
   };
 
   const [todos, setTodos] = useState(undefined);
+  const [completed, setCompleted] = useState(undefined);
   const [selected, setSelected] = useState();
   const [closedContexts, setClosedContexts] = useState({});
   const selectedNode = useRef();
@@ -42,12 +66,20 @@ const List = ({ location }) => {
   });
 
   const [, view, tag] = location.pathname.split('/');
-  const { where, orderBy } = views[view];
   if (tag) {
-    where.push(['tags', 'array-contains', `#${tag}`]);
+    views[view].todo.where.push(['tags', 'array-contains', `#${tag}`]);
   }
 
-  useEffect(list({ setTodos, where, orderBy }), [tag]);
+  // regular todo list
+  useEffect(list({ setTodos, ...views[view].todo }), [tag]);
+  // completed list
+  useEffect(() => {
+    if (views[view].completed) {
+      console.log('Getting completed tasks');
+      return list({ setTodos: setCompleted, ...views[view].completed })();
+    }
+    return undefined;
+  }, [tag]);
 
   const todoArray = todos
     ? Object.keys(todos)
@@ -140,6 +172,17 @@ const List = ({ location }) => {
             `}
           />
           <div>You're done - congratulations!</div>
+        </div>
+      )}
+      {completed && (
+        <div
+          css={css`
+            margin-top: 4rem;
+          `}
+        >
+          {Object.keys(completed).map(key => (
+            <Item todo={completed[key]} id={key} key={key} />
+          ))}
         </div>
       )}
     </div>

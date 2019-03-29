@@ -1,7 +1,9 @@
 import test from 'ava';
 
 const mockdate = require('mockdate');
-const { getDate, today, sunday } = require('./date');
+const {
+  getDate, today, sunday, thisMonday,
+} = require('./date');
 
 test.afterEach(() => {
   mockdate.reset();
@@ -10,6 +12,13 @@ test.afterEach(() => {
 test('returns correct today', (t) => {
   mockdate.set('2019-03-20');
   t.is(today(), '2019-03-20');
+});
+
+test('returns correct this monday', (t) => {
+  mockdate.set('2019-03-29');
+  t.is(thisMonday(), '2019-03-25');
+  mockdate.set('2019-03-18');
+  t.is(thisMonday(), '2019-03-18');
 });
 
 const sundayMacro = (t, input, expected) => {

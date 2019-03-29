@@ -1,11 +1,14 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, Fragment,
+} from 'react';
 import PropTypes from 'prop-types';
 import { update } from './firebase';
 import Title from './Title';
 import IconChecked from './icons/checked.svg';
 import IconUnchecked from './icons/unchecked.svg';
+import { today } from './date';
 
 const usePrevious = (value) => {
   const ref = useRef();
@@ -39,7 +42,7 @@ const Item = React.forwardRef(({
   };
 
   const toggleComplete = () => {
-    const c = !todo.completed;
+    const c = todo.completed ? '' : today();
     update(id, { completed: c });
   };
 
@@ -61,7 +64,7 @@ const Item = React.forwardRef(({
         margin-bottom: 0.2rem;
         border-radius: 0.2rem;
         display: grid;
-        gap: 0.4rem;
+        gap: 0.5rem;
         grid-template-columns: min-content minmax(0, 1fr) fit-content(35%);
         grid-auto-flow: column;
         align-items: center;
@@ -83,7 +86,7 @@ const Item = React.forwardRef(({
             `
           : undefined}
       `}
-      onFocus={onFocus}
+      onFocus={todo.completed ? undefined : onFocus}
     >
       <button
         css={css`
@@ -99,62 +102,69 @@ const Item = React.forwardRef(({
       >
         {todo.completed ? <IconChecked css={icon} /> : <IconUnchecked css={icon} />}
       </button>
-      <Title title={todo.title} oneLine={!selected} onChange={titleChange} />
-      <div
-        css={css`
-          direction: rtl;
-          margin: -0.125rem;
-        `}
-      >
-        <input
-          css={css`
-            font-size: 0.75rem;
-            border: 1px solid rgba(0, 0, 0, 0.3);
-            border-radius: 0.125rem;
-            padding: 0.25rem;
-            width: 6em;
-            text-align: center;
-            background: none;
-            font-family: inherit;
-            margin: 0.125rem;
-            direction: initial;
-          `}
-          onChange={dateChange}
-          onBlur={updateSoft}
-          onFocus={() => {
-            datePicker.current.select();
-          }}
-          value={soft}
-          placeholder="No date..."
-          ref={datePicker}
-        />
-        <div
-          css={css`
-            display: inline-block;
-          `}
-        >
-          {todo.tags
-            && todo.tags.map(tag => (
-              <div
-                key={tag}
-                css={css`
-                  display: inline-block;
-                  font-size: 0.75rem;
-                  border: 1px solid rgba(0, 0, 0, 0.3);
-                  border-radius: 0.125rem;
-                  padding: 0.25rem;
-                  background: #798caf;
-                  line-height: 1;
-                  color: white;
-                  margin: 0.125rem;
-                  direction: initial;
-                `}
-              >
-                {tag}
-              </div>
-            ))}
-        </div>
-      </div>
+      {todo.completed ? (
+        <div>{todo.title.split(/\n/)[0]}</div>
+      ) : (
+        <Fragment>
+          <Title title={todo.title} oneLine={!selected} onChange={titleChange} />
+          <div
+            css={css`
+              direction: rtl;
+              margin: -0.125rem;
+            `}
+          >
+            <input
+              css={css`
+                font-size: 0.75rem;
+                border: 1px solid rgba(0, 0, 0, 0.3);
+                border-radius: 0.125rem;
+                padding: 0.25rem;
+                width: 6em;
+                text-align: center;
+                background: none;
+                font-family: inherit;
+                margin: 0.125rem;
+                direction: initial;
+              `}
+              onChange={dateChange}
+              onBlur={updateSoft}
+              onFocus={() => {
+                datePicker.current.select();
+              }}
+              value={soft}
+              placeholder="No date..."
+              ref={datePicker}
+              disabled={todo.completed}
+            />
+            <div
+              css={css`
+                display: inline-block;
+              `}
+            >
+              {todo.tags
+                && todo.tags.map(tag => (
+                  <div
+                    key={tag}
+                    css={css`
+                      display: inline-block;
+                      font-size: 0.75rem;
+                      border: 1px solid rgba(0, 0, 0, 0.3);
+                      border-radius: 0.125rem;
+                      padding: 0.25rem;
+                      background: #798caf;
+                      line-height: 1;
+                      color: white;
+                      margin: 0.125rem;
+                      direction: initial;
+                    `}
+                  >
+                    {tag}
+                  </div>
+                ))}
+            </div>
+          </div>
+        </Fragment>
+      )}
     </div>
   );
 });
@@ -164,8 +174,8 @@ Item.propTypes = {
     title: PropTypes.string,
   }).isRequired,
   id: PropTypes.string.isRequired,
-  selected: PropTypes.bool.isRequired,
-  onSelected: PropTypes.func.isRequired,
+  selected: PropTypes.bool,
+  onSelected: PropTypes.func,
 };
 
 export default Item;

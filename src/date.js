@@ -11,6 +11,11 @@ const sundayDate = () => {
 
 export const today = () => format(new Date());
 export const sunday = () => format(sundayDate());
+export const thisMonday = () => {
+  const d = new Date();
+  d.setDate(sundayDate().getDate() - 6);
+  return format(d);
+};
 
 export const getDate = (dateStr) => {
   switch (dateStr.toLowerCase()) {

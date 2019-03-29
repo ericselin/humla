@@ -38,7 +38,7 @@ const New = ({ visible, close }) => {
 
   const addTask = (keepOpen) => {
     if (title) {
-      add({ title, completed: false, soft: '' });
+      add({ title, completed: '', soft: '' });
       if (keepOpen) setForceUpdate(f => !f);
       else close();
     }

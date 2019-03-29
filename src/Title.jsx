@@ -31,7 +31,6 @@ const Title = ({
         font-family: inherit;
         background: none;
         border: none;
-        padding: 0.125rem;
         resize: none;
         overflow: hidden;
         &:empty::before {
