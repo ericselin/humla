@@ -41,7 +41,7 @@ const List = ({ location }) => {
     someday: {
       todo: { where: [['completed', '==', ''], ['soft', '>=', 'someday']], orderBy: 'soft' },
     },
-    all: { todo: { where: ['completed', '==', ''], orderBy: 'soft' } },
+    all: { todo: { where: [['completed', '==', '']], orderBy: 'soft' } },
     unprocessed: { todo: { where: [['completed', '==', ''], ['soft', '==', '']] } },
   };
 
