@@ -1,8 +1,19 @@
+/* eslint-disable react/prop-types */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { useRef } from 'react';
-import PropTypes from 'prop-types';
 
+/**
+ * @typedef TitleProps
+ * @property {string} title
+ * @property {(title: string) => void} onChange
+ * @property {boolean?} [oneLine]
+ * @property {boolean?} [focus]
+ */
+
+/**
+ * @type {import('react').FC<TitleProps>}
+ */
 const Title = ({
   title, onChange, oneLine, focus,
 }) => {
@@ -23,7 +34,7 @@ const Title = ({
   return (
     <div
       role="textbox"
-      tabIndex="0"
+      tabIndex={0}
       css={css`
         width: 100%;
         font-size: 1rem;
@@ -60,18 +71,6 @@ const Title = ({
       dangerouslySetInnerHTML={{ __html: titleDiv }}
     />
   );
-};
-
-Title.propTypes = {
-  title: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  oneLine: PropTypes.bool,
-  focus: PropTypes.bool,
-};
-
-Title.defaultProps = {
-  oneLine: undefined,
-  focus: undefined,
 };
 
 export default Title;
