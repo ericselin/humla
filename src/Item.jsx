@@ -3,7 +3,6 @@ import { css, jsx } from '@emotion/core';
 import React, {
   useState, useRef, useEffect, Fragment,
 } from 'react';
-import PropTypes from 'prop-types';
 import { update } from './firebase';
 import Title from './Title';
 import IconChecked from './icons/checked.svg';
@@ -37,7 +36,7 @@ const Item = React.forwardRef(({
   }
 
   const updateSoft = () => {
-    const { soft: s } = update(id, { soft });
+    const { soft: s } = update(id, { soft, title });
     setSoft(s);
   };
 
@@ -168,14 +167,5 @@ const Item = React.forwardRef(({
     </div>
   );
 });
-
-Item.propTypes = {
-  todo: PropTypes.shape({
-    title: PropTypes.string,
-  }).isRequired,
-  id: PropTypes.string.isRequired,
-  selected: PropTypes.bool,
-  onSelected: PropTypes.func,
-};
 
 export default Item;
