@@ -143,6 +143,7 @@ export const update = (id, updates) => {
 export const getTags = (setter) => {
   const tagsMap = {};
   myTodos()
+    .where('completed', '==', '')
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
