@@ -30,9 +30,7 @@ const MenuLink = ({ children, to, close }) => (
 const Menu = ({ close, logout, visible }) => {
   const [tags, setTags] = useState(undefined);
 
-  useEffect(() => {
-    getTags(setTags);
-  }, []);
+  useEffect(() => getTags(setTags), []);
 
   return (
     visible && (

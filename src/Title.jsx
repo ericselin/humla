@@ -33,7 +33,7 @@ const Title = ({
     div.current.blur();
   }
 
-  const titleDiv = title ? title.replace(/^(.*)$/gm, '<div>$1</div>') : '';
+  const titleDiv = title.replace(/^(.*)$/gm, '<div>$1</div>');
 
   return (
     <div

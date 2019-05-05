@@ -119,25 +119,23 @@ export const update = (id, updates) => {
   return u;
 };
 
-export const getTags = (setter) => {
-  myTodos()
-    .where('completed', '==', '')
-    .onSnapshot((querySnapshot) => {
-      const tagsMap = {};
-      querySnapshot.forEach((doc) => {
-        const todo = doc.data();
-        if (todo.tags) {
-          todo.tags.forEach((tag) => {
-            tagsMap[tag] = tag;
-          });
-        }
-      });
-      const tags = Object.keys(tagsMap).sort((a, b) => {
-        if (a > b) return 1;
-        if (a < b) return -1;
-        return 0;
-      });
-      console.log('New tags:', tags.join(', '));
-      setter(tags);
+export const getTags = setter => myTodos()
+  .where('completed', '==', '')
+  .onSnapshot((querySnapshot) => {
+    const tagsMap = {};
+    querySnapshot.forEach((doc) => {
+      const todo = doc.data();
+      if (todo.tags) {
+        todo.tags.forEach((tag) => {
+          tagsMap[tag] = tag;
+        });
+      }
     });
-};
+    const tags = Object.keys(tagsMap).sort((a, b) => {
+      if (a > b) return 1;
+      if (a < b) return -1;
+      return 0;
+    });
+    console.log('New tags:', tags.join(', '));
+    setter(tags);
+  });
