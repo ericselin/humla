@@ -39,24 +39,6 @@ const myTodos = () => {
   return todos.where('owner', '==', uid);
 };
 
-export const updateCompleted = () => myTodos()
-  .where('completed', '==', false)
-  .get()
-  .then((snapshot) => {
-    if (snapshot.size) {
-      console.warn(`Updating ${snapshot.size} old-style completed fields`);
-      const batch = firebase.firestore().batch();
-      snapshot.docs.forEach((doc) => {
-        batch.update(doc.ref, { completed: '' });
-      });
-      return batch.commit();
-    }
-    return false;
-  })
-  .catch((reason) => {
-    console.error('Could not update completed fields', reason);
-  });
-
 const snapshotListener = setter => (querySnapshot) => {
   console.info('Incoming query snapshot', querySnapshot);
   const t = {};
@@ -67,22 +49,20 @@ const snapshotListener = setter => (querySnapshot) => {
 };
 
 export const list = ({ setTodos, where, orderBy }) => () => {
-  console.warn('Checking for tasks to update');
-  updateCompleted();
   console.log('Adding query snapshot listener...', where);
-  let listener = myTodos();
+  let query = myTodos();
   // check for filter
   if (where && where.length) {
     // check whether we have many wheres
     if (Array.isArray(where[0])) {
-      listener = where.reduce((l, w) => l.where(...w), listener);
+      query = where.reduce((l, w) => l.where(...w), query);
     } else {
-      listener = listener.where(...where);
+      query = query.where(...where);
     }
   }
   // check for sorting
-  if (orderBy) listener = listener.orderBy(orderBy);
-  listener = listener.onSnapshot(
+  if (orderBy) query = query.orderBy(orderBy);
+  const unsubscribe = query.onSnapshot(
     snapshotListener(setTodos),
     (error) => {
       console.error(error);
@@ -93,7 +73,7 @@ export const list = ({ setTodos, where, orderBy }) => () => {
   );
   return () => {
     console.log('Removing query snapshot listener...');
-    listener();
+    unsubscribe();
   };
 };
 
@@ -136,7 +116,6 @@ export const update = (id, updates) => {
   const u = processUpdates(updates);
   todos.doc(id).update(u);
   console.log('Updated', id, 'to', u);
-
   return u;
 };
 
