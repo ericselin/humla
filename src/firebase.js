@@ -141,11 +141,10 @@ export const update = (id, updates) => {
 };
 
 export const getTags = (setter) => {
-  const tagsMap = {};
   myTodos()
     .where('completed', '==', '')
-    .get()
-    .then((querySnapshot) => {
+    .onSnapshot((querySnapshot) => {
+      const tagsMap = {};
       querySnapshot.forEach((doc) => {
         const todo = doc.data();
         if (todo.tags) {
@@ -159,9 +158,7 @@ export const getTags = (setter) => {
         if (a < b) return -1;
         return 0;
       });
+      console.log('New tags:', tags.join(', '));
       setter(tags);
-    })
-    .catch((error) => {
-      console.log('Error getting tags: ', error);
     });
 };
