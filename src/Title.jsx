@@ -17,11 +17,15 @@ import { useRef } from 'react';
 const Title = ({
   title, onChange, oneLine, focus,
 }) => {
+  /** @type {import('react').MutableRefObject<HTMLDivElement>} */
   const div = useRef(null);
 
   const onKeyUp = () => {
     // safety: only update if not one-liner
-    if (!oneLine) onChange(div.current.innerText);
+    if (!oneLine) {
+      const newTitle = Array.from(div.current.children).map(el => el.textContent).join('\n');
+      onChange(newTitle);
+    }
   };
 
   // always blur if this is a one-liner
@@ -44,6 +48,9 @@ const Title = ({
         border: none;
         resize: none;
         overflow: hidden;
+        & > div {
+          min-height: 1.2em;
+        }
         &:empty::before {
           content: 'New task...';
           color: rgba(0, 0, 0, 0.3);
