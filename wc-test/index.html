@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Settings test</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,500"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="app.css" />
   </head>
   <body>
-    <humla-login>
-      <humla-setting-toggle></humla-setting-toggle>
-    </humla-login>
+    <humla-login logged-in="humla-setting-toggle"></humla-login>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script>
@@ -30,7 +33,7 @@
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
     </script>
-    <script type="module" src="/humla-login.mjs"></script>
-    <script type="module" src="/humla-setting-toggle.mjs"></script>
+    <script type="module" src="/humla-login.js"></script>
+    <script type="module" src="/humla-setting-toggle.js"></script>
   </body>
 </html>

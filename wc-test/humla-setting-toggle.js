@@ -1,3 +1,5 @@
+import firebase from './firebase.js';
+
 const template = document.createElement('template');
 template.innerHTML = /* html */ `
 <style>
@@ -5,7 +7,7 @@ template.innerHTML = /* html */ `
     color: red;
   }
 </style>
-<b>Hello</b><button>get</button>
+<b>Hello</b>
 `;
 
 window.customElements.define(
@@ -19,14 +21,15 @@ window.customElements.define(
       shadowRoot.appendChild(template.content.cloneNode(true));
     }
 
-    connectedCallback() {
-      this.shadowRoot.querySelector('button').addEventListener('click', async () => {
-        const { uid } = window.firebase.auth().currentUser;
-        const db = window.firebase.firestore();
-        const qs = await db.collection('todos').where('owner', '==', uid).get();
-        console.log(qs);
-        this.shadowRoot.querySelector('b').innerText = `${qs.size} todos`;
-      });
+    async connectedCallback() {
+      const { uid } = firebase.auth().currentUser;
+      const db = firebase.firestore();
+      const qs = await db
+        .collection('todos')
+        .where('owner', '==', uid)
+        .get();
+      console.log(qs);
+      this.shadowRoot.querySelector('b').innerText = `${qs.size} todos`;
     }
   },
 );
