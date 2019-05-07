@@ -1,30 +1,39 @@
 import firebase from './firebase.js';
 
-const template = document.createElement('template');
 const views = {
   loading: () => /* html */ `
-    <main state="loading">
-      Loading...
-    </main>`,
+  <style>
+    main {
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+  <main state="loading">
+  Loading...
+  </main>`,
   out: () => /* html */ `
-    <main state="out">
-      <button id="btn">Hello</button>
-    </main>
+  <style>
+    main {
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+  <main state="out">
+  <button id="btn">Hello</button>
+  </main>
   `,
   in: element => /* html */ `
-    <style>
-      [state="loading"] {
-        display: flex;
-        height: 100vh;
-        align-items: center;
-        justify-content: center;
-      }
-    </style>
     <main state="in">
-      <${element}></${element}>
+    <${element}></${element}>
     </main>
-`,
+    `,
 };
+const template = document.createElement('template');
+template.innerHTML = views.loading();
 
 window.customElements.define(
   'humla-login',
