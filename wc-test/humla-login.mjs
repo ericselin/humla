@@ -1,20 +1,62 @@
 const template = document.createElement('template');
 template.innerHTML = /* html */ `
-<button id="btn">Hello</button>
+<style>
+  main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  [state=in] {
+    display: none;
+  }
+  [state=out] {
+    display: none;
+  }
+</style>
+<main state="out">
+  <button id="btn">Hello</button>
+</main>
+<main state="in">
+  <slot></slot>
+</main>
+<main state="loading">
+  Loading...
+</main>
 `;
+
+const { firebase } = window;
 
 window.customElements.define(
   'humla-login',
   class extends HTMLElement {
-    constructor() {
-      super(); // always call super() first in the constructor.
+    /**
+     * @param view {string}
+     */
+    setView(view) {
+      this.shadowRoot.querySelectorAll('[state]').forEach((/** @type {HTMLElement} */ element) => {
+        // eslint-disable-next-line no-param-reassign
+        element.style.display = element.getAttribute('state') === view ? 'block' : 'none';
+      });
+    }
 
+    constructor() {
+      super();
       // Attach a shadow root to the element.
       const shadowRoot = this.attachShadow({ mode: 'open' });
       shadowRoot.appendChild(template.content.cloneNode(true));
     }
 
     connectedCallback() {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          console.log('Logged in', user.email, user.uid);
+          this.setView('in');
+        } else {
+          console.log('Logged out');
+          this.setView('out');
+        }
+      });
+
       const btn = this.shadowRoot.querySelector('#btn');
       btn.addEventListener('click', () => {
         const provider = new window.firebase.auth.GoogleAuthProvider();
