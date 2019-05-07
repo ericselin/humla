@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Settings test</title>
+  </head>
+  <body>
+    <humla-login></humla-login>
+    <humla-setting-toggle></humla-setting-toggle>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-firestore.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyA8T1qoF1G2NQ4eN946MDlsEfZFyaoiPNU",
+        authDomain: "super-todo-230614.firebaseapp.com",
+        databaseURL: "https://super-todo-230614.firebaseio.com",
+        projectId: "super-todo-230614",
+        storageBucket: "super-todo-230614.appspot.com",
+        messagingSenderId: "804405641493",
+        appId: "1:804405641493:web:09b3d240c00fd3a1"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script type="module" src="/humla-login.mjs"></script>
+    <script type="module" src="/humla-setting-toggle.mjs"></script>
+  </body>
+</html>

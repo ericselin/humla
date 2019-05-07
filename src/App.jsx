@@ -6,7 +6,6 @@ import { hot } from 'react-hot-loader/root';
 import { auth, authProvider } from './firebase';
 import List from './List';
 import Header from './Header';
-import Settings from './Settings';
 
 export const login = () => {
   console.log('Logging in');
@@ -75,7 +74,6 @@ const App = () => {
               <Route path="/someday" component={List} />
               <Route path="/all" component={List} />
               <Route path="/unprocessed" component={List} />
-              <Route path="/settings" component={Settings} />
             </main>
           </Fragment>
         ) : (
