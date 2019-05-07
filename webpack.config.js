@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => ({
   entry: './src/index.jsx',
@@ -29,6 +30,9 @@ module.exports = (env, argv) => ({
       title: 'Humla App',
       template: './src/index.html',
     }),
+    new CopyPlugin([
+      { from: 'src/humla-*.html', to: '.', flatten: true },
+    ]),
   ],
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
