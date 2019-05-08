@@ -8,7 +8,7 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
-        "source": "!/@(wc)/**",
+        "source": "**",
         "destination": "/index.html"
       }
     ]
