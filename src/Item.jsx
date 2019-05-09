@@ -29,6 +29,7 @@ const Item = React.forwardRef(({
   const datePicker = useRef(null);
 
   // update title when item is deselected
+  // this is the only place the title is updated
   const prevSelected = usePrevious(selected);
   if (prevSelected && !selected) {
     const { soft: newSoft } = update(id, { title });
@@ -36,13 +37,17 @@ const Item = React.forwardRef(({
   }
 
   const updateSoft = () => {
+    // also update title just in case
     const { soft: s } = update(id, { soft, title });
     setSoft(s);
   };
 
   const toggleComplete = () => {
     const c = todo.completed ? '' : today();
-    update(id, { completed: c });
+    // need to send title to handle projects
+    // workaround: only send title if not uncompleting
+    const { title: newTitle } = update(id, { completed: c, title });
+    if (newTitle) setTitle(newTitle);
   };
 
   const onFocus = (e) => {

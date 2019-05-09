@@ -7,14 +7,14 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
+      "name": "Humla",
       "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}"
     },
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome Web Components",
+      "name": "Web Components",
       "url": "http://localhost:5000",
       "webRoot": "${workspaceFolder}/wc-test"
     }
