@@ -81,11 +81,11 @@ ha-setting > input + label {
 }
 
 ha-setting > input:checked + label {
-  background-image: url(/icons/checked.svg);
+  background-image: url(icons/checked.svg);
 }
 
 ha-setting > input:not(:checked) + label {
-  background-image: url(/icons/unchecked.svg);
+  background-image: url(icons/unchecked.svg);
 }
 
 ha-setting > input:disabled + label {
