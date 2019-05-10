@@ -9,10 +9,23 @@
       href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,500"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <humla-login logged-in="humla-settings"></humla-login>
+    <ha-login logged-in="humla-settings">
+      <main state="loading" active>
+        Loading...
+      </main>
+      <main state="out">
+        <button>Log in</button>
+      </main>
+      <main state="in" import="./ha-setting.js">
+        <h1 class="text-title">Settings</h1>
+        <ha-setting name="projects">
+          Projects
+        </ha-setting>
+      </main>
+    </ha-login>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script>
@@ -33,7 +46,6 @@
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
     </script>
-    <script type="module" src="humla-login.js"></script>
-    <script type="module" src="humla-settings.js"></script>
+    <script async defer type="module" src="ha-login.js"></script>
   </body>
 </html>

@@ -3,5 +3,5 @@
     "checkJs": true,
     "jsx": "react"
   },
-  "include": ["src/**/*", "wc-test/**/*"]
+  "include": ["src/**/*"]
 }

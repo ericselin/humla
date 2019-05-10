@@ -16,7 +16,7 @@
       "request": "launch",
       "name": "Web Components",
       "url": "http://localhost:5000",
-      "webRoot": "${workspaceFolder}/wc-test"
+      "webRoot": "${workspaceFolder}/wc"
     }
   ]
 }

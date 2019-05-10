@@ -1,7 +1,4 @@
 import firebase from './firebase.js';
-import load from './html-loader.js';
-
-const html = load('humla-setting-toggle.html');
 
 const settings = () => {
   const { uid } = firebase.auth().currentUser;
@@ -10,19 +7,25 @@ const settings = () => {
 };
 
 window.customElements.define(
-  'humla-setting-toggle',
+  'ha-setting',
   class extends HTMLElement {
     async connectedCallback() {
-      // Attach a shadow root to the element.
-      const template = document.createElement('template');
-      const shadowRoot = this.attachShadow({ mode: 'open' });
-      template.innerHTML = await Promise.resolve(html);
-      shadowRoot.appendChild(template.content.cloneNode(true));
-      shadowRoot.querySelector('input').addEventListener('change', (ev) => {
-        /** @type {HTMLInputElement} */
-        const el = ev.target;
-        this.updateSetting(el.checked);
+      // create the input element
+      const input = document.createElement('input');
+      input.addEventListener('change', (ev) => {
+        this.updateSetting(/** @type {HTMLInputElement} */ (ev.target).checked);
       });
+      input.id = this.name;
+      input.type = 'checkbox';
+      input.disabled = true;
+      // create the label
+      const label = document.createElement('label');
+      label.setAttribute('for', this.name);
+      // attach these
+      this.prepend(label);
+      this.prepend(input);
+      // set as loaded
+      this.setAttribute('loaded', '');
     }
 
     static get observedAttributes() {
@@ -57,7 +60,7 @@ window.customElements.define(
      * @param {boolean} val
      */
     async updateSetting(val) {
-      console.log('Setting setting', val);
+      console.log(`Setting ${this.name} to ${val}`);
       const doc = await settings().get();
       if (doc.exists) {
         await settings().update(this.name, val);
@@ -70,7 +73,7 @@ window.customElements.define(
 
     async loadSetting(name) {
       const doc = await settings().get();
-      const input = this.shadowRoot.querySelector('input');
+      const input = this.querySelector('input');
       if (doc.get(name)) {
         input.setAttribute('checked', '');
       } else {
