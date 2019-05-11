@@ -104,16 +104,15 @@ body {
 }
 
 .todo__completed {
-  color: rgba(0, 0, 0, 0.6);
   margin: 0;
   padding: 0;
-  background: none;
   border: none;
   cursor: pointer;
 }
 
 .todo--completed__icon {
   fill: rgba(0, 0, 0, 0.6);
+  display: block;
 }
 
 .css-1ena3a2-Title {
@@ -214,6 +213,17 @@ ha-todo[completed] {
   background: none;
   box-shadow: none;
   text-decoration: line-through;
+}
+
+ha-todo button {
+  background: url(/icons/unchecked.svg);
+  height: 1.5rem;
+  width: 1.5rem;
+  filter: opacity(0.6);
+}
+
+ha-todo[completed] button {
+  background: url(/icons/checked.svg);
 }
 
 ha-title {
