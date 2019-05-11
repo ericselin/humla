@@ -14,7 +14,7 @@
 
   <body>
     <header class="header">
-      <button type="button" class="header__button">
+      <button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -27,7 +27,7 @@
         </svg>
       </button>
       <div class="header__title">Today</div>
-      <button type="button" class="header__button">
+      <button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -43,15 +43,23 @@
       </button>
     </header>
     <ha-list class="container">
-        <div class="context" style="display: none"></div>
-        <ha-todo loading>
-        <button type="button" class="todo__completed"></button>
+      <div class="context" style="display: none"></div>
+      <ha-todo loading>
+        <button class="todo__completed"></button>
+        <ha-title></ha-title>
+      </ha-todo>
+      <ha-todo loading>
+        <button class="todo__completed"></button>
+        <ha-title></ha-title>
+      </ha-todo>
+      <ha-todo loading>
+        <button class="todo__completed"></button>
         <ha-title></ha-title>
       </ha-todo>
     </ha-list>
     <template id="ha-todo">
       <ha-todo>
-        <button type="button" class="todo__completed"></button>
+        <button class="todo__completed"></button>
         <ha-title></ha-title>
         <div class="todo__details" style="display: none">
           <input placeholder="No date..." class="ha-date" value="2019-05-05" />
@@ -61,7 +69,7 @@
     </template>
     <template id="context">
       <div>context</div>
-      <button type="button" class="context__button">
+      <button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

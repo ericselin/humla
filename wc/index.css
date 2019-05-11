@@ -18,6 +18,13 @@ body {
   text-transform: inherit;
 }
 
+button {
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .header {
   display: grid;
   align-items: center;
@@ -25,13 +32,9 @@ body {
   grid-template-columns: 4rem 1fr 4rem;
 }
 
-.header__button {
+.header button {
   margin: 20px;
   color: white;
-  padding: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 
 .header__icon {
@@ -74,13 +77,6 @@ body {
   grid-template-columns: 1fr min-content;
   align-items: center;
   min-height: 28px;
-}
-
-.context__button {
-  padding: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 
 .css-16q8bwg {
