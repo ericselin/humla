@@ -72,6 +72,7 @@ body {
   display: grid;
   grid-template-columns: 1fr min-content;
   align-items: center;
+  min-height: 28px;
 }
 
 .context__button {
@@ -163,10 +164,6 @@ body {
 
 .todo__tag {
   display: inline-block;
-}
-
-.css-slpxx5 {
-  display: inline-block;
   font-size: 0.75rem;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 0.125rem;
@@ -213,6 +210,12 @@ ha-todo[open] {
   }
 }
 
+ha-todo[completed] {
+  background: none;
+  box-shadow: none;
+  text-decoration: line-through;
+}
+
 ha-title {
   width: 100%;
   font-size: 1rem;
@@ -233,30 +236,11 @@ ha-title:empty::before {
   color: rgba(0, 0, 0, 0.3);
 }
 
+[loading] ha-title:empty::before {
+  content: '';
+}
+
 ha-title:focus {
   outline: none;
 }
 
-.todo--completed {
-  padding: 0.4rem;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  margin-bottom: 0.2rem;
-  border-radius: 0.2rem;
-  display: grid;
-  gap: 0.5rem;
-  grid-template-columns: min-content minmax(0, 1fr) fit-content(35%);
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-left: 0.2rem solid transparent;
-  background: none;
-  box-shadow: none;
-  -webkit-text-decoration: line-through;
-  text-decoration: line-through;
-}
-.todo--completed .rest {
-  display: none;
-}
