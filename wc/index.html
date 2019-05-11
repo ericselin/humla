@@ -42,33 +42,22 @@
         </svg>
       </button>
     </header>
-    <main class="container">
-      <div class="context"></div>
-      <ha-todo loading>
+    <ha-list class="container">
+        <div class="context" style="display: none"></div>
+        <ha-todo loading>
         <button type="button" class="todo__completed"></button>
         <ha-title></ha-title>
       </ha-todo>
-    </main>
+    </ha-list>
     <template id="ha-todo">
-      <button type="button" class="todo__completed">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          class="todo--completed__icon"
-        >
-          <path
-            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-          ></path>
-          <path d="M0 0h24v24H0z" fill="none"></path>
-        </svg>
-      </button>
-      <ha-title></ha-title>
-      <div class="todo__details">
-        <input placeholder="No date..." class="ha-date" value="2019-05-05" />
-        <div class="todo__tag">#tag</div>
-      </div>
+      <ha-todo>
+        <button type="button" class="todo__completed"></button>
+        <ha-title></ha-title>
+        <div class="todo__details" style="display: none">
+          <input placeholder="No date..." class="ha-date" value="2019-05-05" />
+          <div class="todo__tag">#tag</div>
+        </div>
+      </ha-todo>
     </template>
     <template id="context">
       <div>context</div>
@@ -84,5 +73,26 @@
         </svg>
       </button>
     </template>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-firestore.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyA8T1qoF1G2NQ4eN946MDlsEfZFyaoiPNU",
+        authDomain: "super-todo-230614.firebaseapp.com",
+        databaseURL: "https://super-todo-230614.firebaseio.com",
+        projectId: "super-todo-230614",
+        storageBucket: "super-todo-230614.appspot.com",
+        messagingSenderId: "804405641493",
+        appId: "1:804405641493:web:09b3d240c00fd3a1"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script async defer type="module" src="ha-list.js"></script>
   </body>
 </html>

@@ -48,6 +48,7 @@ body {
   padding: 0 1.25rem;
   margin: auto;
   max-width: 700px;
+  display: block;
 }
 
 .container::before {
@@ -216,14 +217,14 @@ ha-todo[completed] {
 }
 
 ha-todo button {
-  background: url(/icons/unchecked.svg);
+  background: url(icons/unchecked.svg);
   height: 1.5rem;
   width: 1.5rem;
   filter: opacity(0.6);
 }
 
 ha-todo[completed] button {
-  background: url(/icons/checked.svg);
+  background: url(icons/checked.svg);
 }
 
 ha-title {

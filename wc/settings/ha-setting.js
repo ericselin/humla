@@ -1,4 +1,4 @@
-import firebase from '../firebase.js';
+import firebase from '../lib/firebase.js';
 
 const settings = () => {
   const { uid } = firebase.auth().currentUser;
