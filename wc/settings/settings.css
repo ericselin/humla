@@ -1,0 +1,67 @@
+.text-title {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 200;
+  margin: 2rem 0;
+  text-align: ce;
+}
+
+ha-login > main:not([active]) {
+  display: none;
+}
+
+ha-login > main[active] {
+  display: block;
+}
+
+ha-login > main[active][state="loading"] {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+ha-setting {
+  display: flex;
+  align-items: center;
+}
+
+ha-setting::before {
+  content: " ";
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 0.5em;
+}
+
+ha-setting[loaded]::before {
+  display: none;
+}
+
+ha-setting > input {
+  display: none;
+}
+
+ha-setting::before,
+ha-setting > input + label {
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 0.5em;
+}
+
+ha-setting > input + label {
+  cursor: pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+ha-setting > input:checked + label {
+  background-image: url(../icons/checked.svg);
+}
+
+ha-setting > input:not(:checked) + label {
+  background-image: url(../icons/unchecked.svg);
+}
+
+ha-setting > input:disabled + label {
+  background-image: none;
+}

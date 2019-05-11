@@ -1,4 +1,4 @@
-import firebase from './firebase.js';
+import firebase from '../firebase.js';
 
 window.customElements.define(
   'ha-login',
