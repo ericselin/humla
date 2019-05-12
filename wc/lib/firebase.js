@@ -4,16 +4,15 @@ import { today } from './date.js';
 // @ts-ignore
 const { firebase } = window;
 
-export const waitForAuth = () =>
-  new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        resolve(`${user.email} signed in`);
-      } else {
-        reject('User signed out');
-      }
-    });
+export const waitForAuth = () => new Promise((resolve, reject) => {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      resolve(`${user.email} signed in`);
+    } else {
+      reject(new Error('User signed out'));
+    }
   });
+});
 
 export class Todos {
   constructor() {
