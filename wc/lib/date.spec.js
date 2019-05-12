@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { today } from './date.js';
 
 describe('date testing', () => {

@@ -1,5 +1,6 @@
 {
   "extends": "airbnb-base",
+  "env": { "jasmine": true },
   "rules": {
     "import/extensions": [2, "always"]
   }
