@@ -1,7 +1,12 @@
 dependencies:
+  '@types/jasmine': 3.3.12
   copy-webpack-plugin: 5.0.3
 lockfileVersion: 5
 packages:
+  /@types/jasmine/3.3.12:
+    dev: false
+    resolution:
+      integrity: sha512-lXvr2xFQEVQLkIhuGaR3GC1L9lMU1IxeWnAF/wNY5ZWpC4p9dgxkKkzMp7pntpAdv9pZSnYqgsBkCg32MXSZMg==
   /ajv-errors/1.0.1_ajv@6.10.0:
     dependencies:
       ajv: 6.10.0
@@ -687,4 +692,5 @@ packages:
     resolution:
       integrity: sha512-S+Zk8DEWE6oKpV+vI3qWkaK+jSbIK86pCwe2IF/xwIpQ8jEuxpw9NyaGjmp9+BoJv5FV2piqCDcoCtStppiq2A==
 specifiers:
+  '@types/jasmine': ^3.3.12
   copy-webpack-plugin: ^5.0.3

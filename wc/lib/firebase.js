@@ -16,10 +16,9 @@ export const waitForAuth = () =>
   });
 
 export class Todos {
-  /** @type {import('@firebase/firestore-types').Query} */
-  todos;
   constructor() {
     const { uid } = firebase.auth().currentUser;
+    /** @type {import('@firebase/firestore-types').Query} */
     this.todos = firebase
       .firestore()
       .collection('todos')
