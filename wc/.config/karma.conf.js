@@ -8,12 +8,18 @@ module.exports = (config) => {
       { pattern: '**/*.spec.js', type: 'module' },
     ],
     reporters: ['progress'],
-    port: 9876, // karma web server port
+    port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadless', 'ChromeHeadlessNoSandbox'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     autoWatch: false,
-    singleRun: true, // Karma captures browsers, runs the tests and exits
+    singleRun: true,
     concurrency: Infinity,
   });
 };
