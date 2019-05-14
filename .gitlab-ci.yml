@@ -3,11 +3,12 @@ image: weboaks/node-karma-protractor-chrome
 cache:
   paths:
     - node_modules/
+    - .yarn/
 
 deploy:
   stage: build
   script:
-    - yarn
+    - yarn install --pure-lockfile --cache-folder .yarn-cache
     - yarn test
     - yarn test-legacy
     - yarn build
