@@ -7,6 +7,7 @@
     "start": "webpack-dev-server --hot --mode=development",
     "build": "webpack --mode=production",
     "test": "ava",
+    "test-wc": "karma start wc/.config/karma.conf.js",
     "deploy": "firebase deploy"
   },
   "dependencies": {
@@ -36,11 +37,15 @@
     "clean-webpack-plugin": "^2.0.0",
     "eslint": "5.3.0",
     "eslint-config-airbnb": "17.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.1",
     "eslint-plugin-react": "7.11.0",
     "firebase-tools": "^6.4.0",
     "html-webpack-plugin": "^4.0.0-beta.5",
+    "karma": "^4.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^2.0.1",
     "mockdate": "^2.0.2",
     "prettier-eslint": "^8.8.2",
     "react-svg-loader": "^2.1.0",
