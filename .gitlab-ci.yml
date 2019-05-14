@@ -1,20 +1,14 @@
-image: node:lts-alpine
+image: weboaks/node-karma-protractor-chrome
 
 cache:
   paths:
     - node_modules/
 
-build:
+deploy:
   stage: build
   script:
     - yarn
+    - yarn test
+    - yarn test-legacy
     - yarn build
-  artifacts:
-    paths:
-      - dist/
-
-deploy:
-  stage: deploy
-  script:
-    - yarn
     - yarn deploy
