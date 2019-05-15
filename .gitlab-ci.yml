@@ -3,7 +3,7 @@ image: weboaks/node-karma-protractor-chrome
 cache:
   paths:
     - node_modules/
-    - .yarn/
+    - .yarn-cache/
 
 deploy:
   stage: build
