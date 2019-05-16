@@ -47,6 +47,22 @@ export class Todos {
   }
 }
 
+// experimenting with another way to do chaining
+export const doc = (id) => {
+  const me = firebase
+    .firestore()
+    .collection('todos')
+    .doc(id);
+  return {
+    /**
+     * @param {Todo} updates
+     */
+    update(updates) {
+      return me.update(updates);
+    },
+  };
+};
+
 export default firebase;
 
 /**
