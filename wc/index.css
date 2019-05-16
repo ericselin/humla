@@ -235,7 +235,16 @@ ha-title {
 }
 
 ha-title > div {
+  display: none;
   min-height: 1.2em;
+}
+
+ha-title > div:first-child {
+  display: block;
+}
+
+ha-title[open] > div {
+  display: block;
 }
 
 ha-title:empty::before {
