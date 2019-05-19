@@ -23,7 +23,7 @@ const Title = ({
   const onKeyUp = () => {
     // safety: only update if not one-liner
     if (!oneLine) {
-      const newTitle = Array.from(div.current.children).map(el => el.textContent).join('\n');
+      const newTitle = Array.from(div.current.childNodes).map(el => el.textContent).join('\n');
       onChange(newTitle);
     }
   };

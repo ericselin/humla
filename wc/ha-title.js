@@ -14,14 +14,8 @@ export default class Title extends HTMLElement {
     else this.removeAttribute('open');
   }
 
-  attributeChangedCallback(name) {
-    if (name === 'open') {
-      this.contentEditable = this.open.toString();
-    }
-  }
-
   get innerText() {
-    return Array.from(this.children)
+    return Array.from(this.childNodes)
       .map(el => el.textContent)
       .join('\n');
   }
@@ -32,6 +26,7 @@ export default class Title extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = formatTitle(this.innerHTML);
+    this.contentEditable = 'true';
   }
 }
 

@@ -20,6 +20,7 @@
     "@firebase/util": "^0.2.7",
     "@types/jasmine": "^3.3.12",
     "copy-webpack-plugin": "^5.0.3",
+    "eslint-plugin-jsdoc": "^5.0.2",
     "prop-types": "^15.6.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
