@@ -33,6 +33,16 @@ window.customElements.define(
         if (todo.completed) element.setAttribute('completed', '');
         doc.querySelector('ha-title').innerHTML = todo.title;
         doc.querySelector('button').addEventListener('click', completedClick);
+        /** @type {HTMLInputElement} */ (doc.querySelector('.ha-date')).value = todo.soft || '';
+        if (todo.tags) {
+          const detailsElem = doc.querySelector('.details');
+          todo.tags.forEach((t) => {
+            const tagElem = document.createElement('div');
+            tagElem.className = 'tag';
+            tagElem.innerText = t;
+            detailsElem.appendChild(tagElem);
+          });
+        }
         this.appendChild(doc);
       });
 
