@@ -1,8 +1,9 @@
-module.exports = {
-  extends: "airbnb-base",
-  env: { jasmine: true },
-  plugins: ["jsdoc"],
-  rules: {
+{
+  "extends": "airbnb-base",
+  "env": { "jasmine": true },
+  "plugins": ["jsdoc"],
+  "rules": {
+    "no-restricted-globals": ["off", "history"],
     "import/extensions": [2, "always"],
     "jsdoc/check-alignment": 1,
     "jsdoc/check-examples": 1,

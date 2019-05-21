@@ -260,3 +260,7 @@ ha-title:focus {
   outline: none;
 }
 
+ha-link {
+  cursor: pointer;
+  text-decoration: underline;
+}
