@@ -1,4 +1,5 @@
 import { today } from './date.js';
+import processTitle from './keywords.js';
 
 /** @type {import('@firebase/app') & import('@firebase/auth') & import('@firebase/firestore')} */
 // @ts-ignore
@@ -55,10 +56,12 @@ export const doc = (id) => {
   return {
     /**
      * @param {Todo} updates
-     * @returns {Promise}
+     * @returns {Todo}
      */
     update(updates) {
-      return me.update(updates);
+      const processedUpdates = Object.assign(updates, processTitle(updates.title));
+      me.update(processedUpdates);
+      return processedUpdates;
     },
   };
 };

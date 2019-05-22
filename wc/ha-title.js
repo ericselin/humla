@@ -1,4 +1,4 @@
-const formatTitle = title => title.replace(/^(.*)$/gm, '<div>$1</div>');
+const formatTitle = title => (title ? title.replace(/^(.*)$/gm, '<div>$1</div>') : '');
 
 export default class Title extends HTMLElement {
   static get observedAttributes() {
@@ -16,7 +16,15 @@ export default class Title extends HTMLElement {
 
   get innerText() {
     return Array.from(this.childNodes)
-      .map(el => el.textContent)
+      .map((el) => {
+        // if this is a text node, trim and include only if contains text
+        if (el.nodeType === el.TEXT_NODE) {
+          const line = el.textContent.trim();
+          return line || undefined;
+        }
+        return el.textContent;
+      })
+      .filter(l => typeof l !== 'undefined')
       .join('\n');
   }
 

@@ -25,7 +25,6 @@ const Title = ({
     if (!oneLine) {
       const newTitle = Array.from(div.current.childNodes)
         .map((el) => {
-          console.log(el.nodeName, el);
           // if this is a text node, trim and include only if contains text
           if (el.nodeType === el.TEXT_NODE) {
             const line = el.textContent.trim();

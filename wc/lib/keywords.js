@@ -26,7 +26,7 @@ const processTitle = (title) => {
   }
 
   // check for project
-  const projectMatch = updates.title.match(/^.+ \/ .+\n[^ \n]+/);
+  const projectMatch = updates.title.match(/^.+ \/ .+\n[^ \n@]+/);
   if (projectMatch) {
     Object.assign(updates, { project: true });
   } else {

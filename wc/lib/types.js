@@ -5,7 +5,8 @@
  * @property {string} context
  * @property {string[]} tags
  * @property {string} soft
- * @property {string} id
+ * @property {boolean} [project]
+ * @property {string} [id]
  */
 
 module.exports = undefined;
