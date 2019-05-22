@@ -31,6 +31,7 @@ window.customElements.define(
 
     /**
      * @param {Promise<import('./lib/types').Todo[]>} getPromise
+     * @returns {Promise}
      */
     async get(getPromise) {
       const todoList = await getPromise;

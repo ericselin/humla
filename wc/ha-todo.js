@@ -20,11 +20,7 @@ class HaTodo extends HTMLElement {
 
   set open(val) {
     if (val) this.setAttribute('open', '');
-    else {
-      this.removeAttribute('open');
-      // this needs to be done later (raf?) apparently
-      document.activeElement.blur();
-    }
+    else this.removeAttribute('open');
   }
 
   /**

@@ -21,6 +21,19 @@ export const waitForAuth = () => new Promise((resolve, reject) => {
   });
 });
 
+/**
+ * @param {Todo} a
+ * @param {Todo} b
+ * @returns {number}
+ */
+export const todoSorter = (a, b) => {
+  if (a.context > b.context) return -1;
+  if (a.context < b.context) return 1;
+  if (a.soft < b.soft) return -1;
+  if (a.soft > b.soft) return 1;
+  return 0;
+};
+
 export const todos = () => {
   const { uid } = firebase.auth().currentUser;
   /** @type {import('@firebase/firestore-types').Query} */
@@ -42,8 +55,10 @@ export const todos = () => {
 
     async get() {
       const snapshot = await query.get();
+      /** @type {Todo[]} */
+      // @ts-ignore
       const data = snapshot.docs.map(doc => Object.assign({ id: doc.id }, doc.data()));
-      return /** @type {Todo[]} */ (data);
+      return data.sort(todoSorter);
     },
   };
 };
