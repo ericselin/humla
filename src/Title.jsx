@@ -23,8 +23,20 @@ const Title = ({
   const onKeyUp = () => {
     // safety: only update if not one-liner
     if (!oneLine) {
-      const newTitle = Array.from(div.current.childNodes).map(el => el.textContent.trim()).join('\n');
+      const newTitle = Array.from(div.current.childNodes)
+        .map((el) => {
+          console.log(el.nodeName, el);
+          // if this is a text node, trim and include only if contains text
+          if (el.nodeType === el.TEXT_NODE) {
+            const line = el.textContent.trim();
+            return line || undefined;
+          }
+          return el.textContent;
+        })
+        .filter(line => typeof line !== 'undefined')
+        .join('\n');
       onChange(newTitle);
+      console.log(newTitle);
     }
   };
 
@@ -35,7 +47,7 @@ const Title = ({
 
   const titleDiv = title.replace(/^(.*)$/gm, '<div>$1</div>');
 
-  return (
+  return ((
     <div
       role="textbox"
       tabIndex={0}
@@ -77,7 +89,7 @@ const Title = ({
       }}
       dangerouslySetInnerHTML={{ __html: titleDiv }}
     />
-  );
+  ));
 };
 
 export default Title;
