@@ -19,7 +19,6 @@ window.customElements.define(
     attributeChangedCallback(name) {
       if (name === 'open') {
         /** @type {import('./ha-title').default} */
-
         const title = this.querySelector('ha-title');
         // set title open state
         title.open = this.open;
