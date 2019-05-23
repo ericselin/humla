@@ -34,6 +34,23 @@ export const todoSorter = (a, b) => {
   return 0;
 };
 
+/**
+ * @param {Object<string, Todo[]>} obj
+ * @param {Todo} t
+ * @returns {Object<string, Todo[]>}
+ */
+export const contextReducer = (obj, t) => {
+  /* eslint-disable no-param-reassign */
+  const context = t.context || 'no context';
+  if (obj[context]) {
+    obj[context].push(t);
+  } else {
+    obj[context] = [t];
+  }
+  return obj;
+  /* eslint-enable */
+};
+
 export const todos = () => {
   const { uid } = firebase.auth().currentUser;
   /** @type {import('@firebase/firestore-types').Query} */
@@ -84,3 +101,9 @@ export const doc = (id) => {
 export default firebase;
 
 /** @typedef {import('./types').Todo} Todo */
+
+/**
+ * @typedef Context
+ * @property {string} context
+ * @property {Todo[]} todos
+ */

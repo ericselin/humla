@@ -1,4 +1,4 @@
-import { todoSorter } from './firebase.js';
+import { todoSorter, contextReducer } from './firebase.js';
 
 describe('todo sorter', () => {
   it('sorts dates correctly', () => {
@@ -35,5 +35,20 @@ describe('todo sorter', () => {
     const arr = [cas1, cas4, cbs2];
     arr.sort(todoSorter);
     expect(arr).toEqual([cbs2, cas4, cas1]);
+  });
+});
+
+describe('context reducer', () => {
+  it('groups by context', async () => {
+    const arr = [
+      { context: '@a', title: 'hello 1' },
+      { context: '@b', title: 'hello b' },
+      { context: '@a', title: 'hello 2' },
+    ];
+    const categories = arr.reduce(contextReducer, {}); // ?
+    expect(categories).toEqual({
+      '@a': [arr[0], arr[2]],
+      '@b': [arr[1]],
+    });
   });
 });
