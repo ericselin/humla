@@ -38,9 +38,18 @@ window.customElements.define(
 
       /** @type {HTMLTemplateElement} */
       const template = this.ownerDocument.querySelector('template#ha-todo');
+      /** @type {HTMLTemplateElement} */
+      const contextTemplate = this.ownerDocument.querySelector('template#context');
       this.innerHTML = '';
 
-      todoList.forEach((todo) => {
+      todoList.forEach((todo, i, arr) => {
+        // create context header if needed
+        if (i === 0 || todo.context !== arr[i - 1].context) {
+          const doc = /** @type {DocumentFragment} */ (contextTemplate.content.cloneNode(true));
+          doc.querySelector('div').innerText = todo.context;
+          this.appendChild(doc);
+        }
+        // render the todo
         const doc = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
         const element = /** @type {HTMLElement} */ (doc.querySelector('ha-todo'));
         element.id = todo.id;
