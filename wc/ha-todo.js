@@ -31,11 +31,11 @@ class HaTodo extends HTMLElement {
    */
   render(todo) {
     if (todo.completed) this.setAttribute('completed', '');
-    this.querySelector('ha-title').innerText = todo.title;
     this.querySelector('button').addEventListener('click', completedClick);
+    /** @type {HTMLElement} */ (this.querySelector('ha-title')).innerText = todo.title;
     /** @type {HTMLInputElement} */ (this.querySelector('.ha-date')).value = todo.soft || '';
+    const detailsElem = this.querySelector('.details');
     if (todo.tags) {
-      const detailsElem = this.querySelector('.details');
       detailsElem.querySelectorAll('*:not(input)').forEach((tagElem) => {
         tagElem.remove();
       });
@@ -46,6 +46,10 @@ class HaTodo extends HTMLElement {
         detailsElem.appendChild(tagElem);
       });
     }
+    const tagElem = document.createElement('div');
+    tagElem.className = 'tag';
+    tagElem.innerText = todo.context;
+    detailsElem.appendChild(tagElem);
   }
 
   attributeChangedCallback(name) {

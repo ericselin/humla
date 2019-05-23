@@ -7,7 +7,7 @@ describe('todo sorter', () => {
     const s4 = { soft: '2019-05-04' };
     const arr = [s2, s4, s1];
     arr.sort(todoSorter);
-    expect(arr).toEqual([s1, s2, s4]);
+    expect(arr).toEqual([s4, s2, s1]);
   });
 
   it('sorts context correctly', () => {
@@ -19,12 +19,21 @@ describe('todo sorter', () => {
     expect(arr).toEqual([cb, ca1, ca2]);
   });
 
+  it('sorts context correctly when context null', () => {
+    const cn = { context: null };
+    const ca = { context: '@a' };
+    const cb = { context: '@b' };
+    const arr = [cn, ca, cb, cn];
+    arr.sort(todoSorter);
+    expect(arr).toEqual([cb, ca, cn, cn]);
+  });
+
   it('sorts combination correctly', () => {
     const cas1 = { soft: '2019-05-01', context: '@a' };
     const cbs2 = { soft: '2019-05-02', context: '@b' };
     const cas4 = { soft: '2019-05-04', context: '@a' };
     const arr = [cas1, cas4, cbs2];
     arr.sort(todoSorter);
-    expect(arr).toEqual([cbs2, cas1, cas4]);
+    expect(arr).toEqual([cbs2, cas4, cas1]);
   });
 });

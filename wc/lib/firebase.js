@@ -27,10 +27,10 @@ export const waitForAuth = () => new Promise((resolve, reject) => {
  * @returns {number}
  */
 export const todoSorter = (a, b) => {
-  if (a.context > b.context) return -1;
-  if (a.context < b.context) return 1;
-  if (a.soft < b.soft) return -1;
-  if (a.soft > b.soft) return 1;
+  if ((a.context || '') > (b.context || '')) return -1;
+  if ((a.context || '') < (b.context || '')) return 1;
+  if ((a.soft || '') > (b.soft || '')) return -1;
+  if ((a.soft || '') < (b.soft || '')) return 1;
   return 0;
 };
 
