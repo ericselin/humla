@@ -14,7 +14,7 @@
 
   <body>
     <header class="header">
-      <button>
+      <ha-overlay-button overlay="menu">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -25,13 +25,9 @@
           <path d="M0 0h24v24H0z" fill="none"></path>
           <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
         </svg>
-      </button>
+      </ha-overlay-button>
       <div>
         <div class="header__title">Today</div>
-        <div>
-          <ha-link path="/">All</ha-link>
-          <ha-link path="/today">Today</ha-link>
-        </div>
       </div>
       <button>
         <svg
@@ -63,6 +59,23 @@
         <ha-title></ha-title>
       </ha-todo>
     </ha-list>
+    <ha-overlay id="menu">
+      <aside class="menu">
+        <h1>Humla App</h1>
+        <div>
+          <ha-link path="/today">Today</ha-link>
+          <ha-link path="/week">This week</ha-link>
+          <ha-link path="/later">Later</ha-link>
+          <ha-link path="/someday">Someday</ha-link>
+          <ha-link path="/all">All</ha-link>
+          <ha-link path="/unprocessed">Unprocessed</ha-link>
+        </div>
+        <div class="menu__spacer"></div>
+        <div>
+          <a href="/logout">Logout</a>
+        </div>
+      </aside>
+    </ha-overlay>
     <template id="ha-todo">
       <ha-todo>
         <button></button>
@@ -99,5 +112,7 @@
     <script async defer type="module" src="ha-todo.js"></script>
     <script async defer type="module" src="ha-title.js"></script>
     <script async defer type="module" src="ha-link.js"></script>
+    <script async defer type="module" src="ha-overlay.js"></script>
+    <script async defer type="module" src="ha-overlay-button.js"></script>
   </body>
 </html>

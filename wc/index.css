@@ -253,7 +253,7 @@ ha-title:empty::before {
 }
 
 [loading] ha-title:empty::before {
-  content: '';
+  content: "";
 }
 
 ha-title:focus {
@@ -263,4 +263,65 @@ ha-title:focus {
 ha-link {
   cursor: pointer;
   text-decoration: underline;
+}
+
+ha-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: none;
+}
+
+ha-overlay[open] {
+  display: flex;
+}
+
+ha-overlay-button {
+  display: inline-block;
+  cursor: pointer;
+  margin: 20px;
+  color: white;
+}
+
+.menu {
+  min-height: 100%;
+  background: white;
+  width: 15rem;
+  overflow: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu > * {
+  padding: 1rem 0.75rem;
+}
+
+.menu > * + * {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.menu > h1 {
+  font-weight: 200;
+  font-size: 1.25rem;
+  color: rgba(0, 0, 0, 0.9);
+  margin: 0;
+}
+
+.menu ha-link,
+.menu a {
+  text-decoration: none;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  display: block;
+  color: #000;
+}
+
+.menu__spacer {
+  flex: 1;
+  border-top: none;
+  padding: 0;
 }
