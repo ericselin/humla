@@ -1,12 +1,12 @@
 import { doc } from './lib/firebase.js';
+import { today } from './lib/date.js';
 
 /**
  * @param {MouseEvent} event
  */
 const completedClick = (event) => {
-  const todo = /** @type {HTMLElement} */ (event.target).closest('ha-todo');
-  if (todo.hasAttribute('completed')) todo.removeAttribute('completed');
-  else todo.setAttribute('completed', '');
+  const todo = /** @type {HaTodo} */ /** @type {HTMLElement} */ (event.target).closest('ha-todo');
+  todo.completed = todo.completed ? '' : today();
 };
 
 /**
@@ -14,7 +14,7 @@ const completedClick = (event) => {
  * @param {HTMLElement} element
  */
 export const render = (todo, element) => {
-  if (todo.completed) element.setAttribute('completed', '');
+  if (todo.completed !== (element.getAttribute('completed') || '')) element.setAttribute('completed', todo.completed);
   element.querySelector('button').addEventListener('click', completedClick);
   /* eslint-disable no-param-reassign */
   /** @type {HTMLElement} */ (element.querySelector('ha-title')).innerText = todo.title;
@@ -36,7 +36,7 @@ export const render = (todo, element) => {
 
 class HaTodo extends HTMLElement {
   static get observedAttributes() {
-    return ['open'];
+    return ['open', 'completed'];
   }
 
   get open() {
@@ -46,6 +46,15 @@ class HaTodo extends HTMLElement {
   set open(val) {
     if (val) this.setAttribute('open', '');
     else this.removeAttribute('open');
+  }
+
+  get completed() {
+    return this.getAttribute('completed') || '';
+  }
+
+  set completed(val) {
+    if (val) this.setAttribute('completed', val);
+    else this.removeAttribute('completed');
   }
 
   /**
@@ -58,6 +67,19 @@ class HaTodo extends HTMLElement {
     render(todo, this);
   }
 
+  save() {
+    /** @type {import('./ha-title').default} */
+    const title = this.querySelector('ha-title');
+    /** @type {HTMLInputElement} */
+    const date = this.querySelector('.ha-date');
+    const todo = doc(this.id).update({
+      title: title.innerText,
+      soft: date.value,
+      completed: this.completed,
+    });
+    this.render(todo);
+  }
+
   attributeChangedCallback(name) {
     if (name === 'open') {
       /** @type {import('./ha-title').default} */
@@ -66,10 +88,10 @@ class HaTodo extends HTMLElement {
       title.open = this.open;
       // save if now not open
       if (!this.open) {
-        // @ts-ignore
-        const todo = doc(this.id).update({ title: title.innerText });
-        this.render(todo);
+        this.save();
       }
+    } else if (name === 'completed') {
+      this.save();
     }
   }
 }
