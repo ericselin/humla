@@ -98,6 +98,22 @@ export const doc = (id) => {
   };
 };
 
+/**
+ * @param {Todo} todo
+ */
+export const add = (todo) => {
+  /** @type {Todo & {owner: string}} */
+  const addable = {
+    ...todo,
+    ...processTitle(todo.title),
+    owner: firebase.auth().currentUser.uid,
+  };
+  firebase
+    .firestore()
+    .collection('todos')
+    .add(addable);
+};
+
 export default firebase;
 
 /** @typedef {import('./types').Todo} Todo */
