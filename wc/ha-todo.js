@@ -9,6 +9,31 @@ const completedClick = (event) => {
   else todo.setAttribute('completed', '');
 };
 
+/**
+ * @param {Todo} todo
+ * @param {HTMLElement} element
+ */
+export const render = (todo, element) => {
+  if (todo.completed) element.setAttribute('completed', '');
+  element.querySelector('button').addEventListener('click', completedClick);
+  /* eslint-disable no-param-reassign */
+  /** @type {HTMLElement} */ (element.querySelector('ha-title')).innerText = todo.title;
+  /** @type {HTMLInputElement} */ (element.querySelector('.ha-date')).value = todo.soft || '';
+  /* eslint-enable */
+  const detailsElem = element.querySelector('.details');
+  if (todo.tags) {
+    detailsElem.querySelectorAll('*:not(input)').forEach((tagElem) => {
+      tagElem.remove();
+    });
+    todo.tags.forEach((t) => {
+      const tagElem = document.createElement('div');
+      tagElem.className = 'tag';
+      tagElem.innerText = t;
+      detailsElem.appendChild(tagElem);
+    });
+  }
+};
+
 class HaTodo extends HTMLElement {
   static get observedAttributes() {
     return ['open'];
@@ -30,26 +55,7 @@ class HaTodo extends HTMLElement {
    * @param {Todo} todo
    */
   render(todo) {
-    if (todo.completed) this.setAttribute('completed', '');
-    this.querySelector('button').addEventListener('click', completedClick);
-    /** @type {HTMLElement} */ (this.querySelector('ha-title')).innerText = todo.title;
-    /** @type {HTMLInputElement} */ (this.querySelector('.ha-date')).value = todo.soft || '';
-    const detailsElem = this.querySelector('.details');
-    if (todo.tags) {
-      detailsElem.querySelectorAll('*:not(input)').forEach((tagElem) => {
-        tagElem.remove();
-      });
-      todo.tags.forEach((t) => {
-        const tagElem = document.createElement('div');
-        tagElem.className = 'tag';
-        tagElem.innerText = t;
-        detailsElem.appendChild(tagElem);
-      });
-    }
-    const tagElem = document.createElement('div');
-    tagElem.className = 'tag';
-    tagElem.innerText = todo.context;
-    detailsElem.appendChild(tagElem);
+    render(todo, this);
   }
 
   attributeChangedCallback(name) {

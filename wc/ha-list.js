@@ -1,4 +1,5 @@
-import { waitForAuth, todos } from './lib/firebase.js';
+import { waitForAuth, todos, contextReducer } from './lib/firebase.js';
+import { render } from './ha-todo.js';
 
 window.customElements.define(
   'ha-list',
@@ -34,7 +35,7 @@ window.customElements.define(
      * @returns {Promise}
      */
     async get(getPromise) {
-      const todoList = await getPromise;
+      const todoList = (await getPromise).reduce(contextReducer, {});
 
       /** @type {HTMLTemplateElement} */
       const template = this.ownerDocument.querySelector('template#ha-todo');
@@ -42,23 +43,22 @@ window.customElements.define(
       const contextTemplate = this.ownerDocument.querySelector('template#context');
       this.innerHTML = '';
 
-      todoList.forEach((todo, i, arr) => {
-        // create context header if needed
-        if (i === 0 || todo.context !== arr[i - 1].context) {
-          const doc = /** @type {DocumentFragment} */ (contextTemplate.content.cloneNode(true));
-          doc.querySelector('div').innerText = todo.context;
-          this.appendChild(doc);
-        }
-        // render the todo
-        const doc = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
-        const element = /** @type {HTMLElement} */ (doc.querySelector('ha-todo'));
-        element.id = todo.id;
-        element.addEventListener('click', this.todoClick);
-        this.appendChild(doc);
-        /** @type {import('./ha-todo').default} */ (element).render(todo);
+      Object.keys(todoList).forEach((context) => {
+        // create context header
+        /** @type {DocumentFragment} */
+        const contextDoc = (contextTemplate.content.cloneNode(true));
+        contextDoc.querySelector('div').innerText = context;
+        // create todos
+        todoList[context].forEach((todo) => {
+          const todoDoc = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
+          const element = /** @type {HTMLElement} */ (todoDoc.querySelector('ha-todo'));
+          element.id = todo.id;
+          element.addEventListener('click', this.todoClick);
+          render(todo, element);
+          contextDoc.appendChild(todoDoc);
+        });
+        this.appendChild(contextDoc);
       });
-
-      if (todoList.length === 0) console.log('No todos found.');
     }
 
     navigation() {
