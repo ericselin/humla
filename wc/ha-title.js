@@ -34,7 +34,7 @@ export default class Title extends HTMLElement {
 
   connectedCallback() {
     const title = this.innerHTML.replace(/<br>/g, '\n');
-    this.innerHTML = formatTitle(title);
+    this.innerText = title;
     this.contentEditable = 'true';
     this.role = 'input';
   }
