@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --hot --mode=development",
     "build": "webpack --mode=production",
     "test-legacy": "ava",
-    "test": "karma start wc/.config/karma.conf.js",
+    "test": "karma start wc/karma.conf.js",
     "deploy": "firebase deploy"
   },
   "dependencies": {
