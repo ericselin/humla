@@ -29,8 +29,8 @@ export const waitForAuth = () => new Promise((resolve, reject) => {
 export const todoSorter = (a, b) => {
   if ((a.context || '') > (b.context || '')) return -1;
   if ((a.context || '') < (b.context || '')) return 1;
-  if ((a.soft || '') > (b.soft || '')) return -1;
-  if ((a.soft || '') < (b.soft || '')) return 1;
+  if ((a.soft || '') < (b.soft || '')) return -1;
+  if ((a.soft || '') > (b.soft || '')) return 1;
   return 0;
 };
 
@@ -50,6 +50,12 @@ export const contextReducer = (obj, t) => {
   return obj;
   /* eslint-enable */
 };
+
+/**
+ * @param {import('@firebase/firestore-types').QueryDocumentSnapshot} doc
+ * @returns {Todo}
+ */
+const idMapper = doc => Object.assign({ id: doc.id }, /** @type {Todo} */ (doc.data()));
 
 export const todos = () => {
   const { uid } = firebase.auth().currentUser;
@@ -76,6 +82,18 @@ export const todos = () => {
       // @ts-ignore
       const data = snapshot.docs.map(doc => Object.assign({ id: doc.id }, doc.data()));
       return data.sort(todoSorter);
+    },
+
+    /**
+     * @param {(todos: Todo[]) => any} listener Change listener
+     * @returns {() => any} Unsubscribe function
+     */
+    listen(listener) {
+      const unsubscribe = query.onSnapshot((snapshot) => {
+        const data = snapshot.docs.map(idMapper);
+        listener(data.sort(todoSorter));
+      });
+      return unsubscribe;
     },
   };
 };

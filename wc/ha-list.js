@@ -8,6 +8,9 @@ window.customElements.define(
       super();
       this.navigation = this.navigation.bind(this);
       this.todoClick = this.todoClick.bind(this);
+      this.render = this.render.bind(this);
+      /** @type {() => any} */
+      this.listener = undefined;
     }
 
     static get observedAttributes() {
@@ -31,12 +34,10 @@ window.customElements.define(
     }
 
     /**
-     * @param {Promise<import('./lib/types').Todo[]>} getPromise
-     * @returns {Promise}
+     * @param {import('./lib/types').Todo[]} todoArr
      */
-    async get(getPromise) {
-      const todoList = (await getPromise).reduce(contextReducer, {});
-
+    render(todoArr) {
+      const todoList = todoArr.reduce(contextReducer, {});
       /** @type {HTMLTemplateElement} */
       const template = this.ownerDocument.querySelector('template#ha-todo');
       /** @type {HTMLTemplateElement} */
@@ -61,20 +62,25 @@ window.customElements.define(
       });
     }
 
+    /**
+     * @param {Promise<import('./lib/types').Todo[]>} getPromise
+     * @returns {Promise}
+     */
+    async get(getPromise) {
+      this.render(await getPromise);
+    }
+
     navigation() {
+      if (this.listener) this.listener();
       if (location.pathname === '/today') {
-        this.get(
-          todos()
-            .uncompleted()
-            .today()
-            .get(),
-        );
+        this.listener = todos()
+          .uncompleted()
+          .today()
+          .listen(this.render);
       } else {
-        this.get(
-          todos()
-            .uncompleted()
-            .get(),
-        );
+        this.listener = todos()
+          .uncompleted()
+          .listen(this.render);
       }
     }
 
@@ -86,11 +92,9 @@ window.customElements.define(
         }
       });
       await waitForAuth();
-      this.get(
-        todos()
-          .uncompleted()
-          .get(),
-      );
+      this.listener = todos()
+        .uncompleted()
+        .listen(this.render);
     }
 
     /**

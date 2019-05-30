@@ -72,12 +72,11 @@ class HaTodo extends HTMLElement {
     const title = this.querySelector('ha-title');
     /** @type {HTMLInputElement} */
     const date = this.querySelector('.ha-date');
-    const todo = doc(this.id).update({
+    doc(this.id).update({
       title: title.innerText,
       soft: date.value,
       completed: this.completed,
     });
-    this.render(todo);
   }
 
   attributeChangedCallback(name) {

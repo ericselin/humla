@@ -7,7 +7,7 @@ describe('todo sorter', () => {
     const s4 = { soft: '2019-05-04' };
     const arr = [s2, s4, s1];
     arr.sort(todoSorter);
-    expect(arr).toEqual([s4, s2, s1]);
+    expect(arr).toEqual([s1, s2, s4]);
   });
 
   it('sorts context correctly', () => {
@@ -15,6 +15,7 @@ describe('todo sorter', () => {
     const ca2 = { context: '@a' };
     const cb = { context: '@b' };
     const arr = [ca1, cb, ca2];
+    // @ts-ignore
     arr.sort(todoSorter);
     expect(arr).toEqual([cb, ca1, ca2]);
   });
@@ -24,6 +25,7 @@ describe('todo sorter', () => {
     const ca = { context: '@a' };
     const cb = { context: '@b' };
     const arr = [cn, ca, cb, cn];
+    // @ts-ignore
     arr.sort(todoSorter);
     expect(arr).toEqual([cb, ca, cn, cn]);
   });
@@ -33,8 +35,9 @@ describe('todo sorter', () => {
     const cbs2 = { soft: '2019-05-02', context: '@b' };
     const cas4 = { soft: '2019-05-04', context: '@a' };
     const arr = [cas1, cas4, cbs2];
+    // @ts-ignore
     arr.sort(todoSorter);
-    expect(arr).toEqual([cbs2, cas4, cas1]);
+    expect(arr).toEqual([cbs2, cas1, cas4]);
   });
 });
 
@@ -45,6 +48,7 @@ describe('context reducer', () => {
       { context: '@b', title: 'hello b' },
       { context: '@a', title: 'hello 2' },
     ];
+    // @ts-ignore
     const categories = arr.reduce(contextReducer, {}); // ?
     expect(categories).toEqual({
       '@a': [arr[0], arr[2]],
