@@ -77,7 +77,7 @@ export const todos = () => {
     },
 
     today() {
-      query = query.where('soft', '==', today());
+      query = query.where('soft', '<=', today()).where('soft', '>', '');
       return this;
     },
 
