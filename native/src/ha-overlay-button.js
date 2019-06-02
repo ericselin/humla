@@ -6,10 +6,6 @@ window.customElements.define(
       /** @type {import('./ha-overlay').default} */
       const el = (document.getElementById(overlay));
       el.open = true;
-      // focus if attribute set on a child
-      /** @type {HTMLElement} */
-      const focusable = (el.querySelector('[focus]'));
-      if (focusable) focusable.focus();
     }
 
     connectedCallback() {

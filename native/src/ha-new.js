@@ -3,6 +3,11 @@ import { add } from './lib/firebase.js';
 window.customElements.define(
   'ha-new',
   class extends HTMLElement {
+    constructor() {
+      super();
+      this.shortcut = this.shortcut.bind(this);
+    }
+
     /**
      * @param {KeyboardEvent} e
      */
@@ -16,8 +21,22 @@ window.customElements.define(
       }
     }
 
+    /**
+     * @param {KeyboardEvent} e
+     */
+    shortcut(e) {
+      if (e.altKey && e.key === 'n') {
+        this.closest('ha-overlay').setAttribute('open', '');
+      }
+    }
+
     connectedCallback() {
       this.addEventListener('keydown', this.onKeyDown.bind(this));
+      document.addEventListener('keydown', this.shortcut);
+    }
+
+    disconnectedCallback() {
+      document.removeEventListener('keydown', this.shortcut);
     }
   },
 );

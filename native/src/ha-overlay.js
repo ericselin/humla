@@ -12,6 +12,15 @@ class HaOverlay extends HTMLElement {
     else this.removeAttribute('open');
   }
 
+  attributeChangedCallback(name) {
+    if (name === 'open' && this.open) {
+      // focus if attribute set on a child
+      /** @type {HTMLElement} */
+      const focusable = (this.querySelector('[focus]'));
+      if (focusable) focusable.focus();
+    }
+  }
+
   /**
    * @param {MouseEvent} e
    */
