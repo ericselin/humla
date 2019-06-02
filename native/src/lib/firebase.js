@@ -1,9 +1,14 @@
 import { today } from './date.js';
 import processTitle from './keywords.js';
 
-/** @type {import('@firebase/app') & import('@firebase/auth') & import('@firebase/firestore')} */
+/** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
+/** @typedef {import('@firebase/auth')} FirebaseAuth */
+/** @typedef {import('@firebase/firestore')} FirebaseFirestore */
+
+/** @type {FirebaseNamespace} */
 // @ts-ignore
-const { firebase } = window;
+// eslint-disable-next-line prefer-destructuring
+const firebase = window.firebase;
 
 export const waitForAuth = () => new Promise((resolve, reject) => {
   firebase.auth().onAuthStateChanged((user) => {

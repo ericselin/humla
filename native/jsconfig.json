@@ -3,7 +3,8 @@
     "checkJs": true,
     "target": "es2015",
     "lib": ["dom", "esnext"],
-    "module": "commonjs"
+    "module": "commonjs",
+    "noEmit": true
   },
   "include": ["**/*"]
 }

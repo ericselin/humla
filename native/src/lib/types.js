@@ -9,4 +9,4 @@
  * @property {string} [id]
  */
 
-module.exports = undefined;
+exports.Todo = undefined;

@@ -1,6 +1,6 @@
 {
   "extends": "airbnb-base",
-  "env": { "jasmine": true },
+  "env": { "jasmine": true, "browser": true },
   "plugins": ["jsdoc"],
   "rules": {
     "no-restricted-globals": ["off", "history"],

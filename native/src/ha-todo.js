@@ -5,7 +5,8 @@ import { today } from './lib/date.js';
  * @param {MouseEvent} event
  */
 const completedClick = (event) => {
-  const todo = /** @type {HaTodo} */ /** @type {HTMLElement} */ (event.target).closest('ha-todo');
+  const targ = /** @type {HTMLElement} */ (event.target);
+  const todo = /** @type {HaTodo} */ (targ.closest('ha-todo'));
   todo.completed = todo.completed ? '' : today();
 };
 

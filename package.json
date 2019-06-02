@@ -1,73 +1,18 @@
 {
-  "name": "super-todo",
+  "name": "humla",
   "version": "1.0.0",
-  "main": "index.js",
+  "repository": "https://gitlab.com/ericselin/humla.git",
+  "author": "Eric Selin <eric.selin@gmail.com>",
   "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "react",
+    "native"
+  ],
   "scripts": {
-    "start": "webpack-dev-server --hot --mode=development",
-    "build": "webpack --mode=production",
-    "test-legacy": "ava",
-    "test": "karma start wc/karma.conf.js",
     "deploy": "firebase deploy"
   },
-  "dependencies": {
-    "@babel/preset-env": "^7.4.2",
-    "@emotion/core": "^10.0.7",
-    "@firebase/app": "^0.3.9",
-    "@firebase/app-types": "^0.3.4",
-    "@firebase/auth": "^0.9.3",
-    "@firebase/firestore": "^1.0.3",
-    "@firebase/util": "^0.2.7",
-    "@types/jasmine": "^3.3.12",
-    "copy-webpack-plugin": "^5.0.3",
-    "eslint-plugin-jsdoc": "^5.0.2",
-    "prop-types": "^15.6.2",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
-    "react-hot-loader": "^4.7.2",
-    "react-router-dom": "^4.3.1"
-  },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/plugin-transform-modules-commonjs": "^7.4.0",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.4.0",
-    "ava": "^1.3.1",
-    "babel-loader": "^8.0.5",
-    "babel-plugin-emotion": "^10.0.7",
-    "clean-webpack-plugin": "^2.0.0",
-    "eslint": "5.3.0",
-    "eslint-config-airbnb": "17.1.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-jsx-a11y": "6.1.1",
-    "eslint-plugin-react": "7.11.0",
-    "firebase-tools": "^6.4.0",
-    "html-webpack-plugin": "^4.0.0-beta.5",
-    "karma": "^4.1.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^2.0.1",
-    "mockdate": "^2.0.2",
-    "prettier-eslint": "^8.8.2",
-    "react-svg-loader": "^2.1.0",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1"
-  },
-  "eslintConfig": {
-    "extends": [
-      "airbnb"
-    ],
-    "env": {
-      "browser": true
-    }
-  },
-  "browserslist": [
-    "since 2017-06"
-  ],
-  "ava": {
-    "require": [
-      "./_register.js"
-    ]
+    "firebase-tools": "^6.10.0"
   }
 }
