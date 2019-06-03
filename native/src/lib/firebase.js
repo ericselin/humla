@@ -1,4 +1,4 @@
-import { today } from './date.js';
+import { today, sunday } from './date.js';
 import processTitle from './keywords.js';
 
 /** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
@@ -77,7 +77,27 @@ export const todos = () => {
     },
 
     today() {
-      query = query.where('soft', '<=', today()).where('soft', '>', '');
+      query = query.where('soft', '<=', today()).where('soft', '>', '""');
+      return this;
+    },
+
+    week() {
+      query = query.where('soft', '<=', sunday()).where('soft', '>', '""');
+      return this;
+    },
+
+    later() {
+      query = query.where('soft', '>', sunday()).where('soft', '<', 'someday');
+      return this;
+    },
+
+    someday() {
+      query = query.where('soft', '>=', 'someday');
+      return this;
+    },
+
+    unprocessed() {
+      query = query.where('soft', '==', '');
       return this;
     },
 

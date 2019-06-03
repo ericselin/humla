@@ -32,7 +32,7 @@ window.customElements.define(
 
     connectedCallback() {
       this.addEventListener('keydown', this.onKeyDown.bind(this));
-      document.addEventListener('keydown', this.shortcut);
+      window.addEventListener('keydown', this.shortcut);
     }
 
     disconnectedCallback() {

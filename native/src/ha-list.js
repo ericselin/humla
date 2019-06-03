@@ -72,15 +72,25 @@ window.customElements.define(
 
     navigation() {
       if (this.listener) this.listener();
-      if (location.pathname === '/today') {
-        this.listener = todos()
-          .uncompleted()
-          .today()
-          .listen(this.render);
-      } else {
-        this.listener = todos()
-          .uncompleted()
-          .listen(this.render);
+      const view = location.pathname.substr(1);
+      switch (view) {
+        case 'today':
+        case 'week':
+        case 'later':
+        case 'someday':
+        case 'unprocessed':
+          this.listener = todos()
+            .uncompleted()
+            // eslint-disable-next-line no-unexpected-multiline
+            [view]()
+            .listen(this.render);
+          break;
+
+        default:
+          this.listener = todos()
+            .uncompleted()
+            .listen(this.render);
+          break;
       }
     }
 
@@ -91,9 +101,11 @@ window.customElements.define(
           this.selected = '';
         }
       });
+
       await waitForAuth();
       this.listener = todos()
         .uncompleted()
+        .today()
         .listen(this.render);
     }
 

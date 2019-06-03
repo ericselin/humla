@@ -26,6 +26,14 @@ class HaLink extends HTMLElement {
     this.addEventListener('click', linkClick);
     window.addEventListener('popstate', popstate);
     this.setAttribute('role', 'link');
+    if (this.hasAttribute('shortcut')) {
+      const key = this.getAttribute('shortcut');
+      window.addEventListener('keydown', (e) => {
+        if (e.altKey && e.key === key) {
+          this.dispatchEvent(new Event('click'));
+        }
+      });
+    }
   }
 }
 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "serve src",
+    "start": "serve src --single",
     "test": "tsc -p jsconfig.json && karma start karma.conf.js",
     "build": "ncp src \"../dist/native\""
   },
