@@ -145,7 +145,7 @@ ha-todo .details {
   margin: -0.125rem;
 }
 
-.ha-date {
+ha-date input {
   font-size: 0.75rem;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 0.125rem;

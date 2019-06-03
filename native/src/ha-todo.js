@@ -19,11 +19,11 @@ export const render = (todo, element) => {
   element.querySelector('button').addEventListener('click', completedClick);
   /* eslint-disable no-param-reassign */
   /** @type {HTMLElement} */ (element.querySelector('ha-title')).innerText = todo.title;
-  /** @type {HTMLInputElement} */ (element.querySelector('.ha-date')).value = todo.soft || '';
+  element.querySelector('ha-date').setAttribute('value', todo.soft || '');
   /* eslint-enable */
   const detailsElem = element.querySelector('.details');
   if (todo.tags) {
-    detailsElem.querySelectorAll('*:not(input)').forEach((tagElem) => {
+    detailsElem.querySelectorAll('*:not(ha-date)').forEach((tagElem) => {
       tagElem.remove();
     });
     todo.tags.forEach((t) => {
@@ -72,7 +72,7 @@ class HaTodo extends HTMLElement {
     /** @type {import('./ha-title').default} */
     const title = this.querySelector('ha-title');
     /** @type {HTMLInputElement} */
-    const date = this.querySelector('.ha-date');
+    const date = this.querySelector('ha-date');
     doc(this.id).update({
       title: title.innerText,
       soft: date.value,
