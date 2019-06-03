@@ -62,8 +62,23 @@ ha-heading {
 
 .container::after {
   content: " ";
-  margin-top: 2rem;
   display: table;
+  margin-top: 2rem;
+}
+
+ha-list:empty::before {
+  background: center/100% content-box no-repeat url(icons/smile.svg);
+  height: 6rem;
+  filter: opacity(0.6);
+  margin: 3rem auto 1rem;
+  width: 6rem;
+  filter: invert(100%);
+}
+
+ha-list:empty::after {
+  content: 'You\'re done - congratulations!';
+  margin: auto;
+  color: white;
 }
 
 .context {
@@ -77,67 +92,6 @@ ha-heading {
   grid-template-columns: 1fr min-content;
   align-items: center;
   min-height: 28px;
-}
-
-.css-16q8bwg {
-  padding: 0.4rem;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  margin-bottom: 0.2rem;
-  border-radius: 0.2rem;
-  display: grid;
-  gap: 0.5rem;
-  grid-template-columns: min-content minmax(0, 1fr) fit-content(35%);
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-left: 0.2rem solid transparent;
-}
-
-.css-16q8bwg .rest {
-  display: none;
-}
-
-.todo__completed {
-  margin: 0;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-}
-
-.todo--completed__icon {
-  fill: rgba(0, 0, 0, 0.6);
-  display: block;
-}
-
-.css-1ena3a2-Title {
-  width: 100%;
-  font-size: 1rem;
-  line-height: 1.2;
-  font-family: inherit;
-  background: none;
-  border: none;
-  resize: none;
-  overflow: hidden;
-}
-
-.css-1ena3a2-Title > div {
-  min-height: 1.2em;
-}
-
-.css-1ena3a2-Title:empty::before {
-  content: "New task...";
-  color: rgba(0, 0, 0, 0.3);
-}
-
-.css-1ena3a2-Title:focus {
-  outline: none;
-}
-
-.css-1ena3a2-Title > div:not(:first-of-type) {
-  display: none;
 }
 
 ha-todo .details {
