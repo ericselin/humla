@@ -41,7 +41,7 @@ button {
   fill: white;
 }
 
-.header__title {
+ha-heading {
   color: white;
   font-size: 1.25rem;
   font-weight: 200;

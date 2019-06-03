@@ -1,12 +1,15 @@
 // eslint-disable-next-line jsdoc/require-param
 /** @type {EventListener} */
 const linkClick = (event) => {
-  history.pushState({}, '', /** @type {HaLink} */ (event.currentTarget).path);
-  window.dispatchEvent(new Event('navigate'));
+  const link = /** @type {HaLink} */ (event.currentTarget);
+  const title = link.innerText;
+  history.pushState({ title }, '', link.path);
+  window.dispatchEvent(new CustomEvent('navigate', { detail: title }));
 };
 
-const popstate = () => {
-  window.dispatchEvent(new Event('navigate'));
+/** @param {PopStateEvent} e */
+const popstate = (e) => {
+  window.dispatchEvent(new CustomEvent('navigate', { detail: e.state.title }));
 };
 
 class HaLink extends HTMLElement {
