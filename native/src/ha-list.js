@@ -48,7 +48,8 @@ window.customElements.define(
         // create context header
         /** @type {DocumentFragment} */
         const contextDoc = (contextTemplate.content.cloneNode(true));
-        contextDoc.querySelector('div').innerText = context;
+        const contextEl = contextDoc.querySelector('ha-context');
+        /** @type {HTMLDivElement} */ (contextEl.querySelector('[title]')).innerText = context;
         // create todos
         todoList[context].forEach((todo) => {
           const todoDoc = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
@@ -56,9 +57,9 @@ window.customElements.define(
           element.id = todo.id;
           element.addEventListener('click', this.todoClick);
           render(todo, element);
-          contextDoc.appendChild(todoDoc);
+          contextEl.appendChild(todoDoc);
         });
-        this.appendChild(contextDoc);
+        this.appendChild(contextEl);
       });
     }
 

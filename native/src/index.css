@@ -76,12 +76,12 @@ ha-list:empty::before {
 }
 
 ha-list:empty::after {
-  content: 'You\'re done - congratulations!';
+  content: "You're done - congratulations!";
   margin: auto;
   color: white;
 }
 
-.context {
+ha-context > [context] {
   font-weight: 200;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -92,6 +92,22 @@ ha-list:empty::after {
   grid-template-columns: 1fr min-content;
   align-items: center;
   min-height: 28px;
+}
+
+ha-context > [context] button {
+  width: 1.5rem;
+  height: 1.5rem;
+  content: " ";
+  background: center/100% content-box no-repeat url(icons/arrow-up.svg);
+  filter: invert(100%);
+}
+
+ha-context[closed] > [context] button {
+  background-image: url(icons/arrow-down.svg);
+}
+
+ha-context[closed] ha-todo {
+  display: none;
 }
 
 ha-todo .details {

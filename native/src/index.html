@@ -102,7 +102,12 @@
       </ha-todo>
     </template>
     <template id="context">
-      <div class="context"></div>
+      <ha-context>
+        <div context>
+          <div title></div>
+          <button></button>
+        </div>
+      </ha-context>
     </template>
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script>
@@ -133,5 +138,6 @@
     <script async defer type="module" src="ha-new.js"></script>
     <script async defer type="module" src="ha-date.js"></script>
     <script async defer type="module" src="ha-heading.js"></script>
+    <script async defer type="module" src="ha-context.js"></script>
   </body>
 </html>
