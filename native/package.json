@@ -24,9 +24,7 @@
     "mockdate": "^2.0.2",
     "ncp": "^2.0.0",
     "prettier-eslint": "^8.8.2",
-    "serve": "^11.0.1"
-  },
-  "dependencies": {
+    "serve": "^11.0.1",
     "typescript": "^3.5.1"
   }
 }
