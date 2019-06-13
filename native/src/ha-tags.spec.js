@@ -1,33 +1,72 @@
 import HaTags from './ha-tags.js';
 
-/** @type {import('./lib/firebase').Todo[]} */
-const todoArr = [
-  // @ts-ignore
-  {
-    tags: ['#tag'],
-    context: '@ctx',
-  },
-];
-
-let called = false;
-
-/** @type {import('./lib/firebase').todos} */
-// @ts-ignore
-const todos = () => ({
-  uncompleted() {
-    called = true;
-    return this;
-  },
-  listen(cb) {
-    cb(todoArr);
-    return () => undefined;
-  },
-});
-
 describe('ha-title', () => {
-  it('gets uncompleted todos', () => {
-    const t = new HaTags(todos);
-    t.connectedCallback();
-    expect(called).toBe(true);
+  /** @type {import('./lib/firebase').Todo[]} */
+  const todoArr = [
+    // @ts-ignore
+    {
+      tags: ['#tag', '#atag'],
+      context: '@ctx',
+    },
+    // @ts-ignore
+    {
+      tags: ['#tag'],
+      context: '@context',
+    },
+    // @ts-ignore
+    {
+      tags: ['#atag'],
+      context: '@context',
+    },
+    // @ts-ignore
+    {
+      title: 'no context or tag',
+    },
+  ];
+
+  let listening = false;
+  /** @type {import('./lib/firebase').todos} */
+  // @ts-ignore
+  const todos = () => ({
+    uncompleted() {
+      return this;
+    },
+    listen(cb) {
+      listening = true;
+      cb(todoArr);
+      return () => {
+        listening = false;
+      };
+    },
+  });
+
+  let authenticated = false;
+  const waitForAuth = async () => {
+    authenticated = true;
+  };
+
+  it('connects and disconnects', async () => {
+    const t = new HaTags(todos, waitForAuth);
+    await t.connectedCallback();
+    expect(authenticated).toBe(true);
+    expect(listening).toBe(true);
+    t.disconnectedCallback();
+    expect(listening).toBe(false);
+  });
+
+  it('builds correctly from textContent on connect', async () => {
+    const t = new HaTags(todos, waitForAuth);
+    await t.connectedCallback();
+    const ctx = t.children.item(0);
+    const tag = t.children.item(1);
+    expect(ctx.nodeName).toBe('DIV');
+    expect(tag.nodeName).toBe('DIV');
+    expect(t.children.length).toBe(2);
+    expect(ctx.children.length).toBe(2);
+    expect(ctx.children.item(0).getAttribute('path')).toBe('/all/@context');
+    expect(ctx.children.item(1).getAttribute('path')).toBe('/all/@ctx');
+    expect(tag.children.length).toBe(2);
+    expect(tag.children.item(0).getAttribute('path')).toBe('/all/#atag');
+    expect(tag.children.item(1).getAttribute('path')).toBe('/all/#tag');
   });
 });
