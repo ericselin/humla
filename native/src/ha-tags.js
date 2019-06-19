@@ -1,14 +1,14 @@
-import { todos, waitForAuth } from './lib/firebase.js';
+import { todos, init } from './lib/firebase.js';
 
 export default class HaTags extends HTMLElement {
   /**
    * @param {typeof todos} t
-   * @param {typeof waitForAuth} w
+   * @param {typeof init} w
    */
   constructor(t, w) {
     super();
     this.todos = t || todos;
-    this.waitForAuth = w || waitForAuth;
+    this.waitForAuth = w || init;
   }
 
   /**

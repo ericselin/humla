@@ -1,4 +1,4 @@
-import { waitForAuth, todos, contextReducer } from './lib/firebase.js';
+import { init, todos, contextReducer } from './lib/firebase.js';
 import { render } from './ha-todo.js';
 
 window.customElements.define(
@@ -103,7 +103,7 @@ window.customElements.define(
         }
       });
 
-      await waitForAuth();
+      await init();
       this.listener = todos()
         .uncompleted()
         .today()

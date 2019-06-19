@@ -41,12 +41,12 @@ describe('ha-title', () => {
   });
 
   let authenticated = false;
-  const waitForAuth = async () => {
+  const init = async () => {
     authenticated = true;
   };
 
   it('connects and disconnects', async () => {
-    const t = new HaTags(todos, waitForAuth);
+    const t = new HaTags(todos, init);
     await t.connectedCallback();
     expect(authenticated).toBe(true);
     expect(listening).toBe(true);
@@ -55,7 +55,7 @@ describe('ha-title', () => {
   });
 
   it('builds correctly from textContent on connect', async () => {
-    const t = new HaTags(todos, waitForAuth);
+    const t = new HaTags(todos, init);
     await t.connectedCallback();
     const ctx = t.children.item(0);
     const tag = t.children.item(1);

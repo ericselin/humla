@@ -10,10 +10,28 @@ import processTitle from './keywords.js';
 // eslint-disable-next-line prefer-destructuring
 const firebase = window.firebase;
 
-export const waitForAuth = () => new Promise((resolve, reject) => {
+let settings;
+
+const getSettings = () => {
+  const { uid } = firebase.auth().currentUser;
+  const db = firebase.firestore();
+  db.collection(uid)
+    .doc('settings')
+    .get()
+    .then((doc) => {
+      settings = doc.data();
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error('Could not get settings', err);
+    });
+};
+
+export const init = () => new Promise((resolve, reject) => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       resolve(`${user.email} signed in`);
+      getSettings();
     } else {
       reject(new Error('User signed out, trying to sign in now'));
       const authProvider = new firebase.auth.GoogleAuthProvider();
@@ -123,24 +141,6 @@ export const todos = () => {
   };
 };
 
-export const doc = (id) => {
-  const me = firebase
-    .firestore()
-    .collection('todos')
-    .doc(id);
-  return {
-    /**
-     * @param {Todo} updates
-     * @returns {Todo}
-     */
-    update(updates) {
-      const processedUpdates = Object.assign(updates, processTitle(updates.title));
-      me.update(processedUpdates);
-      return processedUpdates;
-    },
-  };
-};
-
 /**
  * @param {Todo} todo
  */
@@ -155,6 +155,47 @@ export const add = (todo) => {
     .firestore()
     .collection('todos')
     .add(addable);
+};
+
+/**
+ * @param {Todo} todo Fully processed todo
+ * @param {boolean} [projects] Whether to process projects
+ * @returns {{ update: Todo, add?: Todo }} Completed project subtask to add
+ */
+export const getUpdates = (todo, projects = settings && settings.projects) => {
+  const updates = {
+    update: { ...todo, ...processTitle(todo.title) },
+  };
+  const project = /^.+ \/ (.+\n([^ \n@].*))/;
+  if (todo.completed && projects && project.test(todo.title)) {
+    const match = todo.title.match(project);
+    updates.add = {
+      ...updates.update,
+      title: updates.update.title.match(/(.*)\n/)[1],
+    };
+    updates.update.title = updates.update.title.replace(match[1], match[2]);
+    updates.update.completed = '';
+  }
+  return updates;
+};
+
+export const doc = (id) => {
+  const me = firebase
+    .firestore()
+    .collection('todos')
+    .doc(id);
+  return {
+    /**
+     * @param {Todo} updates
+     * @returns {Todo}
+     */
+    update(updates) {
+      const { update: updateTodo, add: addTodo } = getUpdates(updates);
+      if (updateTodo) me.update(updateTodo);
+      if (addTodo) add(addTodo);
+      return updateTodo;
+    },
+  };
 };
 
 export default firebase;

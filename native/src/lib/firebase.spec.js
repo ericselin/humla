@@ -1,4 +1,4 @@
-import { todoSorter, contextReducer } from './firebase.js';
+import { todoSorter, contextReducer, getUpdates } from './firebase.js';
 
 describe('todo sorter', () => {
   it('sorts dates correctly', () => {
@@ -53,6 +53,76 @@ describe('context reducer', () => {
     expect(categories).toEqual({
       '@a': [arr[0], arr[2]],
       '@b': [arr[1]],
+    });
+  });
+});
+
+describe('project subtask', () => {
+  const regular = {
+    completed: '2019-06-17',
+    title: 'this is a regular task',
+    soft: '2019-06-17',
+  };
+
+  it('returns falsey for add on not project', () => {
+    const { add } = getUpdates(regular, true);
+    expect(add).toBeFalsy();
+  });
+
+  it('returns falsey for add on not project', () => {
+    const { update } = getUpdates(regular, true);
+    expect(update).toEqual({
+      completed: '2019-06-17',
+      title: 'this is a regular task',
+      soft: '2019-06-17',
+      project: false,
+      context: null,
+      tags: null,
+    });
+  });
+
+  const project = {
+    completed: '2019-06-17',
+    project: true,
+    title: 'this / is done\nnext task',
+    soft: '2019-06-17',
+  };
+
+  it('returns completed subtask if completing', () => {
+    const { add } = getUpdates(project, true);
+    expect(add).toEqual({
+      completed: '2019-06-17',
+      project: true,
+      title: 'this / is done',
+      soft: '2019-06-17',
+      context: null,
+      tags: null,
+    });
+  });
+
+  it('does not make add when not completed', () => {
+    const todo = {
+      completed: '',
+      project: true,
+      title: 'this / is done\nnext task',
+      soft: '2019-06-17',
+      tags: null,
+      context: null,
+    };
+    const { add, update } = getUpdates(todo, true);
+    expect(add).toBeFalsy();
+    expect(update).toEqual(todo);
+  });
+
+  it('returns modified updates when completing project', () => {
+    const { update } = getUpdates(project, true);
+    expect(update).toEqual({
+      completed: '',
+      project: true,
+      title: 'this / next task',
+      soft: '2019-06-17',
+      context: null,
+      tags: null,
     });
   });
 });
