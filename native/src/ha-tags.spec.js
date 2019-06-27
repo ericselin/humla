@@ -54,7 +54,7 @@ describe('ha-title', () => {
     expect(listening).toBe(false);
   });
 
-  it('builds correctly from textContent on connect', async () => {
+  it('builds correctly connect', async () => {
     const t = new HaTags(todos, init);
     await t.connectedCallback();
     const ctx = t.children.item(0);
@@ -64,9 +64,13 @@ describe('ha-title', () => {
     expect(t.children.length).toBe(2);
     expect(ctx.children.length).toBe(2);
     expect(ctx.children.item(0).getAttribute('path')).toBe('/all/@context');
+    expect(ctx.children.item(0).innerHTML).toBe('@context');
     expect(ctx.children.item(1).getAttribute('path')).toBe('/all/@ctx');
+    expect(ctx.children.item(1).innerHTML).toBe('@ctx');
     expect(tag.children.length).toBe(2);
     expect(tag.children.item(0).getAttribute('path')).toBe('/all/#atag');
+    expect(tag.children.item(0).innerHTML).toBe('#atag');
     expect(tag.children.item(1).getAttribute('path')).toBe('/all/#tag');
+    expect(tag.children.item(1).innerHTML).toBe('#tag');
   });
 });

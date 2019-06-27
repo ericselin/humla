@@ -119,6 +119,13 @@ export const todos = () => {
       return this;
     },
 
+    search(search) {
+      if (search.startsWith('@')) query = query.where('context', '==', search);
+      else if (search.startsWith('#')) query = query.where('tags', 'array-contains', search);
+      else throw new Error('Not implemented');
+      return this;
+    },
+
     async get() {
       const snapshot = await query.get();
       /** @type {Todo[]} */

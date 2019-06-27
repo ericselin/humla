@@ -13,7 +13,6 @@ export default class HaTags extends HTMLElement {
 
   /**
    * @param {import('./lib/firebase').Todo[]} todoArr
-   * @returns {any}
    */
   render(todoArr) {
     // create arrays
@@ -33,11 +32,14 @@ export default class HaTags extends HTMLElement {
         });
       }
     });
+    // clear contents
+    this.innerHTML = '';
     // create contexts
     const ctxEl = document.createElement('div');
     contexts.sort().forEach((c) => {
       const el = document.createElement('ha-link');
       el.setAttribute('path', `/all/${c}`);
+      el.innerText = c;
       ctxEl.appendChild(el);
     });
     this.appendChild(ctxEl);
@@ -46,6 +48,7 @@ export default class HaTags extends HTMLElement {
     tags.sort().forEach((t) => {
       const el = document.createElement('ha-link');
       el.setAttribute('path', `/all/${t}`);
+      el.innerText = t;
       tagEl.appendChild(el);
     });
     this.appendChild(tagEl);

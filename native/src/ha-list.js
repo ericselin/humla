@@ -51,25 +51,23 @@ window.customElements.define(
 
     navigation() {
       if (this.listener) this.listener();
-      const view = location.pathname.substr(1);
-      switch (view) {
-        case 'today':
-        case 'week':
-        case 'later':
-        case 'someday':
-        case 'unprocessed':
-          this.listener = todos()
-            .uncompleted()
-            // eslint-disable-next-line no-unexpected-multiline
-            [view]()
-            .listen(this.render);
-          break;
-
-        default:
-          this.listener = todos()
-            .uncompleted()
-            .listen(this.render);
-          break;
+      const [, view, search] = (location.pathname + location.hash).split('/');
+      const views = ['today', 'week', 'later', 'someday', 'unprocessed'];
+      if (views.includes(view)) {
+        this.listener = todos()
+          .uncompleted()
+          // eslint-disable-next-line no-unexpected-multiline
+          [view]()
+          .listen(this.render);
+      } else if (search) {
+        this.listener = todos()
+          .uncompleted()
+          .search(search)
+          .listen(this.render);
+      } else {
+        this.listener = todos()
+          .uncompleted()
+          .listen(this.render);
       }
     }
 
