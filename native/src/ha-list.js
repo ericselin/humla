@@ -7,30 +7,9 @@ window.customElements.define(
     constructor() {
       super();
       this.navigation = this.navigation.bind(this);
-      this.todoClick = this.todoClick.bind(this);
       this.render = this.render.bind(this);
       /** @type {() => any} */
       this.listener = undefined;
-    }
-
-    static get observedAttributes() {
-      return ['selected'];
-    }
-
-    get selected() {
-      return this.getAttribute('selected');
-    }
-
-    set selected(val) {
-      this.setAttribute('selected', val);
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    attributeChangedCallback(name, oldValue, newValue) {
-      if (name === 'selected' && oldValue !== newValue) {
-        if (oldValue) document.getElementById(oldValue).removeAttribute('open');
-        if (newValue) document.getElementById(newValue).setAttribute('open', '');
-      }
     }
 
     /**
@@ -55,7 +34,6 @@ window.customElements.define(
           const todoDoc = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
           const element = /** @type {HTMLElement} */ (todoDoc.querySelector('ha-todo'));
           element.id = todo.id;
-          element.addEventListener('click', this.todoClick);
           render(todo, element);
           contextEl.appendChild(todoDoc);
         });
@@ -97,25 +75,11 @@ window.customElements.define(
 
     async connectedCallback() {
       window.addEventListener('navigate', this.navigation);
-      this.addEventListener('keydown', (e) => {
-        if ((e.key === 'Enter' && e.ctrlKey) || e.key === 'Escape') {
-          this.selected = '';
-        }
-      });
-
       await init();
       this.listener = todos()
         .uncompleted()
         .today()
         .listen(this.render);
-    }
-
-    /**
-     * @param {MouseEvent} event
-     */
-    todoClick(event) {
-      const todo = /** @type {HTMLElement} */ (event.currentTarget);
-      this.selected = todo.id;
     }
   },
 );

@@ -11,6 +11,23 @@ const completedClick = (event) => {
 };
 
 /**
+ * @param {KeyboardEvent} event
+ */
+const blur = (event) => {
+  if ((event.key === 'Enter' && event.ctrlKey) || event.key === 'Escape') {
+    /** @type {HTMLElement} */ (event.target).blur();
+  }
+};
+
+/**
+ * @param {FocusEvent} event
+ */
+const focus = (event) => {
+  const todo = /** @type {Element} */ (event.target).closest('ha-todo');
+  /** @type {HaTodo} */ (todo).open = event.type === 'focusin';
+};
+
+/**
  * @param {Todo} todo
  * @param {HTMLElement} element
  */
@@ -93,6 +110,12 @@ class HaTodo extends HTMLElement {
     } else if (name === 'completed') {
       this.save();
     }
+  }
+
+  connectedCallback() {
+    this.addEventListener('focusin', focus);
+    this.addEventListener('focusout', focus);
+    this.addEventListener('keydown', blur);
   }
 }
 
