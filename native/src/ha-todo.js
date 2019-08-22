@@ -8,6 +8,7 @@ const completedClick = (event) => {
   const targ = /** @type {HTMLElement} */ (event.target);
   const todo = /** @type {HaTodo} */ (targ.closest('ha-todo'));
   todo.completed = todo.completed ? '' : today();
+  todo.save();
 };
 
 /**
@@ -54,7 +55,7 @@ export const render = (todo, element) => {
 
 class HaTodo extends HTMLElement {
   static get observedAttributes() {
-    return ['open', 'completed'];
+    return ['open'];
   }
 
   get open() {
@@ -107,8 +108,6 @@ class HaTodo extends HTMLElement {
       if (!this.open) {
         this.save();
       }
-    } else if (name === 'completed') {
-      this.save();
     }
   }
 

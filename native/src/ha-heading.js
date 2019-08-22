@@ -4,7 +4,7 @@ window.customElements.define(
     connectedCallback() {
       window.addEventListener('navigate', (e) => {
         // @ts-ignore
-        this.textContent = e.detail;
+        this.textContent = e.detail.title;
       });
     }
   },

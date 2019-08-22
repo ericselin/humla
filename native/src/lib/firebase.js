@@ -1,4 +1,4 @@
-import { today, sunday } from './date.js';
+import { today, sunday, thisMonday } from './date.js';
 import processTitle from './keywords.js';
 
 /** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
@@ -88,7 +88,7 @@ export const todos = () => {
     .collection('todos')
     .where('owner', '==', uid);
 
-  return {
+  const chainable = {
     uncompleted() {
       query = query.where('completed', '==', '');
       return this;
@@ -126,6 +126,17 @@ export const todos = () => {
       return this;
     },
 
+    completed: {
+      today() {
+        query = query.where('completed', '==', today());
+        return chainable;
+      },
+      week() {
+        query = query.where('completed', '>=', thisMonday()).where('completed', '<=', sunday());
+        return chainable;
+      },
+    },
+
     async get() {
       const snapshot = await query.get();
       /** @type {Todo[]} */
@@ -146,6 +157,8 @@ export const todos = () => {
       return unsubscribe;
     },
   };
+
+  return chainable;
 };
 
 /**

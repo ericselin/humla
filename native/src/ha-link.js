@@ -2,13 +2,14 @@
 const linkClick = (event) => {
   const link = /** @type {HaLink} */ (event.currentTarget);
   const title = link.innerText;
-  history.pushState({ title }, '', link.path);
-  window.dispatchEvent(new CustomEvent('navigate', { detail: title }));
+  const state = { title, path: link.path };
+  history.pushState(state, '', link.path);
+  window.dispatchEvent(new CustomEvent('navigate', { detail: state }));
 };
 
 /** @param {PopStateEvent} event */
 const popstate = (event) => {
-  window.dispatchEvent(new CustomEvent('navigate', { detail: event.state.title }));
+  window.dispatchEvent(new CustomEvent('navigate', { detail: event.state }));
 };
 
 class HaLink extends HTMLElement {
