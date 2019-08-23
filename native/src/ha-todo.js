@@ -16,7 +16,7 @@ const getTodo = (target) => {
 const completedClick = (event) => {
   const todo = getTodo(event.target);
   todo.completed = todo.completed ? '' : today();
-  // blur the button, causing focusout and thus a save
+  // for now, blur the button to induce a save
   /** @type {HTMLElement} */ (event.target).blur();
 };
 
@@ -31,13 +31,29 @@ const blur = (event) => {
 
 /**
  * @param {FocusEvent} event
+ * @returns {any}
  */
 const focus = (event) => {
   const todo = getTodo(event.target);
+  /* eslint-disable prefer-destructuring */
+  const relatedTarget = /** @type {HTMLElement} */ (event.relatedTarget);
+  const target = /** @type {HTMLElement} */ (event.target);
+  /* eslint-enable prefer-destructuring */
+  const within = todo.contains(relatedTarget);
+
+  // cancel if coming from outside into the button
+  if (!within && event.type === 'focusin' && target.nodeName === 'BUTTON') return;
+  // if we are shifting focus within the todo
+  if (within) {
+    // ... cancel all focusout events
+    if (event.type === 'focusout') return;
+    // ... cancel all focusin events except those coming from button
+    if (relatedTarget.nodeName !== 'BUTTON') return;
+  }
+
   // explicitly save on focus out / when blurring
   if (event.type === 'focusout') todo.save();
-  // if focus comes from button click, do not open
-  else if (/** @type {HTMLElement} */ (event.target).nodeName === 'BUTTON') return;
+
   todo.open = event.type === 'focusin';
 };
 
