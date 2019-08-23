@@ -2,13 +2,22 @@ import { doc } from './lib/firebase.js';
 import { today } from './lib/date.js';
 
 /**
+ * @param {EventTarget} target
+ * @returns {HaTodo}
+ */
+const getTodo = (target) => {
+  const todo = /** @type {Element} */ (target).closest('ha-todo');
+  return /** @type {HaTodo} */ (todo);
+};
+
+/**
  * @param {MouseEvent} event
  */
 const completedClick = (event) => {
-  const targ = /** @type {HTMLElement} */ (event.target);
-  const todo = /** @type {HaTodo} */ (targ.closest('ha-todo'));
+  const todo = getTodo(event.target);
   todo.completed = todo.completed ? '' : today();
-  todo.save();
+  // blur the button, causing focusout and thus a save
+  /** @type {HTMLElement} */ (event.target).blur();
 };
 
 /**
@@ -24,8 +33,12 @@ const blur = (event) => {
  * @param {FocusEvent} event
  */
 const focus = (event) => {
-  const todo = /** @type {Element} */ (event.target).closest('ha-todo');
-  /** @type {HaTodo} */ (todo).open = event.type === 'focusin';
+  const todo = getTodo(event.target);
+  // explicitly save on focus out / when blurring
+  if (event.type === 'focusout') todo.save();
+  // if focus comes from button click, do not open
+  else if (/** @type {HTMLElement} */ (event.target).nodeName === 'BUTTON') return;
+  todo.open = event.type === 'focusin';
 };
 
 /**
@@ -104,10 +117,6 @@ class HaTodo extends HTMLElement {
       const title = this.querySelector('ha-title');
       // set title open state
       title.open = this.open;
-      // save if now not open
-      if (!this.open) {
-        this.save();
-      }
     }
   }
 
