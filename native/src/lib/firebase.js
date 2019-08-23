@@ -186,9 +186,10 @@ export const getUpdates = (todo, projects = settings && settings.projects) => {
   const updates = {
     update: { ...todo, ...processTitle(todo.title) },
   };
+
   const project = /^.+ \/ (.+\n([^ \n@].*))/;
-  if (todo.completed && projects && project.test(todo.title)) {
-    const match = todo.title.match(project);
+  if (todo.completed && projects && project.test(updates.update.title)) {
+    const match = updates.update.title.match(project);
     updates.add = {
       ...updates.update,
       title: updates.update.title.match(/(.*)\n/)[1],

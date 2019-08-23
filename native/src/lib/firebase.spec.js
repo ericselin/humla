@@ -125,4 +125,18 @@ describe('project subtask', () => {
       tags: null,
     });
   });
+
+  it('works with non breaking space, replacing these with space', () => {
+    const todo = {
+      completed: 'yes',
+      project: true,
+      title: 'this /\xa0is done\nnext task',
+      soft: '2019-06-17',
+      tags: null,
+      context: null,
+    };
+    const { add, update } = getUpdates(todo, true);
+    expect(add.title).toBe('this / is done');
+    expect(update.title).toEqual('this / next task');
+  });
 });

@@ -33,6 +33,9 @@ const processTitle = (title) => {
     Object.assign(updates, { project: false });
   }
 
+  // replace nbsp with space
+  updates.title = updates.title.replace(/\u00a0/g, ' ');
+
   /** @type {Todo} */
   return /** @type {any} */ (updates);
 };
