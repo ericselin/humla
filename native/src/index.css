@@ -182,6 +182,10 @@ ha-todo[completed] {
   text-decoration: line-through;
 }
 
+ha-todo[completed] .details {
+  display: none;
+}
+
 ha-todo button {
   background: url(icons/unchecked.svg);
   height: 1.5rem;

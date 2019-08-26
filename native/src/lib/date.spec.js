@@ -16,6 +16,11 @@ describe('date testing', () => {
     expect(thisMonday()).toBe('2019-03-18');
   });
 
+  it('returns correct this monday across month', () => {
+    set('2019-08-26');
+    expect(thisMonday()).toBe('2019-08-26');
+  });
+
   const sundayMacro = (input, expected) => () => {
     set(input);
     expect(sunday()).toBe(expected);
