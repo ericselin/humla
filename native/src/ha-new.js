@@ -9,16 +9,33 @@ window.customElements.define(
     }
 
     /**
+     * @param {boolean} keepOpen Whether to keep the new box open after saving
+     */
+    save(keepOpen) {
+      /** @type {HTMLElement} */
+      const titleEl = (this.querySelector('ha-title'));
+      if (titleEl.innerText) {
+        add({ title: titleEl.innerText, completed: '', soft: '' });
+        titleEl.innerText = '';
+        titleEl.focus();
+      }
+      if (!keepOpen) this.closest('ha-overlay').removeAttribute('open');
+    }
+
+    /**
      * @param {KeyboardEvent} e
      */
     onKeyDown(e) {
       if (e.key === 'Enter' && e.ctrlKey) {
-        /** @type {HTMLElement} */
-        const titleEl = (this.querySelector('ha-title'));
-        add({ title: titleEl.innerText, completed: '', soft: '' });
-        if (!e.shiftKey) this.closest('ha-overlay').removeAttribute('open');
-        titleEl.innerText = '';
+        this.save(e.shiftKey);
       }
+    }
+
+    /**
+     * @param {MouseEvent} e
+     */
+    onClick(e) {
+      this.save(/** @type {HTMLButtonElement} */ (e.currentTarget).hasAttribute('keep-open'));
     }
 
     /**
@@ -32,11 +49,14 @@ window.customElements.define(
 
     connectedCallback() {
       this.addEventListener('keydown', this.onKeyDown.bind(this));
+      Array.from(this.querySelectorAll('button')).forEach((elem) => {
+        elem.addEventListener('click', this.onClick.bind(this));
+      });
       window.addEventListener('keydown', this.shortcut);
     }
 
     disconnectedCallback() {
-      document.removeEventListener('keydown', this.shortcut);
+      window.removeEventListener('keydown', this.shortcut);
     }
   },
 );
