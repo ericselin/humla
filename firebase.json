@@ -5,8 +5,21 @@
   },
   "hosting": {
     "public": "src",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "*.spec.js"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.spec.js"
+    ],
     "rewrites": [
+      {
+        "source": "/api/me",
+        "function": "me"
+      },
+      {
+        "source": "/api/create",
+        "function": "create"
+      },
       {
         "source": "**",
         "destination": "/index.html"
