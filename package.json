@@ -6,14 +6,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "serve src --single",
+    "start": "firebase serve",
     "test": "yarn lint && yarn types && yarn karma",
     "lint": "eslint src --ignore-pattern ha-login.js ",
     "types": "tsc -p jsconfig.json",
     "karma": "karma start karma.conf.js",
     "deploy": "firebase deploy"
   },
-  "husky":{
+  "husky": {
     "hooks": {
       "pre-commit": "yarn test"
     }
@@ -37,7 +37,6 @@
     "mockdate": "^2.0.5",
     "ncp": "^2.0.0",
     "prettier-eslint": "^9.0.0",
-    "serve": "^11.1.0",
     "typescript": "^3.6.2"
   }
 }
