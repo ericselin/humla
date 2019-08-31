@@ -17,6 +17,7 @@ const completedClick = (event) => {
   const todo = getTodo(event.target);
   todo.completed = todo.completed ? '' : today();
   // for now, blur the button to induce a save
+  /** @type {HTMLElement} */ (event.target).focus();
   /** @type {HTMLElement} */ (event.target).blur();
 };
 

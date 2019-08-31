@@ -7,16 +7,9 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Humla",
-      "url": "http://localhost:8080",
-      "webRoot": "${workspaceFolder}"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Web Components",
+      "name": "Chrome Debugger",
       "url": "http://localhost:5000",
-      "webRoot": "${workspaceFolder}/native/src"
+      "webRoot": "${workspaceFolder}/src"
     }
   ]
 }

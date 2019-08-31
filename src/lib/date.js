@@ -1,6 +1,6 @@
-const pad = nr => nr.toString().padStart(2, '0');
+const pad = (nr) => nr.toString().padStart(2, '0');
 
-const format = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const format = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const formatDM = (d, m) => `${new Date().getFullYear()}-${pad(m)}-${pad(d)}`;
 
 const sundayDate = () => {

@@ -1,4 +1,4 @@
-const formatTitle = title => (title ? title.replace(/^(.*)$/gm, '<div>$1</div>') : '');
+const formatTitle = (title) => (title ? title.replace(/^(.*)$/gm, '<div>$1</div>') : '');
 
 export default class Title extends HTMLElement {
   static get observedAttributes() {
@@ -24,7 +24,7 @@ export default class Title extends HTMLElement {
         }
         return el.textContent;
       })
-      .filter(l => typeof l !== 'undefined')
+      .filter((l) => typeof l !== 'undefined')
       .join('\n');
   }
 

@@ -5,14 +5,33 @@
   "author": "Eric Selin <eric.selin@gmail.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "react",
-    "native"
-  ],
   "scripts": {
+    "start": "serve src --single",
+    "test": "yarn lint && yarn types && yarn karma",
+    "lint": "eslint src --ignore-pattern ha-login.js ",
+    "types": "tsc -p jsconfig.json",
+    "karma": "karma start karma.conf.js",
     "deploy": "firebase deploy"
   },
   "devDependencies": {
-    "firebase-tools": "^6.10.0"
+    "@firebase/app": "^0.4.15",
+    "@firebase/app-types": "^0.4.3",
+    "@firebase/auth": "^0.11.8",
+    "@firebase/firestore": "^1.5.0",
+    "@firebase/util": "^0.2.26",
+    "@types/jasmine": "^3.4.0",
+    "eslint": "5.x",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsdoc": "^15.8.4",
+    "firebase-tools": "^7.3.0",
+    "karma": "^4.3.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-jasmine": "^2.0.1",
+    "mockdate": "^2.0.5",
+    "ncp": "^2.0.0",
+    "prettier-eslint": "^9.0.0",
+    "serve": "^11.1.0",
+    "typescript": "^3.6.2"
   }
 }

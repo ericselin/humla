@@ -1,7 +1,6 @@
 module.exports = () => ({
   files: [
-    { pattern: 'src/lib/*.js', load: false },
-    { pattern: 'src/*.js', load: false },
+    { pattern: 'src/**/*.js', load: false },
     '!**/*.spec.js',
     '!wallaby.js',
   ],

@@ -1,5 +1,4 @@
-node_modules
-dist
-.cache
-yarn-error.log
 .firebase
+node_modules
+yarn-error.log
+firebase-debug.log

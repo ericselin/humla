@@ -78,7 +78,8 @@ export const contextReducer = (obj, t) => {
  * @param {import('@firebase/firestore-types').QueryDocumentSnapshot} doc
  * @returns {Todo}
  */
-const idMapper = doc => Object.assign({ id: doc.id }, /** @type {Todo} */ (doc.data()));
+// @ts-ignore
+const idMapper = (doc) => ({ id: doc.id, /** @type {Todo} */ ...(doc.data()) });
 
 export const todos = () => {
   const { uid } = firebase.auth().currentUser;
@@ -141,7 +142,7 @@ export const todos = () => {
       const snapshot = await query.get();
       /** @type {Todo[]} */
       // @ts-ignore
-      const data = snapshot.docs.map(doc => Object.assign({ id: doc.id }, doc.data()));
+      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       return data.sort(todoSorter);
     },
 
