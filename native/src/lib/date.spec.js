@@ -21,6 +21,11 @@ describe('date testing', () => {
     expect(thisMonday()).toBe('2019-08-26');
   });
 
+  it('returns correct next week across month', () => {
+    set('2019-08-29');
+    expect(getDate('nw')).toBe('2019-09-08');
+  });
+
   const sundayMacro = (input, expected) => () => {
     set(input);
     expect(sunday()).toBe(expected);

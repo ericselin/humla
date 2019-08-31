@@ -37,8 +37,8 @@ export const getDate = (dateStr) => {
       return format(sundayDate());
     case 'next week':
     case 'nw': {
-      const d = new Date();
-      d.setDate(sundayDate().getDate() + 7);
+      const d = sundayDate();
+      d.setDate(d.getDate() + 7);
       return format(d);
     }
     default: {
