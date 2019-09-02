@@ -9,5 +9,5 @@ deploy:
   stage: build
   script:
     - yarn install --pure-lockfile --cache-folder .yarn-cache
-    - yarn workspaces run test
+    - yarn test
     - yarn deploy
