@@ -241,6 +241,50 @@ ha-link {
   text-decoration: underline;
 }
 
+.week-list[view="week"] [context] button {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .week-list[view="week"] {
+    max-width: unset;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+    margin: 0.5rem 0 2rem;
+  }
+
+  .week-list[view="week"]::before,
+  .week-list[view="week"]::after {
+    display: none;
+  }
+
+  .week-list[view="week"] ha-todo:not([open]) ha-date {
+    display: none;
+  }
+
+  .week-list[view="week"] ha-todo {
+    grid-template-columns: min-content 1fr;
+    grid-auto-flow: row;
+    gap: 0;
+  }
+
+  .week-list[view="week"] ha-todo button {
+    margin-right: 0.5rem;
+  }
+
+  .week-list[view="week"] ha-todo .details {
+    grid-column: 2;
+    /* direction: ltr; */
+    text-align: left;
+    margin: 0;
+  }
+
+  .week-list[view="week"] ha-todo .details > * {
+    margin-top: 0.5rem;
+  }
+}
+
 ha-overlay {
   position: fixed;
   top: 0;

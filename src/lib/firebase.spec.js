@@ -1,4 +1,12 @@
-import { todoSorter, contextReducer, getUpdates } from './firebase.js';
+import {
+  todoSorter,
+  contextReducer,
+  getUpdates,
+  weekReducer,
+  week,
+  completedThisWeek,
+} from './firebase.js';
+import { set, reset } from './mockdate.js';
 
 describe('todo sorter', () => {
   it('sorts dates correctly', () => {
@@ -54,6 +62,81 @@ describe('context reducer', () => {
       '@a': [arr[0], arr[2]],
       '@b': [arr[1]],
     });
+  });
+});
+
+describe('weekday reducer', () => {
+  it('groups by weekday', async () => {
+    set('2019-08-28');
+    const arr = [
+      { soft: '2019-08-26', title: 'mon 1' },
+      { soft: '2019-08-26', title: 'mon 2' },
+      { soft: '2019-08-27', title: 'tue' },
+      { soft: '2019-08-26', title: 'mon 3' },
+      { soft: '2019-09-01', title: 'sun' },
+      { soft: '2019-08-31', title: 'sat' },
+    ];
+    // @ts-ignore
+    const categories = arr.reduce(weekReducer, week);
+    // @ts-ignore
+    expect(categories).toEqual({
+      Monday: [arr[0], arr[1], arr[3]],
+      Tuesday: [arr[2]],
+      Wednesday: [],
+      Thursday: [],
+      Friday: [],
+      Weekend: [arr[4], arr[5]],
+    });
+    // assert week wasn't mutated
+    expect(week).toEqual({
+      Monday: [],
+      Tuesday: [],
+      Wednesday: [],
+      Thursday: [],
+      Friday: [],
+      Weekend: [],
+    });
+  });
+
+  it('sets overdue to monday', async () => {
+    const arr = [{ soft: '2019-09-01', title: 'sunday' }];
+    // @ts-ignore
+    const categories = arr.reduce(weekReducer, week); // ?
+    // @ts-ignore
+    expect(categories.Monday.length).toEqual(1);
+  });
+
+  afterEach(() => {
+    reset();
+  });
+});
+
+describe('completed this week reducer', () => {
+  it('groups by weekday', async () => {
+    set('2019-08-28');
+    const arr = [
+      { completed: '2019-08-26', title: 'mon 1' },
+      { completed: '2019-08-26', title: 'mon 2' },
+      { completed: '2019-08-27', title: 'tue' },
+      { completed: '2019-08-26', title: 'mon 3' },
+      { completed: '2019-09-01', title: 'sun' },
+      { completed: '2019-08-31', title: 'sat' },
+    ];
+    // @ts-ignore
+    const categories = arr.reduce(completedThisWeek, []);
+    // @ts-ignore
+    expect(categories).toEqual([
+      [arr[0], arr[1], arr[3]],
+      [arr[2]],
+      undefined,
+      undefined,
+      undefined,
+      [arr[4], arr[5]],
+    ]);
+  });
+
+  afterEach(() => {
+    reset();
   });
 });
 

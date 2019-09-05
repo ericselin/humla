@@ -57,7 +57,7 @@ describe('ha-list', () => {
     expect(addEventListener.calls.first().args[0]).toBe('navigate');
   });
 
-  it('renders completed task on navigation to today or week', async () => {
+  it('renders completed task on navigation to today', async () => {
     let navigator;
     const addEventListener = (name, cb) => {
       navigator = cb;
@@ -69,10 +69,6 @@ describe('ha-list', () => {
     navigator(new CustomEvent('navigate', { detail: { title: '', path: '/today' } }));
     expect(list.childNodes.length).toBe(1);
     expect(list.childNodes[0].innerText).toMatch('For today');
-    // @ts-ignore
-    navigator(new CustomEvent('navigate', { detail: { title: '', path: '/week' } }));
-    expect(list.childNodes.length).toBe(1);
-    expect(list.childNodes[0].innerText).toMatch('For week');
   });
 
   it('renders nothing on later path', async () => {

@@ -74,6 +74,43 @@ export const contextReducer = (obj, t) => {
   /* eslint-enable */
 };
 
+const weekDays = ['Weekend', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Weekend'];
+export const week = {
+  Monday: [],
+  Tuesday: [],
+  Wednesday: [],
+  Thursday: [],
+  Friday: [],
+  Weekend: [],
+};
+
+/**
+ * @param {{[weekDay: string]: Todo[]}} weekObj
+ * @param {Todo} t
+ * @returns {{[weekDay: string]: Todo[]}}
+ */
+export const weekReducer = (weekObj, t) => {
+  let day = weekDays[new Date(t.soft).getDay()];
+  // see if this is overdue for this week
+  if (thisMonday() > t.soft) [, day] = weekDays;
+  return { ...weekObj, [day]: weekObj[day].concat(t) };
+};
+
+/**
+ * @param {Todo[][]} weekArr
+ * @param {Todo} t
+ * @returns {Todo[][]}
+ */
+export const completedThisWeek = (weekArr, t) => {
+  const dayNum = new Date(t.completed).getDay() || 7;
+  let dayIndex = dayNum - 1;
+  if (dayIndex === 6) dayIndex = 5;
+  // eslint-disable-next-line no-param-reassign
+  if (!weekArr[dayIndex]) weekArr[dayIndex] = [];
+  weekArr[dayIndex].push(t);
+  return weekArr;
+};
+
 /**
  * @param {import('@firebase/firestore-types').QueryDocumentSnapshot} doc
  * @returns {Todo}

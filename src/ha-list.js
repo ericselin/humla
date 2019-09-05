@@ -14,11 +14,21 @@ export default class HaList extends HTMLElement {
     this.firebase = firebaseMock || firebaseReal;
   }
 
+  get view() {
+    return this.getAttribute('view');
+  }
+
+  set view(val) {
+    this.setAttribute('view', val);
+  }
+
   /**
    * @param {import('./lib/types').Todo[]} todoArr
    */
   render(todoArr) {
-    const todoList = todoArr.reduce(this.firebase.contextReducer, {});
+    const todoList = this.view === 'week'
+      ? todoArr.reduce(this.firebase.weekReducer, this.firebase.week)
+      : todoArr.reduce(this.firebase.contextReducer, {});
     /** @type {HTMLTemplateElement} */
     const template = this.ownerDocument.querySelector('template#ha-todo');
     /** @type {HTMLTemplateElement} */
@@ -57,6 +67,7 @@ export default class HaList extends HTMLElement {
   navigation(evt) {
     if (this.listener) this.listener();
     const [, view, search] = evt.detail.path.split('/');
+    this.view = view;
     const views = ['today', 'week', 'later', 'someday', 'unprocessed'];
     if (views.includes(view)) {
       this.listener = this.firebase
