@@ -44,9 +44,9 @@ describe('ha-list', () => {
 
   it('renders today at the start', async () => {
     // @ts-ignore
-    const list = new HaCompleted(firebaseMock);
+    const list = new HaCompleted(firebaseMock, { addEventListener: () => true, firebase: true });
     await list.connectedCallback();
-    expect(list.childNodes[0].innerText).toMatch('For today');
+    expect(list.children[0].innerText).toMatch('For today');
   });
 
   it('listens to navigation', async () => {
@@ -67,8 +67,8 @@ describe('ha-list', () => {
     await list.connectedCallback();
     // @ts-ignore
     navigator(new CustomEvent('navigate', { detail: { title: '', path: '/today' } }));
-    expect(list.childNodes.length).toBe(1);
-    expect(list.childNodes[0].innerText).toMatch('For today');
+    expect(list.children.length).toBe(1);
+    expect(list.children[0].innerText).toMatch('For today');
   });
 
   it('renders nothing on later path', async () => {

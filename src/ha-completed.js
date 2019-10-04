@@ -1,5 +1,34 @@
 import * as firebaseReal from './lib/firebase.js';
-import { render } from './ha-todo.js';
+import { render as renderTodo } from './ha-todo.js';
+
+/**
+ * @param {Todo[]} todos
+ * @returns {string}
+ */
+const renderWeek = (todos) => {
+  const todosByDay = todos.reduce(firebaseReal.completedThisWeek, [[], [], [], [], [], []]);
+  return todosByDay
+    .map((todosForDay) => `<div>${todosForDay.map(renderTodo).join('')}</div>`)
+    .join('');
+};
+
+/**
+ * @param {Todo[]} todos
+ * @param {string} [view]
+ * @returns {string}
+ */
+const renderInner = (todos, view) => (view === 'week' ? renderWeek(todos) : todos.map(renderTodo).join(''));
+
+/**
+ * @param {Todo[]} todos
+ * @param {string} [view]
+ * @returns {string}
+ */
+export const render = (todos, view = '') => `
+  <ha-completed view="${view}" class="container week-list">
+    ${renderInner(todos, view)}
+  </ha-completed>
+`;
 
 export default class HaCompleted extends HTMLElement {
   /**
@@ -25,42 +54,10 @@ export default class HaCompleted extends HTMLElement {
   }
 
   /**
-   * @param {import('./lib/types').Todo[]} todos
+   * @param {Todo[]} todos
    */
   render(todos) {
-    /** @type {HTMLTemplateElement} */
-    const template = this.ownerDocument.querySelector('template#ha-todo');
-    this.innerHTML = '';
-
-    if (this.view === 'week') {
-      const todoList = todos.reduce(this.firebase.completedThisWeek, []);
-      this.innerHTML = '';
-
-      for (let i = 0; i < todoList.length; i += 1) {
-        const dayTodos = todoList[i];
-        // create weekday wrapping div
-        const wrapperDiv = document.createElement('div');
-        // create todos
-        if (dayTodos) {
-          dayTodos.forEach((todo) => {
-            const todoDoc = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
-            const element = /** @type {HTMLElement} */ (todoDoc.querySelector('ha-todo'));
-            element.id = todo.id;
-            render(todo, element);
-            wrapperDiv.appendChild(todoDoc);
-          });
-        }
-        this.appendChild(wrapperDiv);
-      }
-    } else {
-      todos.forEach((todo) => {
-        const todoDoc = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
-        const element = /** @type {HTMLElement} */ (todoDoc.querySelector('ha-todo'));
-        element.id = todo.id;
-        render(todo, element);
-        this.appendChild(todoDoc);
-      });
-    }
+    this.innerHTML = renderInner(todos, this.view);
   }
 
   /**
@@ -92,12 +89,17 @@ export default class HaCompleted extends HTMLElement {
 
   async connectedCallback() {
     this.window.addEventListener('navigate', this.navigator);
-    await this.firebase.init();
-    this.listener = this.firebase
-      .todos()
-      .completed.today()
-      .listen(this.render);
+    // @ts-ignore
+    if (this.window.firebase) {
+      await this.firebase.init();
+      this.listener = this.firebase
+        .todos()
+        .completed.today()
+        .listen(this.render);
+    }
   }
 }
 
 window.customElements.define('ha-completed', HaCompleted);
+
+/** @typedef {import('./lib/types').Todo} Todo */

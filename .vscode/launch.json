@@ -7,9 +7,17 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Chrome Debugger",
+      "name": "Chrome",
       "url": "http://localhost:5000",
       "webRoot": "${workspaceFolder}/src"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Blisk",
+      "url": "http://localhost:5000",
+      "webRoot": "${workspaceFolder}/src",
+      "runtimeExecutable": "C:\\Users\\selineri\\AppData\\Local\\Blisk\\Application\\blisk.exe"
     }
   ]
 }

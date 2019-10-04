@@ -32,7 +32,6 @@ const blur = (event) => {
 
 /**
  * @param {FocusEvent} event
- * @returns {any}
  */
 const focus = (event) => {
   const todo = getTodo(event.target);
@@ -60,28 +59,18 @@ const focus = (event) => {
 
 /**
  * @param {Todo} todo
- * @param {HTMLElement} element
+ * @returns {string}
  */
-export const render = (todo, element) => {
-  if (todo.completed !== (element.getAttribute('completed') || '')) element.setAttribute('completed', todo.completed);
-  element.querySelector('button').addEventListener('click', completedClick);
-  /* eslint-disable no-param-reassign */
-  /** @type {HTMLElement} */ (element.querySelector('ha-title')).innerText = todo.title;
-  element.querySelector('ha-date').setAttribute('value', todo.soft || '');
-  /* eslint-enable */
-  const detailsElem = element.querySelector('.details');
-  if (todo.tags) {
-    detailsElem.querySelectorAll('*:not(ha-date)').forEach((tagElem) => {
-      tagElem.remove();
-    });
-    todo.tags.forEach((t) => {
-      const tagElem = document.createElement('div');
-      tagElem.className = 'tag';
-      tagElem.innerText = t;
-      detailsElem.appendChild(tagElem);
-    });
-  }
-};
+export const render = (todo) => `
+  <ha-todo id="${todo.id}" ${todo.completed ? ' completed' : ''}>
+    <button></button>
+    <ha-title>${todo.title}</ha-title>
+    <div class="details">
+      <ha-date value="${todo.soft}"></ha-date>
+      ${todo.tags ? todo.tags.map((tag) => `<div class="tag">${tag}</div>`).join('') : ''}
+    </div>
+  </ha-todo>
+`;
 
 class HaTodo extends HTMLElement {
   static get observedAttributes() {
@@ -106,21 +95,15 @@ class HaTodo extends HTMLElement {
     else this.removeAttribute('completed');
   }
 
-  /**
-   * Render a particular todo
-   * WARNING: discards changes
-   *
-   * @param {Todo} todo
-   */
-  render(todo) {
-    render(todo, this);
-  }
-
   save() {
     /** @type {import('./ha-title').default} */
     const title = this.querySelector('ha-title');
     /** @type {HTMLInputElement} */
     const date = this.querySelector('ha-date');
+    // bail if firebase not set
+    // @ts-ignore
+    if (!window.firebase) return;
+    // save
     doc(this.id).update({
       title: title.innerText,
       soft: date.value,
@@ -138,6 +121,7 @@ class HaTodo extends HTMLElement {
   }
 
   connectedCallback() {
+    this.querySelector('button').addEventListener('click', completedClick);
     this.addEventListener('focusin', focus);
     this.addEventListener('focusout', focus);
     this.addEventListener('keydown', blur);

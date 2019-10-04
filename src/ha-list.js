@@ -1,9 +1,70 @@
 import * as firebaseReal from './lib/firebase.js';
-import { render } from './ha-todo.js';
+import { render as renderTodo } from './ha-todo.js';
+
+/**
+ * @param {Todo[]} todos
+ * @returns {string}
+ */
+const renderTodos = (todos) => todos.map(renderTodo).join('');
+
+/**
+ * @param {Todo[]} todos
+ * @returns {string} HTML
+ */
+export const renderList = (todos) => {
+  const contexts = todos.reduce(firebaseReal.contextReducer, {});
+  return Object.keys(contexts)
+    .map(
+      (context) => `
+    <ha-context><div context>${context}<button/></div></ha-context>
+    <div>${renderTodos(contexts[context])}</div>`,
+    )
+    .join('');
+};
+
+/**
+ * @param {Todo[]} todos
+ * @returns {string} HTML
+ */
+const renderWeek = (todos) => {
+  // create array of all contexts
+  const contexts = todos.reduce(
+    (arr, t) => (!arr.includes(t.context) ? arr.concat(t.context) : arr),
+    [],
+  );
+  contexts.push('no context');
+  const week = todos.reduce(firebaseReal.weekReducer, firebaseReal.week);
+  const mapped = Object.keys(week).reduce((obj, day) => {
+    const todosOnDay = week[day];
+    const todosByContext = todosOnDay.reduce(firebaseReal.contextReducer, {});
+    return ({ ...obj, [day]: todosByContext });
+  }, week);
+  return Object.keys(mapped)
+    .map(
+      (day, dayIndex) => `
+    <h2 class="text-heading2" style="grid-column: ${dayIndex + 1}">${day}</h2>
+    ${Object.keys(mapped[day])
+    .map(
+      (context) => `
+    <div class="text-subheading" style="
+      grid-column: ${dayIndex + 1};
+      grid-row: ${contexts.indexOf(context) * 2 + 2}
+    ">${context}</div>
+    <div style="
+      grid-column: ${dayIndex + 1};
+      grid-row: ${contexts.indexOf(context) * 2 + 3}
+    ">${renderTodos(mapped[day][context])}</div>
+    `,
+    )
+    .join('')}
+  `,
+    )
+    .join('');
+};
 
 export default class HaList extends HTMLElement {
   /**
-   * @param {typeof firebaseReal} firebaseMock
+   * @param {typeof firebaseReal} [firebaseMock]
    */
   constructor(firebaseMock) {
     super();
@@ -11,7 +72,7 @@ export default class HaList extends HTMLElement {
     this.render = this.render.bind(this);
     /** @type {() => any} */
     this.listener = undefined;
-    this.firebase = firebaseMock || firebaseReal;
+    this.firebase = typeof firebaseMock !== 'undefined' ? firebaseMock : firebaseReal;
   }
 
   get view() {
@@ -23,34 +84,10 @@ export default class HaList extends HTMLElement {
   }
 
   /**
-   * @param {import('./lib/types').Todo[]} todoArr
+   * @param {import('./lib/types').Todo[]} todos
    */
-  render(todoArr) {
-    const todoList = this.view === 'week'
-      ? todoArr.reduce(this.firebase.weekReducer, this.firebase.week)
-      : todoArr.reduce(this.firebase.contextReducer, {});
-    /** @type {HTMLTemplateElement} */
-    const template = this.ownerDocument.querySelector('template#ha-todo');
-    /** @type {HTMLTemplateElement} */
-    const contextTemplate = this.ownerDocument.querySelector('template#context');
-    this.innerHTML = '';
-
-    Object.keys(todoList).forEach((context) => {
-      // create context header
-      /** @type {DocumentFragment} */
-      const contextDoc = (contextTemplate.content.cloneNode(true));
-      const contextEl = contextDoc.querySelector('ha-context');
-      /** @type {HTMLDivElement} */ (contextEl.querySelector('[title]')).innerText = context;
-      // create todos
-      todoList[context].forEach((todo) => {
-        const todoDoc = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
-        const element = /** @type {HTMLElement} */ (todoDoc.querySelector('ha-todo'));
-        element.id = todo.id;
-        render(todo, element);
-        contextEl.appendChild(todoDoc);
-      });
-      this.appendChild(contextEl);
-    });
+  render(todos) {
+    this.innerHTML = this.view === 'week' ? renderWeek(todos) : renderList(todos);
   }
 
   /**
@@ -92,13 +129,19 @@ export default class HaList extends HTMLElement {
 
   async connectedCallback() {
     window.addEventListener('navigate', this.navigation);
-    await this.firebase.init();
-    this.listener = this.firebase
-      .todos()
-      .uncompleted()
-      .today()
-      .listen(this.render);
+    // only init and add listeners if firebase loaded (useful for design testing)
+    // @ts-ignore
+    if (window.firebase) {
+      await this.firebase.init();
+      this.listener = this.firebase
+        .todos()
+        .uncompleted()
+        .today()
+        .listen(this.render);
+    }
   }
 }
 
-window.customElements.define('ha-list', HaList);
+customElements.define('ha-list', HaList);
+
+/** @typedef {import('./lib/types').Todo} Todo */
