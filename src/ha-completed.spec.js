@@ -1,6 +1,8 @@
 import HaCompleted from './ha-completed.js';
 
-describe('ha-list', () => {
+window.customElements.define(HaCompleted.elementName, HaCompleted);
+
+describe('ha-completed', () => {
   const firebaseMock = {
     init: () => undefined,
     todos: () => {
@@ -30,17 +32,6 @@ describe('ha-list', () => {
       return todos;
     },
   };
-
-  beforeAll(() => {
-    const tmpl = document.createElement('template');
-    tmpl.id = 'ha-todo';
-    tmpl.innerHTML = `<ha-todo>
-      <button></button>
-      <ha-title></ha-title>
-      <ha-date></ha-date>
-    </ha-todo>`;
-    document.body.appendChild(tmpl);
-  });
 
   it('renders today at the start', async () => {
     // @ts-ignore

@@ -1,4 +1,4 @@
-class HaOverlay extends HTMLElement {
+export default class HaOverlay extends HTMLElement {
   static get observedAttributes() {
     return ['open'];
   }
@@ -39,7 +39,4 @@ class HaOverlay extends HTMLElement {
     this.addEventListener('keydown', this.onKey.bind(this));
   }
 }
-
-window.customElements.define('ha-overlay', HaOverlay);
-
-export default HaOverlay;
+HaOverlay.elementName = 'ha-overlay';

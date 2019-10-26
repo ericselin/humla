@@ -1,0 +1,38 @@
+ha-title {
+  width: 100%;
+  font-size: 1rem;
+  line-height: 1.2;
+  font-family: inherit;
+  background: none;
+  border: none;
+  resize: none;
+  overflow: hidden;
+  display: block;
+  cursor: text;
+}
+
+ha-title > div {
+  display: none;
+  min-height: 1.2em;
+}
+
+ha-title > div:first-child {
+  display: block;
+}
+
+ha-title[open] > div {
+  display: block;
+}
+
+ha-title:empty::before {
+  content: "New task...";
+  color: rgba(0, 0, 0, 0.3);
+}
+
+[loading] ha-title:empty::before {
+  content: "";
+}
+
+ha-title:focus {
+  outline: none;
+}

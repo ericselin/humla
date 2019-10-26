@@ -1,0 +1,44 @@
+ha-new {
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 0.2rem;
+  margin: auto;
+  width: 30rem;
+  max-width: calc(100% - 4rem);
+}
+
+ha-new h1 {
+  font-size: 1.25rem;
+  font-weight: 200;
+  text-align: center;
+}
+
+ha-new ha-title {
+  margin: 1rem 0;
+}
+
+ha-new > div {
+  text-align: right;
+}
+
+ha-new button {
+  background: #6991c7;
+  color: white;
+  border: 1px solid #6991c7;
+  padding: 0.5em 1em;
+  border-radius: 0.125rem;
+  cursor: pointer;
+}
+
+ha-new button:not(:last-of-type) {
+  background: white;
+  color: initial;
+  margin-right: 1rem;
+}
+
+ha-new button div {
+  margin-top: 0.125rem;
+  font-size: 0.625rem;
+  font-style: italic;
+}

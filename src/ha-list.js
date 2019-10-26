@@ -1,5 +1,5 @@
 import * as firebaseReal from './lib/firebase.js';
-import { render as renderTodo } from './ha-todo.js';
+import { render as renderTodo } from './todo/ha-todo.js';
 
 /**
  * @param {Todo[]} todos
@@ -26,7 +26,7 @@ export const renderList = (todos) => {
  * @param {Todo[]} todos
  * @returns {string} HTML
  */
-const renderWeek = (todos) => {
+export const renderWeek = (todos) => {
   // create array of all contexts
   const contexts = todos.reduce(
     (arr, t) => (!arr.includes(t.context) ? arr.concat(t.context) : arr),
@@ -37,7 +37,7 @@ const renderWeek = (todos) => {
   const mapped = Object.keys(week).reduce((obj, day) => {
     const todosOnDay = week[day];
     const todosByContext = todosOnDay.reduce(firebaseReal.contextReducer, {});
-    return ({ ...obj, [day]: todosByContext });
+    return { ...obj, [day]: todosByContext };
   }, week);
   return Object.keys(mapped)
     .map(
@@ -61,6 +61,18 @@ const renderWeek = (todos) => {
     )
     .join('');
 };
+
+/**
+ * @param {Todo[]} todos
+ * @param {string} [view]
+ * @returns {string}
+ */
+export const render = (todos, view) => `
+  <link rel="stylesheet" href="ha-list.css" />
+  <ha-list class="container week-list" view="${view || ''}">${
+  view === 'week' ? renderWeek(todos) : renderList(todos)
+}</ha-list>
+`;
 
 export default class HaList extends HTMLElement {
   /**
@@ -141,7 +153,6 @@ export default class HaList extends HTMLElement {
     }
   }
 }
-
-customElements.define('ha-list', HaList);
+HaList.elementName = 'ha-list';
 
 /** @typedef {import('./lib/types').Todo} Todo */

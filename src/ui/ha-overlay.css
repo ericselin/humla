@@ -1,0 +1,20 @@
+ha-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: none;
+}
+
+ha-overlay[open] {
+  display: flex;
+}
+
+ha-overlay-button {
+  display: inline-block;
+  cursor: pointer;
+  margin: 20px;
+  color: white;
+}

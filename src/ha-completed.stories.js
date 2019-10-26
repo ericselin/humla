@@ -1,7 +1,6 @@
 import { render } from './ha-completed.js';
-import './ha-date.js';
 
-export default { title: 'List' };
+export default { title: 'Completed' };
 
 export const regular = () => render([
   {

@@ -1,3 +1,59 @@
+@import 'ha-list.css';
+@import 'ha-context.css';
+@import 'ha-new.css';
+@import 'todo/ha-todo.css';
+@import 'todo/ha-title.css';
+@import 'ui/ha-link.css';
+@import 'ui/ha-overlay.css';
+
+.week-list[view="week"] [context] button {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .week-list[view="week"] {
+    max-width: unset;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+    margin: 0.5rem 0 2rem;
+  }
+
+  .week-list[view="week"]::before,
+  .week-list[view="week"]::after {
+    display: none;
+  }
+
+  .week-list[view="week"] ha-todo:not([open]) input {
+    display: none;
+  }
+
+  .week-list[view="week"] ha-todo {
+    grid-template-columns: min-content 1fr;
+    grid-auto-flow: row;
+    gap: 0;
+  }
+
+  .week-list[view="week"] ha-todo button {
+    margin-right: 0.5rem;
+  }
+
+  .week-list[view="week"] ha-todo .details {
+    grid-column: 2;
+    /* direction: ltr; */
+    text-align: left;
+    margin: 0;
+  }
+
+  .week-list[view="week"] ha-todo .details > * {
+    margin-top: 0.5rem;
+  }
+
+  ha-list[view="week"] {
+    grid-auto-flow: column;
+  }
+}
+
 html {
   min-height: 100%;
 }
@@ -84,248 +140,8 @@ button {
   margin-top: 2rem;
 }
 
-ha-list:empty::before {
-  background: center/100% content-box no-repeat url(icons/smile.svg);
-  height: 6rem;
-  filter: opacity(0.6);
-  margin: 3rem auto 1rem;
-  width: 6rem;
-  filter: invert(100%);
-}
-
-ha-list:empty::after {
-  content: "You're done - congratulations!";
-  margin: auto;
-  color: white;
-}
-
-ha-context > [context] {
-  font-weight: 200;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: white;
-  fill: white;
-  margin: 1.5rem 0 0.75rem;
-  display: grid;
-  grid-template-columns: 1fr min-content;
-  align-items: center;
-  min-height: 28px;
-}
-
-ha-context > [context] button {
-  width: 1.5rem;
-  height: 1.5rem;
-  content: " ";
-  background: center/100% content-box no-repeat url(icons/arrow-up.svg);
-  filter: invert(100%);
-}
-
-ha-context[closed] > [context] button {
-  background-image: url(icons/arrow-down.svg);
-}
-
-ha-context[closed] ha-todo {
-  display: none;
-}
-
-ha-todo .details {
-  direction: rtl;
-  margin: -0.125rem;
-}
-
-ha-date input {
-  font-size: 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 0.125rem;
-  padding: 0.25rem;
-  width: 6em;
-  text-align: center;
-  background: none;
-  font-family: inherit;
-  margin: 0.125rem;
-  direction: initial;
-}
-
-ha-todo .tag {
-  display: inline-block;
-  font-size: 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 0.125rem;
-  padding: 0.25rem;
-  background: #798caf;
-  line-height: 1;
-  color: white;
-  margin: 0.125rem;
-  direction: initial;
-}
-
 .air-top {
   margin-top: 4rem;
-}
-
-ha-todo {
-  padding: 0.4rem;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  margin-bottom: 0.2rem;
-  border-radius: 0.2rem;
-  display: grid;
-  gap: 0.5rem;
-  grid-template-columns: min-content minmax(0, 1fr) fit-content(35%);
-  grid-auto-flow: column;
-  align-items: center;
-  border-left: 0.2rem solid transparent;
-}
-
-ha-todo[loading] {
-  animation: todo-load 0.8s ease-in alternate infinite;
-}
-
-ha-todo[open] {
-  border-color: #132640;
-}
-
-@keyframes todo-load {
-  from {
-    background: rgba(255, 255, 255, 0.5);
-  }
-  to {
-    background: rgba(255, 255, 255, 0.35);
-  }
-}
-
-ha-todo[completed] {
-  background: none;
-  box-shadow: none;
-  text-decoration: line-through;
-}
-
-ha-todo[completed] .details {
-  display: none;
-}
-
-ha-todo button {
-  background: url(icons/unchecked.svg);
-  height: 1.5rem;
-  width: 1.5rem;
-  filter: opacity(0.6);
-}
-
-ha-todo[completed] button {
-  background: url(icons/checked.svg);
-}
-
-ha-title {
-  width: 100%;
-  font-size: 1rem;
-  line-height: 1.2;
-  font-family: inherit;
-  background: none;
-  border: none;
-  resize: none;
-  overflow: hidden;
-  display: block;
-  cursor: text;
-}
-
-ha-title > div {
-  display: none;
-  min-height: 1.2em;
-}
-
-ha-title > div:first-child {
-  display: block;
-}
-
-ha-title[open] > div {
-  display: block;
-}
-
-ha-title:empty::before {
-  content: "New task...";
-  color: rgba(0, 0, 0, 0.3);
-}
-
-[loading] ha-title:empty::before {
-  content: "";
-}
-
-ha-title:focus {
-  outline: none;
-}
-
-ha-link {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.week-list[view="week"] [context] button {
-  display: none;
-}
-
-@media (min-width: 1024px) {
-  .week-list[view="week"] {
-    max-width: unset;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.5rem;
-    margin: 0.5rem 0 2rem;
-  }
-
-  .week-list[view="week"]::before,
-  .week-list[view="week"]::after {
-    display: none;
-  }
-
-  .week-list[view="week"] ha-todo:not([open]) ha-date {
-    display: none;
-  }
-
-  .week-list[view="week"] ha-todo {
-    grid-template-columns: min-content 1fr;
-    grid-auto-flow: row;
-    gap: 0;
-  }
-
-  .week-list[view="week"] ha-todo button {
-    margin-right: 0.5rem;
-  }
-
-  .week-list[view="week"] ha-todo .details {
-    grid-column: 2;
-    /* direction: ltr; */
-    text-align: left;
-    margin: 0;
-  }
-
-  .week-list[view="week"] ha-todo .details > * {
-    margin-top: 0.5rem;
-  }
-
-  ha-list[view="week"] {
-    grid-auto-flow: column;
-  }
-}
-
-ha-overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.3);
-  display: none;
-}
-
-ha-overlay[open] {
-  display: flex;
-}
-
-ha-overlay-button {
-  display: inline-block;
-  cursor: pointer;
-  margin: 20px;
-  color: white;
 }
 
 .menu {
@@ -366,49 +182,4 @@ ha-overlay-button {
   flex: 1;
   border-top: none;
   padding: 0;
-}
-
-ha-new {
-  padding: 1rem;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  border-radius: 0.2rem;
-  margin: auto;
-  width: 30rem;
-  max-width: calc(100% - 4rem);
-}
-
-ha-new h1 {
-  font-size: 1.25rem;
-  font-weight: 200;
-  text-align: center;
-}
-
-ha-new ha-title {
-  margin: 1rem 0;
-}
-
-ha-new > div {
-  text-align: right;
-}
-
-ha-new button {
-  background: #6991c7;
-  color: white;
-  border: 1px solid #6991c7;
-  padding: 0.5em 1em;
-  border-radius: 0.125rem;
-  cursor: pointer;
-}
-
-ha-new button:not(:last-of-type) {
-  background: white;
-  color: initial;
-  margin-right: 1rem;
-}
-
-ha-new button div {
-  margin-top: 0.125rem;
-  font-size: 0.625rem;
-  font-style: italic;
 }

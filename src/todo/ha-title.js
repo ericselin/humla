@@ -1,6 +1,6 @@
 const formatTitle = (title) => (title ? title.replace(/^(.*)$/gm, '<div>$1</div>') : '');
 
-export default class Title extends HTMLElement {
+export default class HaTitle extends HTMLElement {
   static get observedAttributes() {
     return ['open'];
   }
@@ -39,5 +39,4 @@ export default class Title extends HTMLElement {
     this.role = 'input';
   }
 }
-
-window.customElements.define('ha-title', Title);
+HaTitle.elementName = 'ha-title';

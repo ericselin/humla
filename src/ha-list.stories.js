@@ -1,51 +1,42 @@
-import HaList from './ha-list.js';
-import './ha-date.js';
+import { render } from './ha-list.js';
 
 export default { title: 'List' };
 
-export const regular = () => {
-  const list = new HaList();
-  list.className = 'container week-list';
-  list.render([
-    {
-      context: '@work',
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
-    },
-    {
-      context: '@personal',
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
-    },
-    {
-      context: '@personal',
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
-    },
-    {
-      context: '@work',
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
-    },
-    {
-      context: '@work',
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
-    },
-  ]);
-  return list;
-};
+export const regular = () => render([
+  {
+    context: '@work',
+    completed: '',
+    title: 'For today',
+    soft: '2019-10-01',
+  },
+  {
+    context: '@personal',
+    completed: '',
+    title: 'For today',
+    soft: '2019-10-01',
+  },
+  {
+    context: '@personal',
+    completed: '',
+    title: 'For today',
+    soft: '2019-10-01',
+  },
+  {
+    context: '@work',
+    completed: '',
+    title: 'For today',
+    soft: '2019-10-01',
+  },
+  {
+    context: '@work',
+    completed: '',
+    title: 'For today',
+    soft: '2019-10-01',
+  },
+]);
 
-export const weekView = () => {
-  const list = new HaList();
-  list.view = 'week';
-  list.className = 'container week-list';
-  list.render([
+export const weekView = () => render(
+  [
     {
       context: '@work',
       completed: '',
@@ -99,9 +90,8 @@ export const weekView = () => {
       title: 'For today',
       soft: '2019-10-03',
     },
-  ]);
-  return list;
-};
+  ],
+  'week',
+);
 
-document.getElementById('root').appendChild(regular());
-document.getElementById('root').appendChild(weekView());
+export const empty = () => render([]);

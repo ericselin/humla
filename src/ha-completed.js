@@ -1,5 +1,5 @@
 import * as firebaseReal from './lib/firebase.js';
-import { render as renderTodo } from './ha-todo.js';
+import { render as renderTodo } from './todo/ha-todo.js';
 
 /**
  * @param {Todo[]} todos
@@ -99,7 +99,6 @@ export default class HaCompleted extends HTMLElement {
     }
   }
 }
-
-window.customElements.define('ha-completed', HaCompleted);
+HaCompleted.elementName = 'ha-completed';
 
 /** @typedef {import('./lib/types').Todo} Todo */

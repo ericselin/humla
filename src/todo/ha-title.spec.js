@@ -1,26 +1,28 @@
-import Title from './ha-title.js';
+import HaTitle from './ha-title.js';
+
+window.customElements.define(HaTitle.elementName, HaTitle);
 
 describe('ha-title', () => {
   it('returns correctly with text nodes', () => {
-    const t = new Title();
+    const t = new HaTitle();
     t.innerHTML = 'line 1<div>line 2</div>';
     expect(t.innerText).toBe('line 1\nline 2');
   });
 
   it('returns correctly with line breaks', () => {
-    const t = new Title();
+    const t = new HaTitle();
     t.innerHTML = '<div>line 1</div>\n<div>line 2</div>';
     expect(t.innerText).toBe('line 1\nline 2');
   });
 
   it('returns correctly with line breaks', () => {
-    const t = new Title();
+    const t = new HaTitle();
     t.innerHTML = '<div>moi there</div>\n<div>there</div><div><br></div>\n<div>here</div>';
     expect(t.innerText).toBe('moi there\nthere\n\nhere');
   });
 
   it('builds correctly from innerText', () => {
-    const t = new Title();
+    const t = new HaTitle();
     t.innerText = 'moi\nline 2\n\nline 4';
     expect(t.innerHTML).toBe('<div>moi</div>\n<div>line 2</div>\n<div></div>\n<div>line 4</div>');
   });

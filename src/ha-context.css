@@ -1,0 +1,28 @@
+ha-context > [context] {
+  font-weight: 200;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: white;
+  fill: white;
+  margin: 1.5rem 0 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  align-items: center;
+  min-height: 28px;
+}
+
+ha-context > [context] button {
+  width: 1.5rem;
+  height: 1.5rem;
+  content: " ";
+  background: center/100% content-box no-repeat url(icons/arrow-up.svg);
+  filter: invert(100%);
+}
+
+ha-context[closed] > [context] button {
+  background-image: url(icons/arrow-down.svg);
+}
+
+ha-context[closed] + div {
+  display: none;
+}

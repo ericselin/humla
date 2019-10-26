@@ -65,5 +65,4 @@ export default class HaTags extends HTMLElement {
     this.listener();
   }
 }
-
-window.customElements.define('ha-tags', HaTags);
+HaTags.elementName = 'ha-tags';

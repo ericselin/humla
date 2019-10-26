@@ -12,7 +12,7 @@ const popstate = (event) => {
   window.dispatchEvent(new CustomEvent('navigate', { detail: event.state }));
 };
 
-class HaLink extends HTMLElement {
+export default class HaLink extends HTMLElement {
   static get observedAttributes() {
     return ['path'];
   }
@@ -39,5 +39,4 @@ class HaLink extends HTMLElement {
     }
   }
 }
-
-window.customElements.define('ha-link', HaLink);
+HaLink.elementName = 'ha-link';

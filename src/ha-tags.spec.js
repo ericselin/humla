@@ -1,6 +1,8 @@
 import HaTags from './ha-tags.js';
 
-describe('ha-title', () => {
+window.customElements.define(HaTags.elementName, HaTags);
+
+describe('ha-tags', () => {
   /** @type {import('./lib/firebase').Todo[]} */
   const todoArr = [
     // @ts-ignore

@@ -1,5 +1,4 @@
 import { render } from './ha-todo.js';
-import './ha-date.js';
 import './ha-title.js';
 
 export default { title: 'Todo' };

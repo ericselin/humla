@@ -1,5 +1,5 @@
-import { doc } from './lib/firebase.js';
-import { today } from './lib/date.js';
+import { doc } from '../lib/firebase.js';
+import { today, getDate } from '../lib/date.js';
 
 /**
  * @param {EventTarget} target
@@ -66,13 +66,13 @@ export const render = (todo) => `
     <button></button>
     <ha-title>${todo.title}</ha-title>
     <div class="details">
-      <ha-date value="${todo.soft}"></ha-date>
+      <input placeholder="No date..." value="${todo.soft}" />
       ${todo.tags ? todo.tags.map((tag) => `<div class="tag">${tag}</div>`).join('') : ''}
     </div>
   </ha-todo>
 `;
 
-class HaTodo extends HTMLElement {
+export default class HaTodo extends HTMLElement {
   static get observedAttributes() {
     return ['open'];
   }
@@ -99,7 +99,7 @@ class HaTodo extends HTMLElement {
     /** @type {import('./ha-title').default} */
     const title = this.querySelector('ha-title');
     /** @type {HTMLInputElement} */
-    const date = this.querySelector('ha-date');
+    const date = this.querySelector('input');
     // bail if firebase not set
     // @ts-ignore
     if (!window.firebase) return;
@@ -125,11 +125,18 @@ class HaTodo extends HTMLElement {
     this.addEventListener('focusin', focus);
     this.addEventListener('focusout', focus);
     this.addEventListener('keydown', blur);
+    const dateInput = this.querySelector('input');
+    // on week view, we don't have an input, so check it exists
+    if (dateInput) {
+      dateInput.addEventListener('focus', function dateFocus() {
+        this.select();
+      });
+      dateInput.addEventListener('blur', function dateBlur() {
+        this.value = getDate(this.value);
+      });
+    }
   }
 }
+HaTodo.elementName = 'ha-todo';
 
-window.customElements.define('ha-todo', HaTodo);
-
-export default HaTodo;
-
-/** @typedef {import('./lib/types').Todo} Todo */
+/** @typedef {import('../lib/types').Todo} Todo */
