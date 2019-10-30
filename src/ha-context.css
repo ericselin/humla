@@ -1,4 +1,4 @@
-ha-context > [context] {
+ha-context {
   font-weight: 200;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -11,7 +11,7 @@ ha-context > [context] {
   min-height: 28px;
 }
 
-ha-context > [context] button {
+ha-context > button {
   width: 1.5rem;
   height: 1.5rem;
   content: " ";
@@ -19,7 +19,7 @@ ha-context > [context] button {
   filter: invert(100%);
 }
 
-ha-context[closed] > [context] button {
+ha-context[closed] > button {
   background-image: url(icons/arrow-down.svg);
 }
 

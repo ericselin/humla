@@ -16,7 +16,7 @@ export const renderList = (todos) => {
   return Object.keys(contexts)
     .map(
       (context) => `
-    <ha-context><div context>${context}<button/></div></ha-context>
+    <ha-context>${context}<button></button></ha-context>
     <div>${renderTodos(contexts[context])}</div>`,
     )
     .join('');
