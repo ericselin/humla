@@ -4,13 +4,16 @@ import processTitle from './keywords.js';
 /** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
 /** @typedef {import('@firebase/auth')} FirebaseAuth */
 /** @typedef {import('@firebase/firestore')} FirebaseFirestore */
+/** @typedef {import('@firebase/remote-config')} FirebaseRemoteConfig */
 
 /** @type {FirebaseNamespace} */
 // @ts-ignore
 // eslint-disable-next-line prefer-destructuring
 const firebase = window.firebase;
+export const remoteConfig = firebase && firebase.remoteConfig();
 
 let settings;
+let initPromise;
 
 const getSettings = () => {
   const { uid } = firebase.auth().currentUser;
@@ -27,22 +30,34 @@ const getSettings = () => {
     });
 };
 
-export const init = () => new Promise((resolve, reject) => {
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      resolve(`${user.email} signed in`);
-      getSettings();
-    } else {
-      reject(new Error('User signed out, trying to sign in now'));
-      const authProvider = new firebase.auth.GoogleAuthProvider();
-      if (window.innerWidth <= 768) {
-        firebase.auth().signInWithRedirect(authProvider);
+// eslint-disable-next-line no-return-assign
+export const init = () => initPromise
+  || (initPromise = new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        remoteConfig.settings = {
+          fetchTimeoutMillis: 60000,
+          minimumFetchIntervalMillis: 60000,
+        };
+        remoteConfig
+          .fetchAndActivate()
+          .then(() => {
+            console.log('Remote config:', remoteConfig.getAll());
+            resolve(`${user.email} signed in`);
+          })
+          .catch(reject);
+        getSettings();
       } else {
-        firebase.auth().signInWithPopup(authProvider);
+        reject(new Error('User signed out, trying to sign in now'));
+        const authProvider = new firebase.auth.GoogleAuthProvider();
+        if (window.innerWidth <= 768) {
+          firebase.auth().signInWithRedirect(authProvider);
+        } else {
+          firebase.auth().signInWithPopup(authProvider);
+        }
       }
-    }
-  });
-});
+    });
+  }));
 
 /**
  * @param {Todo} a
@@ -58,9 +73,9 @@ export const todoSorter = (a, b) => {
 };
 
 /**
- * @param {Object<string, Todo[]>} obj
+ * @param {{[id: string]: Todo[]}} obj
  * @param {Todo} t
- * @returns {Object<string, Todo[]>}
+ * @returns {{[id: string]: Todo[]}}
  */
 export const contextReducer = (obj, t) => {
   /* eslint-disable no-param-reassign */

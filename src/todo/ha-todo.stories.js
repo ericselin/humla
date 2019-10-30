@@ -25,12 +25,10 @@ export const withTags = () => render({
   tags: ['#dev', '#difficult'],
 });
 
-/**
- * @param {Array<() => string>} builders
- */
-const attach = (builders) => {
-  const root = document.getElementById('root');
-  root.innerHTML = builders.map((b) => b()).join('');
-};
-
-attach([basic, completed, withTags]);
+export const meeting = () => render({
+  context: 'meetings',
+  completed: '',
+  title: 'This is a meeting',
+  soft: '11:00',
+  type: 'meeting',
+});

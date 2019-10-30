@@ -70,5 +70,3 @@ export const weekView = () => render(
   ],
   'week',
 );
-
-document.getElementById('root').innerHTML = [regular(), weekView()].join('');

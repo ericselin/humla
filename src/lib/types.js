@@ -7,6 +7,7 @@
  * @property {string[]} [tags]
  * @property {boolean} [project]
  * @property {string} [id]
+ * @property {string} [type]
  */
 
 exports.Todo = undefined;

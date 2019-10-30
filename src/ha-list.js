@@ -1,5 +1,6 @@
 import * as firebaseReal from './lib/firebase.js';
 import { render as renderTodo } from './todo/ha-todo.js';
+import meetings, { init } from './lib/meetings.js';
 
 /**
  * @param {Todo[]} todos
@@ -68,7 +69,6 @@ export const renderWeek = (todos) => {
  * @returns {string}
  */
 export const render = (todos, view) => `
-  <link rel="stylesheet" href="ha-list.css" />
   <ha-list class="container week-list" view="${view || ''}">${
   view === 'week' ? renderWeek(todos) : renderList(todos)
 }</ha-list>
@@ -98,7 +98,11 @@ export default class HaList extends HTMLElement {
   /**
    * @param {import('./lib/types').Todo[]} todos
    */
-  render(todos) {
+  async render(todos) {
+    if (this.firebase.remoteConfig.getBoolean('meetings') && this.view === 'today') {
+      const meets = await meetings.today();
+      Array.prototype.unshift.apply(todos, meets);
+    }
     this.innerHTML = this.view === 'week' ? renderWeek(todos) : renderList(todos);
   }
 
@@ -145,11 +149,17 @@ export default class HaList extends HTMLElement {
     // @ts-ignore
     if (window.firebase) {
       await this.firebase.init();
+      this.view = 'today';
       this.listener = this.firebase
         .todos()
         .uncompleted()
         .today()
         .listen(this.render);
+
+      // init meetings
+      if (this.firebase.remoteConfig.getBoolean('meetings')) {
+        await init();
+      }
     }
   }
 }
