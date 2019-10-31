@@ -1,6 +1,5 @@
 import * as firebaseReal from './lib/firebase.js';
 import { render as renderTodo } from './todo/ha-todo.js';
-import meetings, { init } from './lib/meetings.js';
 
 /**
  * @param {Todo[]} todos
@@ -64,14 +63,21 @@ export const renderWeek = (todos) => {
 };
 
 /**
- * @param {Todo[]} todos
- * @param {string} [view]
+ * @param {Todo[]} todos Array of todos (meetings are todos)
+ * @param {string} [view] View (i.e. is this week view)
+ * @returns {string}
+ */
+export const renderInner = (todos, view) => (view === 'week' ? renderWeek(todos) : renderList(todos));
+
+/**
+ * @param {Todo[]} todos Array of todos (meetings are todos)
+ * @param {string} [view] View (i.e. is this week view)
  * @returns {string}
  */
 export const render = (todos, view) => `
-  <ha-list class="container week-list" view="${view || ''}">${
-  view === 'week' ? renderWeek(todos) : renderList(todos)
-}</ha-list>
+  <ha-list class="container week-list" view="${view || ''}">
+    ${renderInner(todos, view)}
+  </ha-list>
 `;
 
 export default class HaList extends HTMLElement {
@@ -99,11 +105,7 @@ export default class HaList extends HTMLElement {
    * @param {import('./lib/types').Todo[]} todos
    */
   async render(todos) {
-    if (this.firebase.remoteConfig.getBoolean('meetings') && this.view === 'today') {
-      const meets = await meetings.today();
-      Array.prototype.unshift.apply(todos, meets);
-    }
-    this.innerHTML = this.view === 'week' ? renderWeek(todos) : renderList(todos);
+    this.innerHTML = renderInner(todos, this.view);
   }
 
   /**
@@ -155,11 +157,6 @@ export default class HaList extends HTMLElement {
         .uncompleted()
         .today()
         .listen(this.render);
-
-      // init meetings
-      if (this.firebase.remoteConfig.getBoolean('meetings')) {
-        await init();
-      }
     }
   }
 }

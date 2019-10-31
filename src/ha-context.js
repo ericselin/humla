@@ -9,9 +9,12 @@ export default class HaContext extends HTMLElement {
   }
 
   connectedCallback() {
-    this.querySelector('button').addEventListener('click', () => {
-      this.closed = !this.closed;
-    });
+    const btn = this.querySelector('button');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        this.closed = !this.closed;
+      });
+    }
   }
 }
 HaContext.elementName = 'ha-context';

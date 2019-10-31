@@ -2,7 +2,7 @@ import { render } from './ha-list.js';
 
 export default { title: 'List' };
 
-export const regular = () => render([
+const todos = [
   {
     context: '@work',
     completed: '',
@@ -33,65 +33,47 @@ export const regular = () => render([
     title: 'For today',
     soft: '2019-10-01',
   },
-]);
+  {
+    context: '@work',
+    completed: '',
+    title: 'Working during the weekend?',
+    soft: '2019-10-04',
+  },
+  {
+    context: '@personal',
+    completed: '',
+    title: 'Weekend task',
+    soft: '2019-10-05',
+  },
+  {
+    context: '@personal',
+    completed: '',
+    title: 'For today',
+    soft: '2019-09-01',
+  },
+  {
+    completed: '',
+    title: 'For today',
+    soft: '2019-10-03',
+  },
+];
 
-export const weekView = () => render(
+export const regular = () => render(todos);
+
+export const weekView = () => render(todos, 'week');
+
+export const withMeetings = () => render(
   [
     {
-      context: '@work',
+      context: 'meetings',
       completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
+      title: 'This is a meeting',
+      soft: '11:00',
+      type: 'meeting',
     },
-    {
-      context: '@personal',
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
-    },
-    {
-      context: '@personal',
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
-    },
-    {
-      context: '@work',
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
-    },
-    {
-      context: '@work',
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-01',
-    },
-    {
-      context: '@work',
-      completed: '',
-      title: 'Working during the weekend?',
-      soft: '2019-10-04',
-    },
-    {
-      context: '@personal',
-      completed: '',
-      title: 'Weekend task',
-      soft: '2019-10-05',
-    },
-    {
-      context: '@personal',
-      completed: '',
-      title: 'For today',
-      soft: '2019-09-01',
-    },
-    {
-      completed: '',
-      title: 'For today',
-      soft: '2019-10-03',
-    },
+    ...todos,
   ],
-  'week',
+  'today',
 );
 
 export const empty = () => render([]);

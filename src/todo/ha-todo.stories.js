@@ -24,11 +24,3 @@ export const withTags = () => render({
   soft: '2019-10-01',
   tags: ['#dev', '#difficult'],
 });
-
-export const meeting = () => render({
-  context: 'meetings',
-  completed: '',
-  title: 'This is a meeting',
-  soft: '11:00',
-  type: 'meeting',
-});

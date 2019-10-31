@@ -10,10 +10,23 @@ import processTitle from './keywords.js';
 // @ts-ignore
 // eslint-disable-next-line prefer-destructuring
 const firebase = window.firebase;
-export const remoteConfig = firebase && firebase.remoteConfig();
+const remoteConfig = firebase && firebase.remoteConfig();
 
 let settings;
 let initPromise;
+let remoteConfigPromise;
+
+export const getConfig = async (name) => {
+  if (!remoteConfigPromise) {
+    remoteConfig.settings = {
+      fetchTimeoutMillis: 60000,
+      minimumFetchIntervalMillis: 60000,
+    };
+    remoteConfigPromise = remoteConfig.fetchAndActivate();
+  }
+  await remoteConfigPromise;
+  return remoteConfig.getBoolean(name);
+};
 
 const getSettings = () => {
   const { uid } = firebase.auth().currentUser;
@@ -35,17 +48,7 @@ export const init = () => initPromise
   || (initPromise = new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        remoteConfig.settings = {
-          fetchTimeoutMillis: 60000,
-          minimumFetchIntervalMillis: 60000,
-        };
-        remoteConfig
-          .fetchAndActivate()
-          .then(() => {
-            console.log('Remote config:', remoteConfig.getAll());
-            resolve(`${user.email} signed in`);
-          })
-          .catch(reject);
+        resolve(`${user.email} signed in`);
         getSettings();
       } else {
         reject(new Error('User signed out, trying to sign in now'));

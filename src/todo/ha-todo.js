@@ -1,18 +1,12 @@
 import { doc } from '../lib/firebase.js';
 import { today, getDate } from '../lib/date.js';
 
-const renderMeeting = (todo) => `
-<ha-todo ${todo.completed ? ' completed' : ''} type=${todo.type || 'todo'}>
-  <div></div>
-  <div>${todo.title}</div>
-  <div class="details">
-    <input placeholder="All day" value="${todo.soft}" disabled />
-  </div>
-</ha-todo>
-`;
-
-const renderTodo = (todo) => `
-<ha-todo id="${todo.id}" ${todo.completed ? ' completed' : ''} type=${todo.type || 'todo'}>
+/**
+ * @param {Todo} todo
+ * @returns {string}
+ */
+export const render = (todo) => `
+<ha-todo id="${todo.id}" ${todo.completed ? ' completed' : ''}>
   <button></button>
   <ha-title>${todo.title}</ha-title>
   <div class="details">
@@ -21,19 +15,6 @@ const renderTodo = (todo) => `
   </div>
 </ha-todo>
 `;
-
-/**
- * @param {Todo} todo
- * @returns {string}
- */
-export const render = (todo) => {
-  switch (todo.type) {
-    case 'meeting':
-      return renderMeeting(todo);
-    default:
-      return renderTodo(todo);
-  }
-};
 
 /**
  * @param {EventTarget} target
