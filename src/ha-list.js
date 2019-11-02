@@ -119,7 +119,7 @@ export default class HaList extends HTMLElement {
   /**
    * @param {CustomEvent} evt
    */
-  navigation(evt) {
+  async navigation(evt) {
     if (this.listener) this.listener();
     const [, view, search] = evt.detail.path.split('/');
     this.view = view;
@@ -132,13 +132,13 @@ export default class HaList extends HTMLElement {
         [view]()
         .listen(this.render);
     } else if (search) {
-      this.listener = this.firebase
+      this.listener = await this.firebase
         .todos()
         .uncompleted()
         .search(search)
         .listen(this.render);
     } else {
-      this.listener = this.firebase
+      this.listener = await this.firebase
         .todos()
         .uncompleted()
         .listen(this.render);
@@ -147,17 +147,12 @@ export default class HaList extends HTMLElement {
 
   async connectedCallback() {
     window.addEventListener('navigate', this.navigation);
-    // only init and add listeners if firebase loaded (useful for design testing)
-    // @ts-ignore
-    if (window.firebase) {
-      await this.firebase.init();
-      this.view = 'today';
-      this.listener = this.firebase
-        .todos()
-        .uncompleted()
-        .today()
-        .listen(this.render);
-    }
+    this.view = 'today';
+    this.listener = await this.firebase
+      .todos()
+      .uncompleted()
+      .today()
+      .listen(this.render);
   }
 }
 HaList.elementName = 'ha-list';

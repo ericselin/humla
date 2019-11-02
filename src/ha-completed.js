@@ -63,20 +63,20 @@ export default class HaCompleted extends HTMLElement {
   /**
    * @param {CustomEvent} evt
    */
-  navigator(evt) {
+  async navigator(evt) {
     // unsubscribe if subscribed
     if (this.listener) this.listener();
     const [, view] = evt.detail.path.split('/');
     this.view = view;
     switch (view) {
       case 'today':
-        this.listener = this.firebase
+        this.listener = await this.firebase
           .todos()
           .completed.today()
           .listen(this.render);
         break;
       case 'week':
-        this.listener = this.firebase
+        this.listener = await this.firebase
           .todos()
           .completed.week()
           .listen(this.render);
@@ -89,14 +89,10 @@ export default class HaCompleted extends HTMLElement {
 
   async connectedCallback() {
     this.window.addEventListener('navigate', this.navigator);
-    // @ts-ignore
-    if (this.window.firebase) {
-      await this.firebase.init();
-      this.listener = this.firebase
-        .todos()
-        .completed.today()
-        .listen(this.render);
-    }
+    this.listener = await this.firebase
+      .todos()
+      .completed.today()
+      .listen(this.render);
   }
 }
 HaCompleted.elementName = 'ha-completed';

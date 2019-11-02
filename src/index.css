@@ -160,6 +160,10 @@ button {
   text-transform: uppercase;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .container {
   padding: 0 1.25rem;
   margin: auto;
@@ -209,4 +213,29 @@ button {
   flex: 1;
   border-top: none;
   padding: 0;
+}
+
+.popup {
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 0.2rem;
+  margin: auto;
+  width: 30rem;
+  max-width: calc(100% - 4rem);
+}
+
+.popup h1 {
+  font-size: 1.25rem;
+  font-weight: 200;
+  text-align: center;
+}
+
+.button {
+  background: #6991c7;
+  color: white;
+  border: 1px solid #6991c7;
+  padding: 0.5em 1em;
+  border-radius: 0.125rem;
+  cursor: pointer;
 }

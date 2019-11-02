@@ -46,7 +46,7 @@
     </header>
     <ha-meetings class="container"></ha-meetings>
     <ha-list class="container week-list">
-      <ha-context></ha-context>
+      <ha-context>Todos</ha-context>
       <ha-todo loading>
         <button></button>
         <ha-title></ha-title>
@@ -60,6 +60,15 @@
         <ha-title></ha-title>
       </ha-todo>
     </ha-list>
+    <ha-overlay modal id="login">
+      <ha-login class="popup text-center">
+        <h1>Login</h1>
+        <p>
+          Please sign in to edit your todos!
+        </p>
+        <button class="button">Sign In with Google</button>
+      </ha-login>
+    </ha-overlay>
     <ha-completed class="container week-list air-top"></ha-completed>
     <ha-overlay id="menu">
       <aside class="menu">

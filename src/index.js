@@ -1,4 +1,3 @@
-import { getConfig } from './lib/firebase.js';
 import HaList from './ha-list.js';
 import HaCompleted from './ha-completed.js';
 import HaLink from './ui/ha-link.js';
@@ -11,6 +10,7 @@ import HaTags from './ha-tags.js';
 import HaTitle from './todo/ha-title.js';
 import HaTodo from './todo/ha-todo.js';
 import HaMeetings from './ha-meetings.js';
+import HaLogin from './ui/ha-login.js';
 
 customElements.define(HaList.elementName, HaList);
 customElements.define(HaCompleted.elementName, HaCompleted);
@@ -23,6 +23,25 @@ customElements.define(HaOverlayButton.elementName, HaOverlayButton);
 customElements.define(HaTags.elementName, HaTags);
 customElements.define(HaTitle.elementName, HaTitle);
 customElements.define(HaTodo.elementName, HaTodo);
-getConfig('meetings').then((activated) => {
-  if (activated) customElements.define(HaMeetings.elementName, HaMeetings);
+customElements.define(HaLogin.elementName, HaLogin);
+
+/** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
+/** @typedef {import('@firebase/auth')} FirebaseAuth */
+/** @typedef {import('@firebase/firestore')} FirebaseFirestore */
+/** @typedef {import('@firebase/remote-config')} FirebaseRemoteConfig */
+
+/** @type {FirebaseNamespace} */
+// @ts-ignore
+// eslint-disable-next-line prefer-destructuring
+const firebase = window.firebase;
+const remoteConfig = firebase.remoteConfig();
+
+remoteConfig.settings = {
+  fetchTimeoutMillis: 60000,
+  minimumFetchIntervalMillis: 60000,
+};
+remoteConfig.fetchAndActivate().then(() => {
+  if (remoteConfig.getBoolean('meetings')) {
+    customElements.define(HaMeetings.elementName, HaMeetings);
+  }
 });

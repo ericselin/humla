@@ -12,6 +12,15 @@ export default class HaOverlay extends HTMLElement {
     else this.removeAttribute('open');
   }
 
+  get modal() {
+    return this.hasAttribute('modal');
+  }
+
+  set modal(val) {
+    if (val) this.setAttribute('modal', '');
+    else this.removeAttribute('modal');
+  }
+
   attributeChangedCallback(name) {
     if (name === 'open' && this.open) {
       // focus if attribute set on a child
@@ -27,11 +36,11 @@ export default class HaOverlay extends HTMLElement {
   closing(e) {
     /** @type {HTMLElement} */
     const t = (e.target);
-    if (t === e.currentTarget || t.tagName === 'HA-LINK') this.open = false;
+    if (!this.modal && (t === e.currentTarget || t.tagName === 'HA-LINK')) this.open = false;
   }
 
   onKey(e) {
-    if (e.key === 'Escape') this.open = false;
+    if (!this.modal && e.key === 'Escape') this.open = false;
   }
 
   connectedCallback() {

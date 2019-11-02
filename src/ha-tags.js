@@ -1,14 +1,15 @@
-import { todos, init } from './lib/firebase.js';
+import { todos } from './lib/firebase.js';
+import auth from './lib/auth.js';
 
 export default class HaTags extends HTMLElement {
   /**
    * @param {typeof todos} t
-   * @param {typeof init} w
+   * @param {typeof auth} w
    */
   constructor(t, w) {
     super();
     this.todos = t || todos;
-    this.waitForAuth = w || init;
+    this.waitForAuth = w || auth;
   }
 
   /**
@@ -56,7 +57,7 @@ export default class HaTags extends HTMLElement {
 
   async connectedCallback() {
     await this.waitForAuth();
-    this.listener = this.todos()
+    this.listener = await this.todos()
       .uncompleted()
       .listen(this.render.bind(this));
   }

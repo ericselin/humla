@@ -33,7 +33,7 @@ describe('ha-tags', () => {
     uncompleted() {
       return this;
     },
-    listen(cb) {
+    async listen(cb) {
       listening = true;
       cb(todoArr);
       return () => {
