@@ -125,7 +125,7 @@ export default class HaList extends HTMLElement {
     this.view = view;
     const views = ['today', 'week', 'later', 'someday', 'unprocessed'];
     if (views.includes(view)) {
-      this.listener = this.firebase
+      this.listener = await this.firebase
         .todos()
         .uncompleted()
         // eslint-disable-next-line no-unexpected-multiline

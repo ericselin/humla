@@ -1,14 +1,17 @@
 ha-list:empty::before {
   background: center/100% content-box no-repeat url(icons/smile.svg);
   height: 6rem;
-  filter: opacity(0.6);
-  margin: 3rem auto 1rem;
   width: 6rem;
+  margin: 3rem auto 1rem;
   filter: invert(100%);
+  display: block;
+  content: ' ';
 }
 
 ha-list:empty::after {
   content: "You're done - congratulations!";
   margin: auto;
   color: white;
+  text-align: center;
+  display: block;
 }
