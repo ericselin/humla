@@ -75,9 +75,7 @@ export const renderInner = (todos, view) => (view === 'week' ? renderWeek(todos)
  * @returns {string}
  */
 export const render = (todos, view) => `
-  <ha-list class="container week-list" view="${view || ''}">
-    ${renderInner(todos, view)}
-  </ha-list>
+  <ha-list class="container week-list" view="${view || ''}">${renderInner(todos, view)}</ha-list>
 `;
 
 export default class HaList extends HTMLElement {

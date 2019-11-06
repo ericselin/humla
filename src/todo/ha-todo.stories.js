@@ -24,3 +24,11 @@ export const withTags = () => render({
   soft: '2019-10-01',
   tags: ['#dev', '#difficult'],
 });
+
+export const project = () => render({
+  context: '@personal',
+  completed: '',
+  title: 'Get things done / do next thing',
+  soft: '2019-10-01',
+  project: true,
+});

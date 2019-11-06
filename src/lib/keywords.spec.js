@@ -1,4 +1,4 @@
-import processTitle from './keywords.js';
+import processTitle, { projectMatch } from './keywords.js';
 
 describe('title processing', () => {
   it('returns tags', () => {
@@ -30,5 +30,16 @@ describe('title processing', () => {
     const results = processTitle('task due !3.5');
     expect(results.soft).toBe('2019-05-03');
     expect(results.title).toBe('task due ');
+  });
+});
+
+describe('project matcher', () => {
+  it('works with simple project', () => {
+    const match = projectMatch('this is / a project\nwith some tasks');
+    expect(match).toEqual({
+      firstLine: 'this is / a project',
+      nextAndFollowingStep: 'a project\nwith some tasks',
+      followingStep: 'with some tasks',
+    });
   });
 });

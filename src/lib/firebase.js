@@ -1,5 +1,5 @@
 import { today, sunday, thisMonday } from './date.js';
-import processTitle from './keywords.js';
+import processTitle, { projectMatch } from './keywords.js';
 import auth from './auth.js';
 
 /** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
@@ -13,7 +13,14 @@ import auth from './auth.js';
 const firebase = window.firebase;
 const remoteConfig = firebase && firebase.remoteConfig();
 
-export const getConfig = (name) => remoteConfig.getBoolean(name);
+/**
+ * Get remote config flag
+ * (Always returns true if remote config not available.)
+ *
+ * @param {string} name Remote config name
+ * @returns {boolean}
+ */
+export const getConfig = (name) => (remoteConfig ? remoteConfig.getBoolean(name) : true);
 
 /**
  * @param {Todo} a
@@ -186,15 +193,19 @@ export const getUpdates = (todo, projects = getConfig('projects')) => {
     update: { ...todo, ...processTitle(todo.title) },
   };
 
-  const project = /^.+ \/ (.+\n([^ \n@].*))/;
-  if (todo.completed && projects && project.test(updates.update.title)) {
-    const match = updates.update.title.match(project);
-    updates.add = {
-      ...updates.update,
-      title: updates.update.title.match(/(.*)\n/)[1],
-    };
-    updates.update.title = updates.update.title.replace(match[1], match[2]);
-    updates.update.completed = '';
+  if (projects) {
+    const match = projectMatch(updates.update.title);
+    if (todo.completed && match) {
+      updates.add = {
+        ...updates.update,
+        title: match.firstLine,
+      };
+      updates.update.title = updates.update.title.replace(
+        match.nextAndFollowingStep,
+        match.followingStep,
+      );
+      updates.update.completed = '';
+    }
   }
   return updates;
 };

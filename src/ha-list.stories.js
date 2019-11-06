@@ -8,12 +8,15 @@ const todos = [
     completed: '',
     title: 'For today',
     soft: '2019-10-01',
+    tags: ['#tag'],
   },
   {
     context: '@personal',
     completed: '',
     title: 'For today',
     soft: '2019-10-01',
+    project: true,
+    tags: ['#tag'],
   },
   {
     context: '@personal',
@@ -26,6 +29,7 @@ const todos = [
     completed: '',
     title: 'For today',
     soft: '2019-10-01',
+    tags: ['#tag', '#another'],
   },
   {
     context: '@work',

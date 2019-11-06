@@ -35,11 +35,15 @@ ha-todo .tag {
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 0.125rem;
   padding: 0.25rem;
-  background: #798caf;
+  background: hsl(219, 25%, 58%);
   line-height: 1;
   color: white;
   margin: 0.125rem;
   direction: initial;
+}
+
+ha-todo .tag--project {
+  background: hsl(219, 35%, 48%);;
 }
 
 ha-todo[loading] {

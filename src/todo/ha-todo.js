@@ -1,4 +1,4 @@
-import { doc } from '../lib/firebase.js';
+import { doc, getConfig } from '../lib/firebase.js';
 import { today, getDate } from '../lib/date.js';
 
 /**
@@ -11,6 +11,7 @@ export const render = (todo) => `
   <ha-title>${todo.title}</ha-title>
   <div class="details">
     <input placeholder="No date..." value="${todo.soft}" />
+    ${getConfig('projects') && todo.project ? '<div class="tag tag--project">Project</div>' : ''}
     ${todo.tags ? todo.tags.map((tag) => `<div class="tag">${tag}</div>`).join('') : ''}
   </div>
 </ha-todo>

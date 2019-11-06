@@ -2,6 +2,22 @@ import { getDate } from './date.js';
 
 /**
  * @param {string} title
+ * @returns {{ firstLine: string, nextAndFollowingStep: string, followingStep: string }}
+ */
+export const projectMatch = (title) => {
+  const match = title.match(/^.+ \/ (.+\n([^ \n@].*))/);
+  if (match) {
+    return {
+      firstLine: title.match(/(.*)\n/)[1],
+      nextAndFollowingStep: match[1],
+      followingStep: match[2],
+    };
+  }
+  return undefined;
+};
+
+/**
+ * @param {string} title
  * @returns {Todo}
  */
 const processTitle = (title) => {
@@ -26,8 +42,7 @@ const processTitle = (title) => {
   }
 
   // check for project
-  const projectMatch = updates.title.match(/^.+ \/ .+\n[^ \n@]+/);
-  if (projectMatch) {
+  if (projectMatch(updates.title)) {
     Object.assign(updates, { project: true });
   } else {
     Object.assign(updates, { project: false });
