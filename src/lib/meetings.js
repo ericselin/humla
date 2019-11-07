@@ -1,11 +1,35 @@
+const CLIENT_ID = '804405641493-ilsat4d564fjc6aictgg6cagcsem94m9.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyA8T1qoF1G2NQ4eN946MDlsEfZFyaoiPNU';
+const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+const SCOPES = 'https://www.googleapis.com/auth/calendar.events.readonly';
+
+let gapi;
+
 export const authorize = async () => {
-  throw new Error('Not implemented');
+  await gapi.auth2.getAuthInstance().signIn();
 };
 
-const init = async () => {
-  // re-sign-in with new scopes
+const init = () => new Promise((resolve) => {
   // load gapi with discovery docs
-};
+  const script = document.createElement('script');
+  script.src = 'https://apis.google.com/js/api.js';
+  script.async = true;
+  script.defer = true;
+  script.onload = () => {
+    // @ts-ignore
+    gapi = window.gapi;
+    gapi.load('client:auth2', async () => {
+      await gapi.client.init({
+        apiKey: API_KEY,
+        clientId: CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES,
+      });
+      resolve();
+    });
+  };
+  document.head.appendChild(script);
+});
 
 let initPromise;
 const ensureInit = async () => {
@@ -14,11 +38,44 @@ const ensureInit = async () => {
   return initPromise;
 };
 
+const isAuthorized = () => {
+  const auth = gapi.auth2.getAuthInstance();
+  return auth.isSignedIn.get();
+};
+
+// get ISO string of the previous midnight
+const midnightISO = (date) => `${date.toISOString().split('T')[0]}T00:00:00.000Z`;
+
 const meetings = {
   /** @type {() => Promise<Meeting[]>} */
   today: async () => {
+    // ensure everything is loaded
     await ensureInit();
-    return undefined;
+    // bail if we're not authorized for calendar
+    if (!isAuthorized()) return undefined;
+
+    // get events
+    const now = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(now.getDate() + 1);
+    const response = await gapi.client.calendar.events.list({
+      calendarId: 'primary',
+      timeMin: midnightISO(now),
+      timeMax: midnightISO(tomorrow),
+      showDeleted: false,
+      singleEvents: true,
+      orderBy: 'startTime',
+    });
+    const events = response.result.items;
+    const mapped = events.map((event) => {
+      /** @type {Meeting} */
+      const meeting = {
+        start: new Date(event.end.dateTime),
+        title: event.summary,
+      };
+      return meeting;
+    });
+    return mapped;
   },
 };
 export default meetings;

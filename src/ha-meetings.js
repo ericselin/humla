@@ -59,15 +59,17 @@ export default class HaMeetings extends HTMLElement {
     else this.innerHTML = '';
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async connectedCallback() {
+    // immediately set inner html
+    this.innerHTML = '<ha-context closed>Meetings</ha-context>';
     window.addEventListener('navigate', this.navigation.bind(this));
     this.innerHTML = renderInner(await get.today());
     // if not authorized, we have a button
     const btn = this.querySelector('#authorize');
     if (btn) {
-      btn.addEventListener('click', () => {
-        authorize();
+      btn.addEventListener('click', async () => {
+        await authorize();
+        this.innerHTML = renderInner(await get.today());
       });
     }
   }
