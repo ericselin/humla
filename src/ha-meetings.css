@@ -5,3 +5,13 @@ ha-meetings .card button {
   margin: 1rem 0;
   display: block;
 }
+
+ha-meetings [past] {
+  text-decoration: line-through;
+  background: none;
+  box-shadow: none;
+}
+
+ha-meetings [free] {
+  font-style: italic;
+}

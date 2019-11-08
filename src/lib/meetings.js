@@ -67,11 +67,19 @@ const meetings = {
       orderBy: 'startTime',
     });
     const events = response.result.items;
+    const date = (timeObj) => {
+      if (timeObj.dateTime) return new Date(timeObj.dateTime);
+      const wholeDay = new Date(timeObj.date);
+      wholeDay.setHours(0);
+      return wholeDay;
+    };
     const mapped = events.map((event) => {
       /** @type {Meeting} */
       const meeting = {
-        start: new Date(event.end.dateTime),
+        start: date(event.start),
+        end: date(event.end),
         title: event.summary,
+        free: event.transparency === 'transparent',
       };
       return meeting;
     });
@@ -94,5 +102,7 @@ export const getTime = (date) => (date
 /**
  * @typedef Meeting
  * @property {string} title
- * @property {Date} [start]
+ * @property {Date} start
+ * @property {Date} end
+ * @property {boolean} [free]
  */

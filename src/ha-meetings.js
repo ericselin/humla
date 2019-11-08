@@ -4,15 +4,21 @@ import get, { getTime, authorize } from './lib/meetings.js';
  * @param {Meeting} meeting
  * @returns {string}
  */
-const renderMeeting = (meeting) => `
-<div class="card card--meeting">
+const renderMeeting = (meeting) => {
+  const now = new Date();
+  let modifier = '';
+  if (meeting.end < now) modifier += ' past';
+  if (meeting.free) modifier += ' free';
+  return `
+<div class="card card--meeting" ${modifier}>
   <div></div>
   <div>${meeting.title}</div>
   <div>
-    <input placeholder="All day" value="${getTime(meeting.start)}" disabled />
+    <input value="${getTime(meeting.start)} - ${getTime(meeting.end)}" disabled />
   </div>
 </div>
 `;
+};
 
 const meetingsAuthHtml = `
 <div>
@@ -25,8 +31,8 @@ const meetingsAuthHtml = `
       <button id="authorize">Authorize</button>
     </div>
   </div>
-  ${renderMeeting({ title: 'Morning standup', start: new Date('1.1 9:00') })}
-  ${renderMeeting({ title: 'Lunch meeting with management', start: new Date('1.1 11:30') })}
+  ${renderMeeting({ title: 'Morning standup', start: new Date('1.1 9:00'), end: new Date('1.1 9:15') })}
+  ${renderMeeting({ title: 'Lunch meeting with management', start: new Date('1.1 11:30'), end: new Date('1.1 13:00') })}
 </div>
 `;
 
@@ -36,7 +42,9 @@ const meetingsAuthHtml = `
  */
 const renderInner = (meetings) => `
 <ha-context ${meetings ? '' : 'closed'}>Meetings<button></button></ha-context>
-${meetings ? meetings.map(renderMeeting).join('') : meetingsAuthHtml}
+<div>
+  ${meetings ? meetings.map(renderMeeting).join('') : meetingsAuthHtml}
+</div>
 `;
 
 /**
