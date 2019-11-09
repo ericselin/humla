@@ -18,6 +18,7 @@ const init = () => new Promise((resolve) => {
   script.onload = () => {
     // @ts-ignore
     gapi = window.gapi;
+    // @ts-ignore
     gapi.load('client:auth2', async () => {
       await gapi.client.init({
         apiKey: API_KEY,

@@ -181,6 +181,8 @@ export const add = (todo) => {
     .firestore()
     .collection('todos')
     .add(addable);
+  // @ts-ignore
+  if (firebase) firebase.analytics().logEvent('todo created');
 };
 
 /**
@@ -207,6 +209,12 @@ export const getUpdates = (todo, projects = getConfig('projects')) => {
       updates.update.completed = '';
     }
   }
+
+  if (todo.completed) {
+    // @ts-ignore
+    if (firebase) firebase.analytics().logEvent('todo completed');
+  }
+
   return updates;
 };
 

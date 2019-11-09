@@ -1,12 +1,21 @@
 /** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
 /** @typedef {import('@firebase/auth')} FirebaseAuth */
 /** @typedef {import('@firebase/firestore')} FirebaseFirestore */
+/** @typedef {import('@firebase/analytics')} FirebaseAnalytics */
 /** @typedef {import('@firebase/remote-config')} FirebaseRemoteConfig */
 
 /** @type {FirebaseNamespace} */
 // @ts-ignore
 // eslint-disable-next-line prefer-destructuring
 const firebase = window.firebase;
+
+// check if we want to set the channel
+if (window.location.hash === '#beta') {
+  firebase.analytics().setUserProperties({ channel: 'beta' });
+}
+if (window.location.hash === '#stable') {
+  firebase.analytics().setUserProperties({ channel: '' });
+}
 
 /**
  * Sign in the user
@@ -54,6 +63,7 @@ const auth = async () => {
       const unsub = firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           resolve(true);
+          firebase.analytics().logEvent('login');
           unsub();
         }
       });
