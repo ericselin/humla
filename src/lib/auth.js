@@ -33,6 +33,15 @@ export const signIn = async () => {
   await promise;
 };
 
+/**
+ * Sign the user out
+ *
+ * @returns {Promise<any>}
+ */
+export const signOut = async () => {
+  await firebase.auth().signOut();
+};
+
 let authenticated;
 /**
  * Returns promise of whether the user is signed in or not

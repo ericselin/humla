@@ -27,9 +27,9 @@ const processTitle = (title) => {
   Object.assign(updates, { tags: updates.title.match(tags) });
 
   // check for context
-  const context = /@\w+/;
+  const context = /(?:^|\s)(@\w+)/;
   const match = updates.title.match(context);
-  Object.assign(updates, { context: match ? match[0] : null });
+  Object.assign(updates, { context: match ? match[1] : null });
 
   // check for date
   const dateRegex = /\B!(\w+\.?\w*)\b/;

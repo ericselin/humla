@@ -6,12 +6,25 @@ ha-meetings .card button {
   display: block;
 }
 
+ha-meetings [free] {
+  background: rgba(255, 255, 255, 0.3);
+}
+
 ha-meetings [past] {
   text-decoration: line-through;
   background: none;
   box-shadow: none;
 }
 
-ha-meetings [free] {
+ha-meetings [current] {
+  border-color: #132640;
+}
+
+ha-meetings .empty {
+  margin: 1.5rem 0 0.75rem;
+  font-weight: 200;
+  color: white;
+  text-align: center;
   font-style: italic;
+  min-height: 28px;
 }

@@ -6,7 +6,7 @@ import { today, getDate } from '../lib/date.js';
  * @returns {string}
  */
 export const render = (todo) => `
-<ha-todo id="${todo.id}" ${todo.completed ? ' completed' : ''}>
+<ha-todo id="${todo.id}" ${todo.completed ? ` completed=${todo.completed}` : ''}>
   <button></button>
   <ha-title>${todo.title}</ha-title>
   <div class="details">

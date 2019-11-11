@@ -31,6 +31,26 @@ describe('title processing', () => {
     expect(results.soft).toBe('2019-05-03');
     expect(results.title).toBe('task due ');
   });
+
+  it('creates context properly', () => {
+    const results = processTitle('task with @context');
+    expect(results.context).toBe('@context');
+  });
+
+  it('does not create context for email', () => {
+    const results = processTitle('task with eric@gmail.com email and @context');
+    expect(results.context).toBe('@context');
+  });
+
+  it('creates context when in the beginning', () => {
+    const results = processTitle('@context task');
+    expect(results.context).toBe('@context');
+  });
+
+  it('creates context when in the beginning of line', () => {
+    const results = processTitle('task for this\n@context');
+    expect(results.context).toBe('@context');
+  });
 });
 
 describe('project matcher', () => {

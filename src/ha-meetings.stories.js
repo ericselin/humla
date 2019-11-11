@@ -13,7 +13,13 @@ export const Default = () => render([
     end: new Date(2019, 1, 1),
   },
   {
-    title: 'Do some stuff',
+    title: 'Free time meeting in the past',
+    start: new Date(2019, 1, 1),
+    end: new Date(2019, 1, 1),
+    free: true,
+  },
+  {
+    title: 'Do some stuff now',
     start: new Date(2019, 1, 1),
     end: new Date(2060, 1, 1),
   },
@@ -29,3 +35,5 @@ export const Default = () => render([
     free: true,
   },
 ]);
+
+export const emptyList = () => render([]);

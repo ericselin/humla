@@ -8,6 +8,7 @@ const renderMeeting = (meeting) => {
   const now = new Date();
   let modifier = '';
   if (meeting.end < now) modifier += ' past';
+  if (meeting.start <= now && meeting.end >= now) modifier += ' current';
   if (meeting.free) modifier += ' free';
   return `
 <div class="card card--meeting" ${modifier}>
@@ -31,8 +32,16 @@ const meetingsAuthHtml = `
       <button id="authorize">Authorize</button>
     </div>
   </div>
-  ${renderMeeting({ title: 'Morning standup', start: new Date('1.1 9:00'), end: new Date('1.1 9:15') })}
-  ${renderMeeting({ title: 'Lunch meeting with management', start: new Date('1.1 11:30'), end: new Date('1.1 13:00') })}
+  ${renderMeeting({
+    title: 'Morning standup',
+    start: new Date('1.1 9:00'),
+    end: new Date('1.1 9:15'),
+  })}
+  ${renderMeeting({
+    title: 'Lunch meeting with management',
+    start: new Date('1.1 11:30'),
+    end: new Date('1.1 13:00'),
+  })}
 </div>
 `;
 
@@ -40,12 +49,23 @@ const meetingsAuthHtml = `
  * @param {Meeting[]} meetings
  * @returns {string}
  */
-const renderInner = (meetings) => `
-<ha-context ${meetings ? '' : 'closed'}>Meetings<button></button></ha-context>
-<div>
-  ${meetings ? meetings.map(renderMeeting).join('') : meetingsAuthHtml}
-</div>
-`;
+const renderInner = (meetings) => {
+  if (meetings) {
+    if (meetings.length) {
+      return `
+      <ha-context>Meetings<button></button></ha-context>
+      <div>
+        ${meetings.map(renderMeeting).join('')}
+      </div>`;
+    }
+    // if no meetings in array, render note
+    return '<div class="empty">No meetings today</div>';
+  }
+  // if meetings was undefined, render the auth element
+  return `
+    <ha-context closed>Meetings<button></button></ha-context>
+    <div>${meetingsAuthHtml}</div>`;
+};
 
 /**
  * @param {Meeting[]} meetings
@@ -69,7 +89,7 @@ export default class HaMeetings extends HTMLElement {
 
   async connectedCallback() {
     // immediately set inner html
-    this.innerHTML = '<ha-context closed>Meetings</ha-context>';
+    this.innerHTML = '<ha-context></ha-context>';
     window.addEventListener('navigate', this.navigation.bind(this));
     this.innerHTML = renderInner(await get.today());
     // if not authorized, we have a button

@@ -135,11 +135,13 @@ export default class HaList extends HTMLElement {
         .uncompleted()
         .search(search)
         .listen(this.render);
-    } else {
+    } else if (view === 'all') {
       this.listener = await this.firebase
         .todos()
         .uncompleted()
         .listen(this.render);
+    } else {
+      this.innerHTML = ' ';
     }
   }
 
