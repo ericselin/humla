@@ -28,7 +28,7 @@ describe('title processing', () => {
 
   it('works with dates', () => {
     const results = processTitle('task due !3.5');
-    expect(results.soft).toBe('2019-05-03');
+    expect(results.soft).toBe('2020-05-03');
     expect(results.title).toBe('task due ');
   });
 

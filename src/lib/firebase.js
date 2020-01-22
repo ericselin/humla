@@ -190,7 +190,7 @@ export const add = (todo) => {
  * @param {boolean} [projects]
  * @returns {{ update: Todo, add?: Todo }} Completed project subtask to add
  */
-export const getUpdates = (todo, projects = getConfig('projects')) => {
+export const getUpdates = (todo, projects = true) => {
   const updates = {
     update: { ...todo, ...processTitle(todo.title) },
   };

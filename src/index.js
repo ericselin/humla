@@ -24,24 +24,9 @@ customElements.define(HaTags.elementName, HaTags);
 customElements.define(HaTitle.elementName, HaTitle);
 customElements.define(HaTodo.elementName, HaTodo);
 customElements.define(HaLogin.elementName, HaLogin);
+customElements.define(HaMeetings.elementName, HaMeetings);
 
 /** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
 /** @typedef {import('@firebase/auth')} FirebaseAuth */
 /** @typedef {import('@firebase/firestore')} FirebaseFirestore */
 /** @typedef {import('@firebase/remote-config')} FirebaseRemoteConfig */
-
-/** @type {FirebaseNamespace} */
-// @ts-ignore
-// eslint-disable-next-line prefer-destructuring
-const firebase = window.firebase;
-const remoteConfig = firebase.remoteConfig();
-
-remoteConfig.settings = {
-  fetchTimeoutMillis: 60000,
-  minimumFetchIntervalMillis: 60000,
-};
-remoteConfig.fetchAndActivate().then(() => {
-  if (remoteConfig.getBoolean('meetings')) {
-    customElements.define(HaMeetings.elementName, HaMeetings);
-  }
-});
