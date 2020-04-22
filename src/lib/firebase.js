@@ -32,6 +32,10 @@ export const todoSorter = (a, b) => {
   if ((a.context || '') < (b.context || '')) return 1;
   if ((a.soft || '') < (b.soft || '')) return -1;
   if ((a.soft || '') > (b.soft || '')) return 1;
+  if (a.sortstamp && b.sortstamp) {
+    if (a.sortstamp.valueOf() < b.sortstamp.valueOf()) return -1;
+    if (a.sortstamp.valueOf() > b.sortstamp.valueOf()) return 1;
+  }
   return 0;
 };
 
@@ -234,7 +238,44 @@ export const doc = (id) => {
       if (addTodo) add(addTodo);
       return updateTodo;
     },
+    async get() {
+      const snapshot = await me.get();
+      return /** @type {Todo} */(snapshot.data());
+    },
   };
+};
+
+/**
+ * Move todo with `moveId` between the other two todos
+ *
+ * @param {string} moveId
+ * @param {string} afterId
+ * @param {string} beforeId
+ * @param {object} [deps]
+ * @param {(id: string) => Promise<Todo>} [deps.get]
+ * @param {(id: string, updates: Todo) => Promise<any>} [deps.update]
+ * @param {(millis: number) => any} [deps.timestamp]
+ */
+export const move = async (moveId, afterId, beforeId, deps = {
+  get: async (id) => id && doc(id).get(),
+  update: async (id, updates) => doc(id).update(updates),
+  timestamp: firebase.firestore.Timestamp.fromMillis,
+}) => {
+  if (!moveId || (!beforeId && !afterId)) throw new Error('Movable id and at least before or after id required');
+  const [before, after] = await Promise.all([
+    deps.get(beforeId),
+    deps.get(afterId),
+  ]);
+  let newMillis;
+  const beforeMillis = before && before.sortstamp && before.sortstamp.toMillis();
+  const afterMillis = after && after.sortstamp && after.sortstamp.toMillis();
+  if (beforeMillis && afterMillis) newMillis = (beforeMillis + afterMillis) / 2;
+  else if (beforeMillis) newMillis = beforeMillis - 60000;
+  else if (afterMillis) newMillis = afterMillis + 60000;
+  // @ts-ignore
+  await deps.update(moveId, {
+    sortstamp: deps.timestamp(newMillis),
+  });
 };
 
 export default firebase;

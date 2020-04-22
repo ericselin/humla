@@ -5,6 +5,7 @@ import {
   weekReducer,
   week,
   completedThisWeek,
+  move,
 } from './firebase.js';
 import { set, reset } from './mockdate.js';
 
@@ -227,5 +228,53 @@ describe('project subtask', () => {
     const { add, update } = getUpdates(todo, true);
     expect(add.title).toBe('this / is done');
     expect(update.title).toEqual('this / next task');
+  });
+});
+
+describe('todo mover', () => {
+  const get = (todos) => async (id) => todos[id];
+  const update = (todos) => async (id, updates) => {
+    if (Object.keys(updates).length !== 1) fail('Cannot update');
+    // eslint-disable-next-line no-param-reassign
+    todos[id].sortstamp = updates.sortstamp;
+  };
+  const timestamp = (millis) => ({ toMillis: () => millis });
+
+  it('moves down between two elements correctly', async () => {
+    const todos = {
+      1: { sortstamp: { toMillis: () => 1000 } },
+      2: { sortstamp: { toMillis: () => 2000 } },
+      3: { sortstamp: { toMillis: () => 3000 } },
+    };
+    await move('1', '2', '3', { get: get(todos), update: update(todos), timestamp });
+    expect(todos[1].sortstamp.toMillis()).toEqual(2500);
+  });
+
+  it('moves up between two elements correctly', async () => {
+    const todos = {
+      1: { sortstamp: { toMillis: () => 1000 } },
+      2: { sortstamp: { toMillis: () => 2000 } },
+      3: { sortstamp: { toMillis: () => 3000 } },
+    };
+    await move('3', '1', '2', { get: get(todos), update: update(todos), timestamp });
+    expect(todos[3].sortstamp.toMillis()).toEqual(1500);
+  });
+
+  it('moves to beginning of list', async () => {
+    const todos = {
+      1: { sortstamp: { toMillis: () => 60001 } },
+      2: { sortstamp: { toMillis: () => 60002 } },
+    };
+    await move('2', undefined, '1', { get: get(todos), update: update(todos), timestamp });
+    expect(todos[2].sortstamp.toMillis()).toEqual(1);
+  });
+
+  it('moves to end of list', async () => {
+    const todos = {
+      1: { sortstamp: { toMillis: () => 1 } },
+      2: { sortstamp: { toMillis: () => 2 } },
+    };
+    await move('1', '2', undefined, { get: get(todos), update: update(todos), timestamp });
+    expect(todos[1].sortstamp.toMillis()).toEqual(60002);
   });
 });

@@ -5,6 +5,7 @@ import { getDate } from './date.js';
  * @returns {{ firstLine: string, nextAndFollowingStep: string, followingStep: string }}
  */
 export const projectMatch = (title) => {
+  if (!title) return undefined;
   const match = title.match(/^.+ \/ (.+\n([^ \n@].*))/);
   if (match) {
     return {
@@ -21,6 +22,8 @@ export const projectMatch = (title) => {
  * @returns {Todo}
  */
 const processTitle = (title) => {
+  if (!title) return undefined;
+
   const updates = { title };
   // check if we need to add tags
   const tags = /#\w+/g;

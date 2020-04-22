@@ -145,8 +145,37 @@ export default class HaList extends HTMLElement {
     }
   }
 
+  /**
+   * Key event to handle sorting
+   *
+   * @param {KeyboardEvent} e
+   */
+  keydown(e) {
+    if (e.altKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+      const currentEl = /** @type {HTMLElement} */(e.target).closest('ha-todo');
+      if (!currentEl) return;
+      let beforeElement;
+      let afterElement;
+      if (e.key === 'ArrowDown') {
+        afterElement = currentEl.nextElementSibling;
+        if (!afterElement) return;
+        beforeElement = afterElement.nextElementSibling;
+      } else {
+        beforeElement = currentEl.previousElementSibling;
+        if (!beforeElement) return;
+        afterElement = beforeElement.previousElementSibling;
+      }
+      this.firebase.move(
+        currentEl.id,
+        afterElement && afterElement.id,
+        beforeElement && beforeElement.id,
+      );
+    }
+  }
+
   async connectedCallback() {
     window.addEventListener('navigate', this.navigation);
+    this.addEventListener('keydown', this.keydown);
     this.view = 'today';
     this.listener = await this.firebase
       .todos()
