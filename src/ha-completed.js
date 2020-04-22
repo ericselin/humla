@@ -32,8 +32,8 @@ export const render = (todos, view = '') => `
 
 export default class HaCompleted extends HTMLElement {
   /**
-   * @param {typeof firebaseReal} firebaseMock
-   * @param {Window} windowMock
+   * @param {typeof firebaseReal} [firebaseMock]
+   * @param {Window} [windowMock]
    */
   constructor(firebaseMock, windowMock) {
     super();

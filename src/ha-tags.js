@@ -3,8 +3,8 @@ import auth from './lib/auth.js';
 
 export default class HaTags extends HTMLElement {
   /**
-   * @param {typeof todos} t
-   * @param {typeof auth} w
+   * @param {typeof todos} [t]
+   * @param {typeof auth} [w]
    */
   constructor(t, w) {
     super();

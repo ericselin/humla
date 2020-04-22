@@ -80,11 +80,14 @@ describe('weekday reducer', () => {
     const categories = arr.reduce(weekReducer, week);
     // @ts-ignore
     expect(categories).toEqual({
+      // @ts-ignore
       Monday: [arr[0], arr[1], arr[3]],
+      // @ts-ignore
       Tuesday: [arr[2]],
       Wednesday: [],
       Thursday: [],
       Friday: [],
+      // @ts-ignore
       Weekend: [arr[4], arr[5]],
     });
     // assert week wasn't mutated
@@ -126,11 +129,14 @@ describe('completed this week reducer', () => {
     const categories = arr.reduce(completedThisWeek, []);
     // @ts-ignore
     expect(categories).toEqual([
+      // @ts-ignore
       [arr[0], arr[1], arr[3]],
+      // @ts-ignore
       [arr[2]],
       undefined,
       undefined,
       undefined,
+      // @ts-ignore
       [arr[4], arr[5]],
     ]);
   });

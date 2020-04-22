@@ -27,7 +27,7 @@ describe('ha-tags', () => {
   ];
 
   let listening = false;
-  /** @type {import('./lib/firebase').todos} */
+  /** @type {typeof import('./lib/firebase').todos} */
   // @ts-ignore
   const todos = () => ({
     uncompleted() {
