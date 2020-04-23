@@ -17,7 +17,7 @@ export const renderList = (todos) => {
     .map(
       (context) => `
     <ha-context>${context}<button></button></ha-context>
-    <div>${renderTodos(contexts[context])}</div>`,
+    <div list>${renderTodos(contexts[context])}</div>`,
     )
     .join('');
 };
@@ -50,7 +50,7 @@ export const renderWeek = (todos) => {
       grid-column: ${dayIndex + 1};
       grid-row: ${contexts.indexOf(context) * 2 + 2}
     ">${context}</div>
-    <div style="
+    <div list style="
       grid-column: ${dayIndex + 1};
       grid-row: ${contexts.indexOf(context) * 2 + 3}
     ">${renderTodos(mapped[day][context])}</div>
@@ -86,8 +86,14 @@ export default class HaList extends HTMLElement {
     super();
     this.navigation = this.navigation.bind(this);
     this.render = this.render.bind(this);
+    this.drag = this.drag.bind(this);
+    this.leave = this.leave.bind(this);
+    this.over = this.over.bind(this);
+    this.drop = this.drop.bind(this);
     /** @type {() => any} */
     this.listener = undefined;
+    /** @type {HTMLElement} */
+    this.dragging = undefined;
     this.firebase = typeof firebaseMock !== 'undefined' ? firebaseMock : firebaseReal;
   }
 
@@ -100,10 +106,69 @@ export default class HaList extends HTMLElement {
   }
 
   /**
+   * @param {DragEvent} ev
+   */
+  drag(ev) {
+    const targetEl = /** @type {HTMLElement} */(ev.target);
+    const todo = /** @type {HTMLElement} */(targetEl.closest('ha-todo'));
+    this.dragging = todo;
+    ev.dataTransfer.setData('text', todo.innerText);
+    // eslint-disable-next-line no-param-reassign
+    ev.dataTransfer.effectAllowed = 'move';
+    window.requestAnimationFrame(() => {
+      this.dragging.classList.add('dragging');
+    });
+  }
+
+  /**
+   * @param {DragEvent} ev
+   */
+  leave(ev) {
+    const targetEl = /** @type {HTMLElement} */(ev.target);
+    // only act when exiting item
+    if (targetEl.nodeName !== 'HA-TODO') return;
+    const targetRect = targetEl.getBoundingClientRect();
+    const parent = targetEl.parentElement;
+    if (ev.y > targetRect.bottom) {
+      parent.insertBefore(this.dragging, targetEl.nextSibling);
+    } else {
+      parent.insertBefore(this.dragging, targetEl);
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  over(ev) {
+    ev.preventDefault();
+    // eslint-disable-next-line no-param-reassign
+    ev.dataTransfer.dropEffect = 'move';
+  }
+
+  drop() {
+    this.dragging.classList.remove('dragging');
+    this.firebase.move(
+      this.dragging.id,
+      this.dragging.previousElementSibling && this.dragging.previousElementSibling.id,
+      this.dragging.nextElementSibling && this.dragging.nextElementSibling.id,
+    );
+  }
+
+  /**
    * @param {import('./lib/types').Todo[]} todos
    */
   async render(todos) {
     this.innerHTML = renderInner(todos, this.view);
+    // attach drag and drop handlers
+    this.querySelectorAll('div[list]').forEach((node) => {
+      node.addEventListener('dragstart', this.drag);
+      node.addEventListener('dragleave', this.leave);
+      node.addEventListener('dragover', this.over);
+      node.addEventListener('drop', this.drop);
+    });
+
+    this.querySelectorAll('ha-todo').forEach((node) => {
+      // eslint-disable-next-line no-param-reassign
+      /** @type {HTMLElement} */(node).draggable = true;
+    });
   }
 
   /**

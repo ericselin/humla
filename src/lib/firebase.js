@@ -262,7 +262,8 @@ export const move = async (moveId, afterId, beforeId, deps = {
   timestamp: firebase.firestore.Timestamp.fromMillis,
 }) => {
   if (!moveId || (!beforeId && !afterId)) throw new Error('Movable id and at least before or after id required');
-  const [before, after] = await Promise.all([
+  const [moveTodo, before, after] = await Promise.all([
+    deps.get(moveId),
     deps.get(beforeId),
     deps.get(afterId),
   ]);
@@ -272,10 +273,18 @@ export const move = async (moveId, afterId, beforeId, deps = {
   if (beforeMillis && afterMillis) newMillis = (beforeMillis + afterMillis) / 2;
   else if (beforeMillis) newMillis = beforeMillis - 60000;
   else if (afterMillis) newMillis = afterMillis + 60000;
-  // @ts-ignore
-  await deps.update(moveId, {
+  const updates = {
     sortstamp: deps.timestamp(newMillis),
-  });
+  };
+  const soft = (after && after.soft) || (before && before.soft);
+  if (soft !== moveTodo.soft) updates.soft = soft;
+  const context = (after && after.context) || (before && before.context);
+  if (context !== moveTodo.context) {
+    updates.context = context;
+    updates.title = moveTodo.title.replace(moveTodo.context, context);
+  }
+  // @ts-ignore
+  await deps.update(moveId, updates);
 };
 
 export default firebase;

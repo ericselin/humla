@@ -46,6 +46,10 @@ ha-todo .tag--project {
   background: hsl(219, 35%, 48%);;
 }
 
+ha-todo.dragging {
+  opacity: 0.5;
+}
+
 ha-todo[loading] {
   animation: todo-load 0.8s ease-in alternate infinite;
 }

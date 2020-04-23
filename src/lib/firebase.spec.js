@@ -234,9 +234,7 @@ describe('project subtask', () => {
 describe('todo mover', () => {
   const get = (todos) => async (id) => todos[id];
   const update = (todos) => async (id, updates) => {
-    if (Object.keys(updates).length !== 1) fail('Cannot update');
-    // eslint-disable-next-line no-param-reassign
-    todos[id].sortstamp = updates.sortstamp;
+    Object.assign(todos[id], updates);
   };
   const timestamp = (millis) => ({ toMillis: () => millis });
 
@@ -276,5 +274,41 @@ describe('todo mover', () => {
     };
     await move('1', '2', undefined, { get: get(todos), update: update(todos), timestamp });
     expect(todos[1].sortstamp.toMillis()).toEqual(60002);
+  });
+
+  it('changes soft date and context to match "after" todo if exists', async () => {
+    const todos = {
+      1: {
+        sortstamp: { toMillis: () => 1000 }, soft: '2020-04-22', context: '@a', title: '3 in @a',
+      },
+      2: {
+        sortstamp: { toMillis: () => 2000 }, soft: '2020-04-23', context: '@b', title: '2 in @b',
+      },
+      3: {
+        sortstamp: { toMillis: () => 3000 }, soft: '2020-04-23', context: '@b', title: '3 in @b',
+      },
+    };
+    await move('3', '1', '2', { get: get(todos), update: update(todos), timestamp });
+    expect(todos[3].soft).toEqual('2020-04-22');
+    expect(todos[3].context).toEqual('@a');
+    expect(todos[3].title).toEqual('3 in @a');
+  });
+
+  it('changes soft date and context to match "before" todo if no "after" todo exists', async () => {
+    const todos = {
+      1: {
+        sortstamp: { toMillis: () => 1000 }, soft: '2020-04-22', context: '@a', title: '3 in @a',
+      },
+      2: {
+        sortstamp: { toMillis: () => 2000 }, soft: '2020-04-23', context: '@b', title: '2 in @b',
+      },
+      3: {
+        sortstamp: { toMillis: () => 3000 }, soft: '2020-04-23', context: '@b', title: '3 in @b',
+      },
+    };
+    await move('3', undefined, '1', { get: get(todos), update: update(todos), timestamp });
+    expect(todos[3].soft).toEqual('2020-04-22');
+    expect(todos[3].context).toEqual('@a');
+    expect(todos[3].title).toEqual('3 in @a');
   });
 });
