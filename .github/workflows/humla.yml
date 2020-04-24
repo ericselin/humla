@@ -8,9 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
-      with:
-        node-version: 10.x
-    - run: yarn
+    - run: yarn --ignore-engines
     - run: yarn test
   deploy:
     if: github.event_name == 'push' && github.event.ref == 'refs/heads/master'
@@ -19,9 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
-      with:
-        node-version: 10.x
-    - run: yarn
+    - run: yarn --ignore-engines
     - run: yarn deploy
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
