@@ -180,6 +180,7 @@ export const add = (todo) => {
     ...todo,
     ...processTitle(todo.title),
     owner: firebase.auth().currentUser.uid,
+    sortstamp: firebase.firestore.Timestamp.now(),
   };
   firebase
     .firestore()
