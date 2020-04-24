@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 const admin = require('firebase-admin');
 
+// @ts-ignore
+// eslint-disable-next-line import/no-unresolved
 const serviceAccount = require('./serviceAccountKey.json');
 
 admin.initializeApp({
