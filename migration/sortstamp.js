@@ -9,28 +9,51 @@ admin.initializeApp({
   databaseURL: 'https://super-todo-230614.firebaseio.com',
 });
 
+/**
+ * @param {any[]} array
+ * @param {number} chunkSize
+ * @returns {any[][]}
+ */
+const chunkArray = (array, chunkSize) => {
+  if (chunkSize < 1) throw new Error('Chunks size invalid');
+  const chunkedArr = [];
+  for (let pos = 0; pos < array.length; pos += chunkSize) {
+    chunkedArr.push(array.slice(pos, pos + chunkSize));
+  }
+  // we know this is an array of arrays, but ts does not
+  // @ts-ignore
+  return chunkedArr;
+};
+
 const main = async () => {
   const db = admin.firestore();
   const todos = await db
     .collection('todos')
-    .where('owner', '==', 'sOUs8jnn5teGZtA0TXaHEehFcuk2')
     .get();
   console.log('Todos found:', todos.size);
   const nostamp = todos.docs.filter((doc) => doc.get('sortstamp') === undefined);
   console.log('Todos with no sortstamp', nostamp.length);
+  const chunked = chunkArray(nostamp.reverse(), 500);
 
-  const batch = db.batch();
   const now = Date.now();
-  nostamp.reverse().forEach((doc, i) => {
-    const stamp = now - i * 60000;
-    batch.update(
-      doc.ref,
-      { sortstamp: admin.firestore.Timestamp.fromMillis(stamp) },
-    );
+  chunked.forEach(async (chunkedTodos, i) => {
+    const batch = db.batch();
+    chunkedTodos.forEach(async (doc, j) => {
+      const stamp = now - (i * 500 + j) * 60000;
+      batch.update(
+        doc.ref,
+        { sortstamp: admin.firestore.Timestamp.fromMillis(stamp) },
+      );
+    });
+    await batch.commit();
+    console.log('Done with batch');
   });
-  await batch.commit();
-
-  console.log('Done!');
 };
 
-main().catch((err) => { console.log(err); });
+main()
+  .then(() => {
+    console.log('Done!');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
