@@ -5,8 +5,7 @@
     "lib": ["dom", "esnext"],
     "module": "commonjs",
     "noEmit": true,
-    "maxNodeModuleJsDepth": 0,
-    "resolveJsonModule": true
+    "maxNodeModuleJsDepth": 0
   },
-  "include": ["**/*"]
+  "include": ["src/**/*"]
 }

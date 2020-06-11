@@ -60,6 +60,7 @@ describe('context reducer', () => {
     // @ts-ignore
     const categories = arr.reduce(contextReducer, {});
     expect(categories).toEqual({
+      // @ts-ignore
       '@a': [arr[0], arr[2]],
       '@b': [arr[1]],
     });

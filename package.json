@@ -27,6 +27,7 @@
     "@firebase/app-types": "^0.6.0",
     "@firebase/auth": "^0.14.3",
     "@firebase/firestore": "^1.14.1",
+    "@firebase/firestore-types": "^1.11.0",
     "@firebase/remote-config": "^0.1.19",
     "@firebase/util": "^0.2.45",
     "@types/jasmine": "^3.5.10",
@@ -43,6 +44,5 @@
     "ncp": "^2.0.0",
     "prettier-eslint": "^11.0.0",
     "typescript": "^3.8.3"
-  },
-  "dependencies": {}
+  }
 }

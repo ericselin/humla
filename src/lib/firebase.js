@@ -2,15 +2,7 @@ import { today, sunday, thisMonday } from './date.js';
 import processTitle, { projectMatch } from './keywords.js';
 import auth from './auth.js';
 
-/** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
-/** @typedef {import('@firebase/auth')} FirebaseAuth */
-/** @typedef {import('@firebase/firestore')} FirebaseFirestore */
-/** @typedef {import('@firebase/remote-config')} FirebaseRemoteConfig */
-
-/** @type {FirebaseNamespace} */
-// @ts-ignore
-// eslint-disable-next-line prefer-destructuring
-const firebase = window.firebase;
+const { firebase } = window;
 const remoteConfig = firebase && firebase.remoteConfig();
 
 /**

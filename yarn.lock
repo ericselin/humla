@@ -78,7 +78,7 @@
     "@firebase/util" "0.2.48"
     tslib "1.11.1"
 
-"@firebase/firestore-types@1.11.0":
+"@firebase/firestore-types@1.11.0", "@firebase/firestore-types@^1.11.0":
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-1.11.0.tgz#ccb734fd424b8b6c3aff3ad1921a89ee31be229b"
   integrity sha512-hD7+cmMUvT5OJeWVrcRkE87PPuj/0/Wic6bntCopJE1WIX/Dm117AUkHgKd3S7Ici6DLp4bdlx1MjjwWL5942w==

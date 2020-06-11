@@ -25,8 +25,3 @@ customElements.define(HaTitle.elementName, HaTitle);
 customElements.define(HaTodo.elementName, HaTodo);
 customElements.define(HaLogin.elementName, HaLogin);
 customElements.define(HaMeetings.elementName, HaMeetings);
-
-/** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
-/** @typedef {import('@firebase/auth')} FirebaseAuth */
-/** @typedef {import('@firebase/firestore')} FirebaseFirestore */
-/** @typedef {import('@firebase/remote-config')} FirebaseRemoteConfig */

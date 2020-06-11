@@ -1,13 +1,4 @@
-/** @typedef {import('@firebase/app-types').FirebaseNamespace} FirebaseNamespace */
-/** @typedef {import('@firebase/auth')} FirebaseAuth */
-/** @typedef {import('@firebase/firestore')} FirebaseFirestore */
-/** @typedef {import('@firebase/analytics')} FirebaseAnalytics */
-/** @typedef {import('@firebase/remote-config')} FirebaseRemoteConfig */
-
-/** @type {FirebaseNamespace} */
-// @ts-ignore
-// eslint-disable-next-line prefer-destructuring
-const firebase = window.firebase;
+const { firebase } = window;
 
 // check if we want to set the channel
 if (window.location.hash === '#beta') {
