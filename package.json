@@ -21,11 +21,7 @@
       "pre-commit": "yarn test"
     }
   },
-  "workspaces": [
-    "functions"
-  ],
   "devDependencies": {
-    "@babel/core": "^7.9.0",
     "@firebase/analytics": "^0.3.3",
     "@firebase/app": "^0.6.2",
     "@firebase/app-types": "^0.6.0",
@@ -33,21 +29,19 @@
     "@firebase/firestore": "^1.14.1",
     "@firebase/remote-config": "^0.1.19",
     "@firebase/util": "^0.2.45",
-    "@storybook/html": "^5.3.18",
     "@types/jasmine": "^3.5.10",
-    "babel-loader": "^8.1.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsdoc": "^24.0.0",
+    "eslint-plugin-jsdoc": "^27.0.6",
     "firebase-tools": "^8.1.1",
     "husky": "^4.2.5",
     "karma": "^5.0.2",
     "karma-chrome-launcher": "^3.1.0",
     "karma-jasmine": "^3.1.1",
-    "mockdate": "^2.0.5",
+    "mockdate": "^3.0.2",
     "ncp": "^2.0.0",
-    "prettier-eslint": "^9.0.1",
+    "prettier-eslint": "^11.0.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {}
