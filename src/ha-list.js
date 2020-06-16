@@ -157,18 +157,22 @@ export default class HaList extends HTMLElement {
    */
   async render(todos) {
     this.innerHTML = renderInner(todos, this.view);
-    // attach drag and drop handlers
-    this.querySelectorAll('div[list]').forEach((node) => {
-      node.addEventListener('dragstart', this.drag);
-      node.addEventListener('dragleave', this.leave);
-      node.addEventListener('dragover', this.over);
-      node.addEventListener('drop', this.drop);
-    });
 
-    this.querySelectorAll('ha-todo').forEach((node) => {
-      // eslint-disable-next-line no-param-reassign
-      /** @type {HTMLElement} */(node).draggable = true;
-    });
+    // only enable drag-n-drop on chrome
+    if (navigator.userAgent.includes('Chrome')) {
+      // attach drag and drop handlers
+      this.querySelectorAll('div[list]').forEach((node) => {
+        node.addEventListener('dragstart', this.drag);
+        node.addEventListener('dragleave', this.leave);
+        node.addEventListener('dragover', this.over);
+        node.addEventListener('drop', this.drop);
+      });
+
+      this.querySelectorAll('ha-todo').forEach((node) => {
+        // eslint-disable-next-line no-param-reassign
+        /** @type {HTMLElement} */(node).draggable = true;
+      });
+    }
   }
 
   /**
