@@ -29,7 +29,7 @@
     "@firebase/firestore": "^1.14.1",
     "@firebase/firestore-types": "^1.11.0",
     "@firebase/remote-config": "^0.1.19",
-    "@firebase/util": "^0.2.45",
+    "@firebase/util": "^0.3.4",
     "@types/jasmine": "^3.5.10",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.1.0",
